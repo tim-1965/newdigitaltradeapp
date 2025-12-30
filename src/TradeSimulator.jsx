@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, DollarSign, BarChart3, Calculator, FileText, Save, Check } from 'lucide-react';
+import { TrendingUp, DollarSign, BarChart3, ArrowRight, Users, FileText, Calculator, Settings } from 'lucide-react';
 
-export default function TradeSimulator() {
-  const [activeView, setActiveView] = useState('inputs'); // 'inputs' or 'simulation'
-  
-  // Auto-save indicator
-  const [showSaved, setShowSaved] = useState(false);
+export default function CompactTradeSimulator() {
+  const [activeTab, setActiveTab] = useState('inputs');
 
-  // Load saved values from localStorage
+  // Load saved values from localStorage or use defaults
   const loadSavedValue = (key, defaultValue) => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('tradeSimulator');
@@ -23,1019 +20,813 @@ export default function TradeSimulator() {
     return defaultValue;
   };
 
-  // 1) Company & trade volume
-  const [annualVolumeMM, setAnnualVolumeMM] = useState(() => loadSavedValue('annualVolumeMM', 200));
-  const [digitisationPct, setDigitisationPct] = useState(() => loadSavedValue('digitisationPct', 100));
+  // Actual Financial Statement Inputs
+  const [turnover, setTurnover] = useState(() => loadSavedValue('turnover', 1291.6));
+  const [costOfSales, setCostOfSales] = useState(() => loadSavedValue('costOfSales', 707.4));
+  const [operatingProfit, setOperatingProfit] = useState(() => loadSavedValue('operatingProfit', -39.6));
+  const [netInterest, setNetInterest] = useState(() => loadSavedValue('netInterest', 29.9));
+  const [tradePayables, setTradePayables] = useState(() => loadSavedValue('tradePayables', 94.9));
+  const [netDebt, setNetDebt] = useState(() => loadSavedValue('netDebt', 511.1));
+  const [equity, setEquity] = useState(() => loadSavedValue('equity', 320.8));
+  const [cashFromOperations, setCashFromOperations] = useState(() => loadSavedValue('cashFromOperations', -170.3));
+  const [currency, setCurrency] = useState(() => loadSavedValue('currency', 'GBP'));
+
+  // Additional Current Costs
+  const [internationalShipments, setInternationalShipments] = useState(() => loadSavedValue('internationalShipments', 2000));
+  const [feePerShipment, setFeePerShipment] = useState(() => loadSavedValue('feePerShipment', 0.0025));
+  const [apHeadcount, setApHeadcount] = useState(() => loadSavedValue('apHeadcount', 8));
+  const [tradeComplianceHeadcount, setTradeComplianceHeadcount] = useState(() => loadSavedValue('tradeComplianceHeadcount', 4));
+  const [avgSalaryCost, setAvgSalaryCost] = useState(() => loadSavedValue('avgSalaryCost', 0.065));
+
+  // Program Assumptions - Trade Finance
+  const [relevantSpendPct, setRelevantSpendPct] = useState(() => loadSavedValue('relevantSpendPct', 50));
+  const [internationalSpendPct, setInternationalSpendPct] = useState(() => loadSavedValue('internationalSpendPct', 60));
+  const [newDPO, setNewDPO] = useState(() => loadSavedValue('newDPO', 90));
+  const [fundingBaseRate, setFundingBaseRate] = useState(() => loadSavedValue('fundingBaseRate', 4.25));
+  const [fundingSpread, setFundingSpread] = useState(() => loadSavedValue('fundingSpread', 500));
+  const [freeDays, setFreeDays] = useState(() => loadSavedValue('freeDays', 7));
+  const [discount, setDiscount] = useState(() => loadSavedValue('discount', 3.5));
+  const [uptakePct, setUptakePct] = useState(() => loadSavedValue('uptakePct', 70));
+  const [accelerationPct, setAccelerationPct] = useState(() => loadSavedValue('accelerationPct', 80));
+  const [platformCost, setPlatformCost] = useState(() => loadSavedValue('platformCost', 0));
+  const [treasuryFundingPct, setTreasuryFundingPct] = useState(() => loadSavedValue('treasuryFundingPct', 0));
+
+  // Program Assumptions - Operational Efficiency
+  const [apEfficiency, setApEfficiency] = useState(() => loadSavedValue('apEfficiency', 40));
+  const [tradeEfficiency, setTradeEfficiency] = useState(() => loadSavedValue('tradeEfficiency', 60));
+  const [customsSavings, setCustomsSavings] = useState(() => loadSavedValue('customsSavings', 75));
   
-  // Convert millions to actual value for calculations
-  const annualVolume = annualVolumeMM * 1000000;
+  // Auto-save indicator
+  const [showSaved, setShowSaved] = useState(false);
 
-  // 2) Early payment discounts & working capital
-  const [currentPaymentTerms, setCurrentPaymentTerms] = useState(() => loadSavedValue('currentPaymentTerms', 60));
-  const [termExtension, setTermExtension] = useState(() => loadSavedValue('termExtension', 30));
-  const [supplierUptakePct, setSupplierUptakePct] = useState(() => loadSavedValue('supplierUptakePct', 65));
-  const [earlyPaymentDiscount, setEarlyPaymentDiscount] = useState(() => loadSavedValue('earlyPaymentDiscount', 3.5));
-  const [daysToPayment, setDaysToPayment] = useState(() => loadSavedValue('daysToPayment', 7));
-  const [bankFundedPct, setBankFundedPct] = useState(() => loadSavedValue('bankFundedPct', 60));
-  const [scfRate, setScfRate] = useState(() => loadSavedValue('scfRate', 6.5));
-  const [internalCostOfFunds, setInternalCostOfFunds] = useState(() => loadSavedValue('internalCostOfFunds', 4.0));
-  const [wcInterestRate, setWcInterestRate] = useState(() => loadSavedValue('wcInterestRate', 6.0));
-
-  // 3) AP headcount efficiency
-  const [apHeadcount, setApHeadcount] = useState(() => loadSavedValue('apHeadcount', 15));
-  const [apCostPerFte, setApCostPerFte] = useState(() => loadSavedValue('apCostPerFte', 50000));
-  const [apEfficiencyPct, setApEfficiencyPct] = useState(() => loadSavedValue('apEfficiencyPct', 40));
-
-  // 4) Customs & trade compliance benefits
-  const [customsFilings, setCustomsFilings] = useState(() => loadSavedValue('customsFilings', 100));
-  const [brokerFeePerFiling, setBrokerFeePerFiling] = useState(() => loadSavedValue('brokerFeePerFiling', 55));
-  const [selfFilingPct, setSelfFilingPct] = useState(() => loadSavedValue('selfFilingPct', 90));
-  const [shipmentsWithFees, setShipmentsWithFees] = useState(() => loadSavedValue('shipmentsWithFees', 300));
-  const [forwarderFeePerShipment, setForwarderFeePerShipment] = useState(() => loadSavedValue('forwarderFeePerShipment', 20));
-  const [docFeesEliminatedPct, setDocFeesEliminatedPct] = useState(() => loadSavedValue('docFeesEliminatedPct', 35));
-  const [tradeComplianceHeadcount, setTradeComplianceHeadcount] = useState(() => loadSavedValue('tradeComplianceHeadcount', 8));
-  const [tradeCostPerFte, setTradeCostPerFte] = useState(() => loadSavedValue('tradeCostPerFte', 50000));
-  const [tradeEfficiencyPct, setTradeEfficiencyPct] = useState(() => loadSavedValue('tradeEfficiencyPct', 40));
-
-  // Simulation inputs (for historic values)
-  const [turnover, setTurnover] = useState(() => loadSavedValue('turnover', 1000000000));
-  const [costOfSales, setCostOfSales] = useState(() => loadSavedValue('costOfSales', 700000000));
-  const [operatingProfit, setOperatingProfit] = useState(() => loadSavedValue('operatingProfit', 40000000));
-  const [netInterest, setNetInterest] = useState(() => loadSavedValue('netInterest', 50000000));
-  const [ebitda, setEbitda] = useState(() => loadSavedValue('ebitda', 120000000));
-  const [tradePayables, setTradePayables] = useState(() => loadSavedValue('tradePayables', 100000000));
-  const [netDebt, setNetDebt] = useState(() => loadSavedValue('netDebt', 500000000));
-  const [equity, setEquity] = useState(() => loadSavedValue('equity', 200000000));
-  const [freeCashFlow, setFreeCashFlow] = useState(() => loadSavedValue('freeCashFlow', 30000000));
-
-  // Save all values to localStorage
+  // Save all values to localStorage whenever they change
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const allValues = {
-        annualVolumeMM, digitisationPct,
-        currentPaymentTerms, termExtension, supplierUptakePct, earlyPaymentDiscount, 
-        daysToPayment, bankFundedPct, scfRate, internalCostOfFunds, wcInterestRate,
-        apHeadcount, apCostPerFte, apEfficiencyPct,
-        customsFilings, brokerFeePerFiling, selfFilingPct, shipmentsWithFees, 
-        forwarderFeePerShipment, docFeesEliminatedPct, tradeComplianceHeadcount, 
-        tradeCostPerFte, tradeEfficiencyPct,
-        turnover, costOfSales, operatingProfit, netInterest, ebitda,
-        tradePayables, netDebt, equity, freeCashFlow
+        turnover, costOfSales, operatingProfit, netInterest, tradePayables, netDebt, equity, cashFromOperations, currency,
+        internationalShipments, feePerShipment, apHeadcount, tradeComplianceHeadcount, avgSalaryCost,
+        relevantSpendPct, internationalSpendPct, newDPO, fundingBaseRate, fundingSpread, freeDays, discount, uptakePct, accelerationPct, platformCost, treasuryFundingPct,
+        apEfficiency, tradeEfficiency, customsSavings
       };
       localStorage.setItem('tradeSimulator', JSON.stringify(allValues));
       
+      // Show "saved" indicator briefly
       setShowSaved(true);
       const timer = setTimeout(() => setShowSaved(false), 1500);
       return () => clearTimeout(timer);
     }
-  }, [annualVolumeMM, digitisationPct, currentPaymentTerms, termExtension, supplierUptakePct, 
-      earlyPaymentDiscount, daysToPayment, bankFundedPct, scfRate, internalCostOfFunds, wcInterestRate,
-      apHeadcount, apCostPerFte, apEfficiencyPct, customsFilings, brokerFeePerFiling, 
-      selfFilingPct, shipmentsWithFees, forwarderFeePerShipment, docFeesEliminatedPct, 
-      tradeComplianceHeadcount, tradeCostPerFte, tradeEfficiencyPct,
-      turnover, costOfSales, operatingProfit, netInterest, ebitda, tradePayables, 
-      netDebt, equity, freeCashFlow]);
+  }, [turnover, costOfSales, operatingProfit, netInterest, tradePayables, netDebt, equity, cashFromOperations, currency,
+      internationalShipments, feePerShipment, apHeadcount, tradeComplianceHeadcount, avgSalaryCost,
+      relevantSpendPct, internationalSpendPct, newDPO, fundingBaseRate, fundingSpread, freeDays, discount, uptakePct, accelerationPct, platformCost, treasuryFundingPct,
+      apEfficiency, tradeEfficiency, customsSavings]);
 
   // ===== CALCULATIONS =====
   
-  // Volume being digitised
-  const digitisedVolume = annualVolume * (digitisationPct / 100);
-
-  // Early payment calculations
-  const daysAccelerated = currentPaymentTerms + termExtension - daysToPayment;
-  const participatingSpend = digitisedVolume * (supplierUptakePct / 100);
-  const discountValue = participatingSpend * (earlyPaymentDiscount / 100);
+  const relevantSpend = (costOfSales * relevantSpendPct) / 100;
+  const internationalSpend = relevantSpend * (internationalSpendPct / 100);
+  const domesticSpend = relevantSpend * (1 - internationalSpendPct / 100);
+  const avgShipmentSize = internationalShipments > 0 ? internationalSpend / internationalShipments : 0;
+  const currentDPO = (tradePayables / costOfSales) * 365;
   
-  // Funding costs
-  const bankFundedAmount = participatingSpend * (bankFundedPct / 100);
-  const internalFundedAmount = participatingSpend * (1 - bankFundedPct / 100);
-  const bankFundingCost = bankFundedAmount * (scfRate / 100) * (daysAccelerated / 365);
-  const internalFundingCost = internalFundedAmount * (internalCostOfFunds / 100) * (daysAccelerated / 365);
+  const incomeFromDiscounts = (discount / 100) * (uptakePct / 100) * relevantSpend;
+  const totalFundingRate = (fundingBaseRate / 100) + (fundingSpread / 10000);
+  const fundingCostToSuppliers = -totalFundingRate * ((newDPO - freeDays) / 365) * relevantSpend * (uptakePct / 100) * (1 - treasuryFundingPct / 100) * (accelerationPct / 100);
+  const netDiscountBenefit = incomeFromDiscounts + fundingCostToSuppliers - platformCost;
   
-  // Net discount benefit
-  const netDiscountBenefit = discountValue - bankFundingCost - internalFundingCost;
+  const additionalDPO = relevantSpend * ((newDPO - currentDPO) / 365) * (1 - treasuryFundingPct / 100) - relevantSpend * ((currentDPO - freeDays) / 365) * (treasuryFundingPct / 100) * (accelerationPct / 100);
+  const workingCapitalReleased = additionalDPO;
+  const scfFacilitySize = relevantSpend * ((newDPO - freeDays) / 365) * (uptakePct / 100) * (accelerationPct / 100) * (1 - treasuryFundingPct / 100);
 
-  // Working capital calculations
-  const termExtensionDays = termExtension;
-  const wcFromExtension = digitisedVolume * (termExtensionDays / 365);
-  const wcUsedForEarlyPay = internalFundedAmount * (daysAccelerated / 365);
-  const netWorkingCapital = wcFromExtension - wcUsedForEarlyPay;
-  const wcAnnualValue = netWorkingCapital * (wcInterestRate / 100);
+  const apHeadcountSaved = apHeadcount * (apEfficiency / 100);
+  const tradeHeadcountSaved = tradeComplianceHeadcount * (tradeEfficiency / 100);
+  const totalHeadcountSavings = (apHeadcountSaved + tradeHeadcountSaved) * avgSalaryCost;
+  const annualCustomsFees = internationalShipments * feePerShipment;
+  const customsCostSavings = annualCustomsFees * (customsSavings / 100);
+  
+  const totalPLImpact = netDiscountBenefit + totalHeadcountSavings + customsCostSavings;
+  const workingCapitalValue = workingCapitalReleased * totalFundingRate;
+  const totalAnnualBenefit = totalPLImpact + workingCapitalValue;
 
-  // AP efficiency
-  const apFteSaved = apHeadcount * (apEfficiencyPct / 100);
-  const apSavings = apFteSaved * apCostPerFte;
+  // Adjusted Financials
+  const adjustedCostOfSales = costOfSales - netDiscountBenefit;
+  const grossProfit = turnover - costOfSales;
+  const adjustedGrossProfit = turnover - adjustedCostOfSales;
+  const adjustedOperatingProfit = operatingProfit + totalPLImpact;
+  const netIncome = operatingProfit - netInterest;
+  const adjustedNetIncome = adjustedOperatingProfit - netInterest;
+  const estimatedDA = grossProfit - operatingProfit;
+  const ebitda = operatingProfit + estimatedDA;
+  const adjustedEBITDA = adjustedOperatingProfit + estimatedDA;
+  const adjustedTradePayables = tradePayables + additionalDPO;
+  const adjustedNetDebt = netDebt - workingCapitalReleased;
+  const adjustedEquity = equity + totalPLImpact;
+  const adjustedFCF = cashFromOperations + workingCapitalReleased;
+  
+  const leverage = ebitda !== 0 ? netDebt / ebitda : 0;
+  const adjustedLeverage = adjustedEBITDA !== 0 ? adjustedNetDebt / adjustedEBITDA : 0;
+  const solvency = equity !== 0 ? netDebt / equity : 0;
+  const adjustedSolvency = adjustedEquity !== 0 ? adjustedNetDebt / adjustedEquity : 0;
+  const ebitdaMargin = turnover !== 0 ? ebitda / turnover : 0;
+  const adjustedEbitdaMargin = turnover !== 0 ? adjustedEBITDA / turnover : 0;
+  const fcfToSales = turnover !== 0 ? cashFromOperations / turnover : 0;
+  const adjustedFcfToSales = turnover !== 0 ? adjustedFCF / turnover : 0;
 
-  // Customs efficiency
-  const brokerSavings = customsFilings * 12 * brokerFeePerFiling * (selfFilingPct / 100);
-  const forwarderSavings = shipmentsWithFees * 12 * forwarderFeePerShipment * (docFeesEliminatedPct / 100);
-  const tradeFteSaved = tradeComplianceHeadcount * (tradeEfficiencyPct / 100);
-  const tradeHeadcountSavings = tradeFteSaved * tradeCostPerFte;
-  const totalCustomsSavings = brokerSavings + forwarderSavings + tradeHeadcountSavings;
-
-  // Total benefits
-  const totalPLBenefit = netDiscountBenefit + apSavings + totalCustomsSavings;
-  const plBenefitAfterCosts = totalPLBenefit; // Platform costs could be added here
-
-  // Simulation calculations
-  const adjustedCostOfSales = costOfSales - (bankFundedAmount * (earlyPaymentDiscount / 100));
-  const adjustedOperatingProfit = operatingProfit + totalPLBenefit;
-  const adjustedNetInterest = netInterest - (netWorkingCapital * (wcInterestRate / 100));
-  const adjustedEbitda = ebitda + (bankFundedAmount * (earlyPaymentDiscount / 100)) + apSavings + totalCustomsSavings;
-  const adjustedTradePayables = tradePayables + wcFromExtension;
-  const adjustedNetDebt = netDebt - netWorkingCapital;
-  const adjustedEquity = equity + totalPLBenefit;
-  const adjustedFCF = freeCashFlow + netWorkingCapital;
-
-  // Key ratios
-  const ebitdaMargin = turnover > 0 ? ebitda / turnover : 0;
-  const adjustedEbitdaMargin = turnover > 0 ? adjustedEbitda / turnover : 0;
-  const operatingMargin = turnover > 0 ? operatingProfit / turnover : 0;
-  const adjustedOperatingMargin = turnover > 0 ? adjustedOperatingProfit / turnover : 0;
-  const leverage = ebitda > 0 ? netDebt / ebitda : 0;
-  const adjustedLeverage = adjustedEbitda > 0 ? adjustedNetDebt / adjustedEbitda : 0;
-  const solvency = equity > 0 ? netDebt / equity : 0;
-  const adjustedSolvency = adjustedEquity > 0 ? adjustedNetDebt / adjustedEquity : 0;
-  const fcfSales = turnover > 0 ? freeCashFlow / turnover : 0;
-  const adjustedFcfSales = turnover > 0 ? adjustedFCF / turnover : 0;
-  const interestCover = netInterest > 0 ? ebitda / netInterest : 0;
-  const adjustedInterestCover = adjustedNetInterest > 0 ? adjustedEbitda / adjustedNetInterest : 0;
-
-  // Formatting functions
   const formatCurrency = (value) => {
-    if (Math.abs(value) >= 1000000) {
-      return `$${(value / 1000000).toFixed(2)}M`;
-    } else if (Math.abs(value) >= 1000) {
-      return `$${(value / 1000).toFixed(0)}K`;
-    }
-    return `$${value.toFixed(0)}`;
+    const absValue = Math.abs(value);
+    const formatted = new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }).format(absValue);
+    return value < 0 ? `(${formatted})` : formatted;
   };
 
-  const formatNumber = (value, decimals = 1) => {
-    return value.toFixed(decimals);
+  const formatNumber = (value) => {
+    return new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value);
   };
 
-  const formatPercent = (value) => {
-    return `${(value * 100).toFixed(2)}%`;
-  };
+  const formatPercent = (value) => `${(value * 100).toFixed(1)}%`;
+  const formatRatio = (value) => value.toFixed(1) + 'x';
+  const getChangeArrow = (original, adjusted) => adjusted > original ? '↑' : '↓';
 
-  const InputField = ({ label, value, onChange, unit = '', note = '', compact = false }) => {
-    const [localValue, setLocalValue] = React.useState(value);
-    const [isEditing, setIsEditing] = React.useState(false);
-
-    React.useEffect(() => {
-      if (!isEditing) {
-        setLocalValue(value);
-      }
-    }, [value, isEditing]);
-
-    const handleFocus = () => {
-      setIsEditing(true);
-    };
-
+  const InputRow = ({ label, value, onChange, type = "number", step = "0.1", unit = "" }) => {
+    const [localValue, setLocalValue] = useState(value);
+    
+    useEffect(() => {
+      setLocalValue(value);
+    }, [value]);
+    
     const handleBlur = () => {
-      setIsEditing(false);
-      const parsed = parseFloat(localValue);
-      if (!isNaN(parsed)) {
-        onChange(parsed);
+      if (type === "number") {
+        const numValue = Number(localValue);
+        if (!isNaN(numValue)) {
+          onChange(numValue);
+        }
       } else {
-        setLocalValue(value);
+        onChange(localValue);
       }
     };
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Enter') {
-        e.target.blur();
-      }
-    };
-
+    
     return (
-      <div className="border-b border-gray-200 py-2.5">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 min-w-0">
-            <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
-            {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
-          </div>
-          <div className={`flex items-center gap-2 ${compact ? 'w-40' : 'w-64'}`}>
-            <input
-              type="text"
-              value={localValue}
-              onChange={(e) => setLocalValue(e.target.value)}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              onKeyDown={handleKeyDown}
-              className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#58A4B0] text-right"
-            />
-            {unit && <span className="text-xs text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
-          </div>
-        </div>
+      <div className="flex items-center gap-3 py-1.5">
+        <label className="text-xs text-gray-700 w-52 flex-shrink-0">{label}</label>
+        <input
+          type={type}
+          step={step}
+          value={localValue}
+          onChange={(e) => setLocalValue(type === "number" ? e.target.value : e.target.value)}
+          onBlur={handleBlur}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleBlur();
+              e.target.blur();
+            }
+          }}
+          className="w-40 px-2 py-1 border border-gray-300 rounded text-sm text-right focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+        />
+        {unit && <span className="text-xs text-gray-500 w-12">{unit}</span>}
       </div>
     );
   };
 
-  const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue }) => {
-    const [localValue, setLocalValue] = React.useState(value);
-    const [isChanging, setIsChanging] = React.useState(false);
-
-    React.useEffect(() => {
-      if (!isChanging) {
+  const SliderRow = ({ label, value, onChange, min = 0, max = 100, step = 5, unit = "%", showValue = true, info = "" }) => {
+    const [localValue, setLocalValue] = useState(value);
+    const [isDragging, setIsDragging] = useState(false);
+    
+    useEffect(() => {
+      if (!isDragging) {
         setLocalValue(value);
       }
-    }, [value, isChanging]);
-
-    const handleChange = (newValue) => {
-      setLocalValue(newValue);
-      setIsChanging(true);
+    }, [value, isDragging]);
+    
+    const handleChange = (e) => {
+      setLocalValue(Number(e.target.value));
     };
-
+    
+    const handleMouseDown = () => {
+      setIsDragging(true);
+    };
+    
     const handleMouseUp = () => {
-      setIsChanging(false);
+      setIsDragging(false);
       onChange(localValue);
     };
-
+    
     return (
-      <div className="border-b border-gray-200 py-2.5">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 min-w-0">
-            <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
-            {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
-          </div>
-          <div className="flex items-center gap-2 w-64">
-            <input
-              type="range"
-              min={min}
-              max={max}
-              step={step}
-              value={localValue}
-              onChange={(e) => handleChange(parseFloat(e.target.value))}
-              onMouseUp={handleMouseUp}
-              onTouchEnd={handleMouseUp}
-              className="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-              style={{
-                background: `linear-gradient(to right, #58A4B0 0%, #58A4B0 ${((localValue - min) / (max - min)) * 100}%, #e5e7eb ${((localValue - min) / (max - min)) * 100}%, #e5e7eb 100%)`
-              }}
-            />
-            <div className="text-right min-w-[60px]">
-              <span className="text-sm font-semibold text-[#0C7C59]">
-                {formatValue ? formatValue(localValue) : localValue}
-              </span>
-              {unit && <span className="text-xs text-gray-600 ml-1">{unit}</span>}
-            </div>
-          </div>
+      <div className="py-1.5">
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-xs text-gray-700">{label}</label>
+          {showValue && <span className="text-xs font-semibold text-blue-600">{localValue}{unit}</span>}
         </div>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={localValue}
+          onChange={handleChange}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchEnd={handleMouseUp}
+          className="w-full h-1.5 bg-gray-200 rounded-lg cursor-pointer accent-blue-600"
+        />
+        {info && <div className="text-xs text-gray-500 mt-0.5">{info}</div>}
       </div>
     );
   };
 
-  const CalculatedField = ({ label, value, note = '' }) => (
-    <div className="bg-[#58A4B0]/10 border-l-4 border-[#58A4B0] py-2.5 px-3 mb-2">
-      <div className="flex items-center gap-3">
-        <div className="flex-1 min-w-0">
-          <label className="text-xs font-semibold text-gray-900 block mb-0.5">{label}</label>
-          {note && <p className="text-xs text-gray-600 line-clamp-1">{note}</p>}
-        </div>
-        <div className="text-base font-bold text-[#0C7C59] min-w-[120px] text-right">
-          {value}
-        </div>
-      </div>
-    </div>
-  );
+  const tabs = [
+    { id: 'inputs', label: 'Input Assumptions', icon: Settings },
+    { id: 'results', label: 'Results', icon: BarChart3 }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#58A4B0]/5">
-      {/* Header */}
-      <div className="bg-white border-b-2 border-[#D64933] shadow-sm">
-        <div className="max-w-[1800px] mx-auto px-6 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-white rounded-xl shadow-lg p-4 mb-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img 
-                src="/240417_PTS_red_logo.png" 
-                alt="Prima Trade" 
-                className="h-8 w-auto"
-              />
+            <div className="flex items-center gap-2">
+              <Calculator className="text-blue-600" size={28} />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Trade Digitalisation Benefits Calculator</h1>
-                <p className="text-sm text-gray-600 mt-1">Cash Against Data Platform</p>
+                <h1 className="text-2xl font-bold text-gray-900">Trade Digitalization Simulator</h1>
+                <p className="text-sm text-gray-600">Complete financial impact analysis with operational benefits</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               {showSaved && (
-                <div className="flex items-center gap-2 text-[#0C7C59] text-sm">
-                  <Check className="w-4 h-4" />
+                <div className="flex items-center gap-1 text-green-600 text-sm animate-pulse">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
                   <span>Saved</span>
                 </div>
               )}
-              <div className="flex bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setActiveView('inputs')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'inputs'
-                      ? 'bg-[#58A4B0] text-white shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <Calculator className="w-4 h-4 inline mr-2" />
-                  Inputs & Results
-                </button>
-                <button
-                  onClick={() => setActiveView('simulation')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'simulation'
-                      ? 'bg-[#0C7C59] text-white shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <BarChart3 className="w-4 h-4 inline mr-2" />
-                  Simulation
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  if (confirm('Reset all values to defaults? This cannot be undone.')) {
+                    localStorage.removeItem('tradeSimulator');
+                    window.location.reload();
+                  }
+                }}
+                className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg border border-gray-300 transition-colors"
+              >
+                Reset to Defaults
+              </button>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="max-w-[1800px] mx-auto px-6 py-6">
-        {activeView === 'inputs' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-           <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-0">
-            {/* 1) Company & Trade Volume */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:rounded-r-none lg:border-r lg:border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-[#58A4B0]">1)</span> Company & Trade Volume
-              </h2>
-              <div className="space-y-1">
-                <InputField
-                  label="Import supply chain: annual volume"
-                  value={annualVolumeMM}
-                  onChange={setAnnualVolumeMM}
-                  unit="$ MM / year"
-                  note="Total invoice face value of imports."
-                />
-                <SliderField
-                  label="Proportion of import supply chain digitising paperwork"
-                  value={digitisationPct}
-                  onChange={setDigitisationPct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note=""
-                />
-              </div>
-            </div>
-                            
-            {/* Summary card aligned with top of panel */}
-               <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:rounded-l-none lg:self-stretch">
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* P&L Section */}
-                <div>
-                  <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
-                  <p className="text-white/80 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
-                  <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-t-xl shadow-lg overflow-hidden">
+          <div className="flex border-b border-gray-200">
+            {tabs.map(tab => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
+                    activeTab === tab.id
+                      ? 'bg-blue-600 text-white border-b-2 border-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon size={18} />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
 
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div>
-                      <div className="text-white/70 mb-1">Discounts</div>
-                      <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
+          {/* Tab Content */}
+          <div className="p-6">
+            {/* TAB 1: INPUT ASSUMPTIONS */}
+            {activeTab === 'inputs' && (
+              <div className="grid grid-cols-2 gap-6">
+                {/* LEFT COLUMN: All Number Inputs */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <DollarSign size={16} className="text-blue-600" />
+                    Input Data
+                  </h3>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3 py-1.5">
+                      <label className="text-xs text-gray-700 w-52">Currency</label>
+                      <select
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className="w-40 px-2 py-1 border border-gray-300 rounded text-sm"
+                      >
+                        <option value="GBP">GBP (£)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                      </select>
                     </div>
-                    <div>
-                      <div className="text-white/70 mb-1">AP Efficiency</div>
-                      <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
-                    </div>
-                    <div>
-                      <div className="text-white/70 mb-1">Customs</div>
-                      <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
+                    <InputRow label="Turnover / Revenue" value={turnover} onChange={setTurnover} />
+                    <InputRow label="Cost of Sales" value={costOfSales} onChange={setCostOfSales} />
+                    <InputRow label="Operating Profit" value={operatingProfit} onChange={setOperatingProfit} />
+                    <InputRow label="Net Interest Payable" value={netInterest} onChange={setNetInterest} />
+                    <InputRow label="Trade Payables" value={tradePayables} onChange={setTradePayables} />
+                    <div className="text-xs text-gray-500 pl-52 py-0.5">Current DPO: {currentDPO.toFixed(1)} days</div>
+                    <InputRow label="Net Financial Debt" value={netDebt} onChange={setNetDebt} />
+                    <InputRow label="Equity" value={equity} onChange={setEquity} />
+                    <InputRow label="Free Cash Flow" value={cashFromOperations} onChange={setCashFromOperations} />
+                    
+                    {/* Divider line */}
+                    <div className="border-t-2 border-gray-300 my-3"></div>
+                    
+                    <div className="text-xs font-semibold text-gray-700 mb-2">Operational Costs</div>
+                    <InputRow label="International Shipments / Year" value={internationalShipments} onChange={setInternationalShipments} step="1" />
+                    <InputRow label="Fee per Shipment" value={feePerShipment * 1000000} onChange={(val) => setFeePerShipment(val / 1000000)} step="100" />
+                    <div className="text-xs text-gray-500 pl-52 py-0.5">Total: {formatCurrency(annualCustomsFees)}</div>
+                    <InputRow label="AP Team Headcount" value={apHeadcount} onChange={setApHeadcount} step="1" />
+                    <InputRow label="Trade Compliance Headcount" value={tradeComplianceHeadcount} onChange={setTradeComplianceHeadcount} step="1" />
+                    <InputRow label="Avg Salary Cost" value={avgSalaryCost * 1000000} onChange={(val) => setAvgSalaryCost(val / 1000000)} step="1000" />
+                    <InputRow label="Platform Cost (millions)" value={platformCost} onChange={setPlatformCost} step="0.1" />
+                  </div>
+                  
+                  {/* Summary Results Box */}
+                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-4 border-2 border-indigo-200 mt-4">
+                    <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <BarChart3 size={16} className="text-indigo-600" />
+                      Summary Benefits
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="bg-white rounded p-2 border border-green-200 flex items-center justify-between">
+                        <div className="text-xs text-gray-600">Discount Benefit</div>
+                        <div className="text-base font-bold text-green-700">{formatCurrency(netDiscountBenefit)}</div>
+                      </div>
+                      <div className="bg-white rounded p-2 border border-purple-200">
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-gray-600">Headcount Savings</div>
+                          <div className="text-base font-bold text-purple-700">{formatCurrency(totalHeadcountSavings)}</div>
+                        </div>
+                        <div className="text-xs text-gray-500 text-right mt-0.5">{formatNumber(apHeadcountSaved + tradeHeadcountSaved)} FTEs</div>
+                      </div>
+                      <div className="bg-white rounded p-2 border border-orange-200 flex items-center justify-between">
+                        <div className="text-xs text-gray-600">Customs Savings</div>
+                        <div className="text-base font-bold text-orange-700">{formatCurrency(customsCostSavings)}</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded p-2 border-2 border-indigo-400 mt-2 flex items-center justify-between">
+                        <div className="text-xs text-indigo-100">Total annual P&L benefit</div>
+                        <div className="text-xl font-bold text-white">{formatCurrency(totalPLImpact)}</div>
+                      </div>
+                      <div className="bg-white rounded p-2 border border-blue-200 flex items-center justify-between mt-2">
+                        <div className="text-xs text-gray-600">Additional working capital generated</div>
+                        <div className="text-base font-bold text-blue-700">{formatCurrency(workingCapitalReleased)}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              
+
+                {/* RIGHT COLUMN: All Sliders - Aligned with inputs */}
+                <div className="space-y-1">
+                  {/* Spacers to align with Currency and Turnover */}
+                  <div className="h-[42px]"></div>
+                  <div className="h-[34px]"></div>
+                  
+                  {/* Spend Analysis - Aligned with Cost of Sales */}
+                  <div className="bg-blue-50 rounded-lg p-3">
+                    <h3 className="text-xs font-semibold text-gray-900 mb-2">Spend Analysis</h3>
+                    <div className="space-y-2">
+                      <SliderRow 
+                        label="Relevant Spend (%)" 
+                        value={relevantSpendPct} 
+                        onChange={setRelevantSpendPct}
+                        info={`${formatCurrency(relevantSpend)}`}
+                      />
+                      <SliderRow 
+                        label="International Suppliers (%)" 
+                        value={internationalSpendPct} 
+                        onChange={setInternationalSpendPct}
+                        info={`Int'l: ${formatCurrency(internationalSpend)} | Dom: ${formatCurrency(domesticSpend)}`}
+                      />
+                      <div className="text-xs text-blue-700 font-medium">Avg shipment: {formatCurrency(avgShipmentSize)}</div>
+                    </div>
+                  </div>
+
+                  {/* Trade Finance Program - Aligned with Operating Profit through Free Cash Flow */}
+                  <div className="bg-blue-50 rounded-lg p-3">
+                    <h3 className="text-xs font-semibold text-gray-900 mb-2">Trade Finance Program</h3>
+                    <div className="space-y-2">
+                      <SliderRow 
+                        label="New DPO Target (days)" 
+                        value={newDPO} 
+                        onChange={setNewDPO} 
+                        min={30} 
+                        max={120} 
+                        unit=" days"
+                        info={`Extension: +${(newDPO - currentDPO).toFixed(1)} days`}
+                      />
+                      <SliderRow 
+                        label="Supplier Discount (%)" 
+                        value={discount} 
+                        onChange={setDiscount} 
+                        min={0} 
+                        max={10} 
+                        step={0.5}
+                      />
+                      <SliderRow 
+                        label="Supplier Uptake (%)" 
+                        value={uptakePct} 
+                        onChange={setUptakePct}
+                      />
+                      <SliderRow 
+                        label="Acceleration (%)" 
+                        value={accelerationPct} 
+                        onChange={setAccelerationPct}
+                      />
+                      <SliderRow 
+                        label="Funding Base Rate (%)" 
+                        value={fundingBaseRate} 
+                        onChange={setFundingBaseRate} 
+                        min={0} 
+                        max={15} 
+                        step={0.25}
+                      />
+                      <SliderRow 
+                        label="Funding Spread (bps)" 
+                        value={fundingSpread} 
+                        onChange={setFundingSpread} 
+                        min={0} 
+                        max={1000} 
+                        step={50} 
+                        unit=" bps"
+                      />
+                      <SliderRow 
+                        label="Free Days" 
+                        value={freeDays} 
+                        onChange={setFreeDays} 
+                        min={0} 
+                        max={30} 
+                        step={1} 
+                        unit=" days"
+                      />
+                      <SliderRow 
+                        label="Treasury Funding (%)" 
+                        value={treasuryFundingPct} 
+                        onChange={setTreasuryFundingPct}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Spacer to align with Operational Costs section (after divider line) */}
+                  <div className="h-[52px]"></div>
+
+                  {/* Efficiency Gains - Aligned with operational costs */}
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <h3 className="text-xs font-semibold text-gray-900 mb-2">Efficiency Assumptions</h3>
+                    <div className="space-y-2">
+                      <SliderRow 
+                        label="Customs Fee Reduction (%)" 
+                        value={customsSavings} 
+                        onChange={setCustomsSavings}
+                        info={`Saves ${formatCurrency(customsCostSavings)}`}
+                      />
+                      <SliderRow 
+                        label="AP Efficiency Gain (%)" 
+                        value={apEfficiency} 
+                        onChange={setApEfficiency}
+                        info={`${formatNumber(apHeadcountSaved)} FTEs = ${formatCurrency(apHeadcountSaved * avgSalaryCost)}`}
+                      />
+                      <SliderRow 
+                        label="Trade Compliance Efficiency (%)" 
+                        value={tradeEfficiency} 
+                        onChange={setTradeEfficiency}
+                        info={`${formatNumber(tradeHeadcountSaved)} FTEs = ${formatCurrency(tradeHeadcountSaved * avgSalaryCost)}`}
+                      />
+                    </div>
+                    <div className="bg-white rounded p-2 mt-2 border border-green-200">
+                      <div className="text-xs font-semibold text-gray-900 mb-1">Total Efficiency Savings</div>
+                      <div className="space-y-1 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Headcount:</span>
+                          <span className="font-semibold text-green-700">{formatCurrency(totalHeadcountSavings)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Customs:</span>
+                          <span className="font-semibold text-green-700">{formatCurrency(customsCostSavings)}</span>
+                        </div>
+                        <div className="flex justify-between border-t pt-1">
+                          <span className="font-semibold text-gray-900">Total:</span>
+                          <span className="font-bold text-green-700">{formatCurrency(totalHeadcountSavings + customsCostSavings)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: RESULTS - Financial Simulation + Benefits */}
+            {activeTab === 'results' && (
+              <div className="space-y-6">
+                {/* Financial Simulation */}
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg p-6 text-white">
+                  <h2 className="text-xl font-bold mb-2">Financial Statement Simulation</h2>
+                  <p className="text-blue-100 text-sm">Before and after comparison showing the complete impact on your published financials</p>
+                </div>
+
+                <div className="overflow-x-auto bg-white rounded-lg shadow">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b-2 border-gray-300 bg-gray-50">
+                        <th className="text-left py-2 px-3 font-semibold text-gray-700"></th>
+                        <th className="text-right py-2 px-3 font-semibold text-gray-700">Actual</th>
+                        <th className="py-2 px-2"></th>
+                        <th className="text-right py-2 px-3 font-semibold text-blue-700">With PrimaTrade</th>
+                        <th className="text-left py-2 px-3 font-semibold text-gray-600">Impact</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="bg-gray-100">
+                        <td colSpan="5" className="py-2 px-3 font-semibold text-gray-900 text-xs">INCOME STATEMENT (millions)</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Turnover</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(turnover)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700">{formatCurrency(turnover)}</td>
+                        <td className="py-2 px-3 text-gray-500 text-xs">No change</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Cost of sales</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(-costOfSales)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatCurrency(-adjustedCostOfSales)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">Reduced via discounts</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 bg-blue-50">
+                        <td className="py-2 px-3 font-semibold text-gray-900">Gross profit</td>
+                        <td className="py-2 px-3 text-right font-semibold">{formatCurrency(grossProfit)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-bold">{formatCurrency(adjustedGrossProfit)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">+ {formatCurrency(adjustedGrossProfit - grossProfit)}</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 bg-blue-50">
+                        <td className="py-2 px-3 font-semibold text-gray-900">Operating profit</td>
+                        <td className="py-2 px-3 text-right font-semibold">{formatCurrency(operatingProfit)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-bold">{formatCurrency(adjustedOperatingProfit)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">+ {formatCurrency(totalPLImpact)}</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Net interest payable</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(-netInterest)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700">{formatCurrency(-netInterest)}</td>
+                        <td className="py-2 px-3 text-gray-500 text-xs">Unchanged</td>
+                      </tr>
+                      <tr className="border-b-2 border-gray-300 bg-blue-50">
+                        <td className="py-2 px-3 font-semibold text-gray-900">Net income</td>
+                        <td className="py-2 px-3 text-right font-semibold">{formatCurrency(netIncome)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-bold">{formatCurrency(adjustedNetIncome)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">{getChangeArrow(netIncome, adjustedNetIncome)} + {formatCurrency(adjustedNetIncome - netIncome)}</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">EBITDA</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(ebitda)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatCurrency(adjustedEBITDA)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">{getChangeArrow(ebitda, adjustedEBITDA)} Improved</td>
+                      </tr>
+                      
+                      <tr className="bg-gray-100">
+                        <td colSpan="5" className="py-2 px-3 font-semibold text-gray-900 pt-3 text-xs">BALANCE SHEET (millions)</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Trade payables</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(tradePayables)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatCurrency(adjustedTradePayables)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">+ {formatCurrency(additionalDPO)} DPO</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Net financial debt</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(netDebt)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatCurrency(adjustedNetDebt)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">↓ - {formatCurrency(workingCapitalReleased)}</td>
+                      </tr>
+                      <tr className="border-b-2 border-gray-300 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Equity</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(equity)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatCurrency(adjustedEquity)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">↑ + {formatCurrency(totalPLImpact)}</td>
+                      </tr>
+                      
+                      <tr className="bg-gray-100">
+                        <td colSpan="5" className="py-2 px-3 font-semibold text-gray-900 pt-3 text-xs">FINANCIAL KPIs</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Leverage (Net Debt / EBITDA)</td>
+                        <td className="py-2 px-3 text-right">{formatRatio(leverage)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatRatio(adjustedLeverage)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">↓ Reduced</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Solvency (Debt / Equity)</td>
+                        <td className="py-2 px-3 text-right">{formatRatio(solvency)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatRatio(adjustedSolvency)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">↓ Improved</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">Free cash flow</td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(cashFromOperations)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatCurrency(adjustedFCF)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">+ {formatCurrency(workingCapitalReleased)}</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">EBITDA margin</td>
+                        <td className="py-2 px-3 text-right">{formatPercent(ebitdaMargin)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatPercent(adjustedEbitdaMargin)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">↑ Improved</td>
+                      </tr>
+                      <tr className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-2 px-3 text-gray-700">FCF / Sales</td>
+                        <td className="py-2 px-3 text-right">{formatPercent(fcfToSales)}</td>
+                        <td className="py-2 px-2 text-center"><ArrowRight size={14} className="mx-auto text-gray-400" /></td>
+                        <td className="py-2 px-3 text-right text-blue-700 font-semibold">{formatPercent(adjustedFcfToSales)}</td>
+                        <td className="py-2 px-3 text-green-600 text-xs font-medium">↑ Improved</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Benefits Summary */}
+                <div className="grid md:grid-cols-4 gap-4">
+                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg p-5 text-white shadow-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <DollarSign size={18} />
+                      <h3 className="text-sm font-semibold">Discount Benefit</h3>
+                    </div>
+                    <div className="text-3xl font-bold mb-1">{formatCurrency(netDiscountBenefit)}</div>
+                    <div className="text-xs opacity-90">Net P&L from early payment discounts</div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg p-5 text-white shadow-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Users size={18} />
+                      <h3 className="text-sm font-semibold">Headcount Savings</h3>
+                    </div>
+                    <div className="text-3xl font-bold mb-1">{formatCurrency(totalHeadcountSavings)}</div>
+                    <div className="text-xs opacity-90">{formatNumber(apHeadcountSaved + tradeHeadcountSaved)} FTEs eliminated</div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg p-5 text-white shadow-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <FileText size={18} />
+                      <h3 className="text-sm font-semibold">Customs Savings</h3>
+                    </div>
+                    <div className="text-3xl font-bold mb-1">{formatCurrency(customsCostSavings)}</div>
+                    <div className="text-xs opacity-90">{internationalShipments.toLocaleString()} shipments, {customsSavings}% reduction</div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg p-5 text-white shadow-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp size={18} />
+                      <h3 className="text-sm font-semibold">Working Capital Generated</h3>
+                    </div>
+                    <div className="text-3xl font-bold mb-1">{formatCurrency(workingCapitalReleased)}</div>
+                    <div className="text-xs opacity-90">Cash released via extended DPO</div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-xl p-8 text-white shadow-2xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-3xl font-bold mb-2">Total Annual P&L Benefit</h3>
+                      <p className="text-indigo-100">Direct impact on profit & loss statement</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-6xl font-bold">{formatCurrency(totalPLImpact)}</div>
+                      <div className="text-indigo-100 text-lg mt-1">per year</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 grid grid-cols-3 gap-6 pt-6 border-t border-indigo-400">
+                    <div>
+                      <div className="text-indigo-200 text-sm mb-1">Discount Benefit</div>
+                      <div className="text-2xl font-bold">{formatCurrency(netDiscountBenefit)}</div>
+                      <div className="text-xs text-indigo-200 mt-1">
+                        Early payment discounts
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-indigo-200 text-sm mb-1">Headcount Savings</div>
+                      <div className="text-2xl font-bold">{formatCurrency(totalHeadcountSavings)}</div>
+                      <div className="text-xs text-indigo-200 mt-1">
+                        AP & Trade Compliance
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-indigo-200 text-sm mb-1">Customs Savings</div>
+                      <div className="text-2xl font-bold">{formatCurrency(customsCostSavings)}</div>
+                      <div className="text-xs text-indigo-200 mt-1">
+                        Direct filing eliminates fees
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Working Capital Section */}
-                <div className="border-l border-white/30 pl-6">
-                  <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
-                  <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
-                  <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl p-6 text-white shadow-xl">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-white/70 mb-1">From extension:</div>
-                      <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
+                      <h3 className="text-2xl font-bold mb-1">Additional Working Capital Generated</h3>
+                      <p className="text-blue-100 text-sm">Cash released through extended payment terms (not P&L impact)</p>
                     </div>
-                    <div>
-                      <div className="text-white/70 mb-1">Used for early pay:</div>
-                      <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
+                    <div className="text-right">
+                      <div className="text-5xl font-bold">{formatCurrency(workingCapitalReleased)}</div>
                     </div>
-                   </div>
+                  </div>
+                  <div className="mt-4 text-sm text-blue-100">
+                    SCF Facility Required: <span className="font-bold">{formatCurrency(scfFacilitySize)}</span>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Impact Breakdown</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center pb-2">
+                        <span className="text-sm text-gray-600">Supplier Discounts (net):</span>
+                        <span className="font-semibold text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-2">
+                        <span className="text-sm text-gray-600">AP Headcount Savings:</span>
+                        <span className="font-semibold text-green-700">{formatCurrency(apHeadcountSaved * avgSalaryCost)}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-2">
+                        <span className="text-sm text-gray-600">Trade Compliance Savings:</span>
+                        <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSaved * avgSalaryCost)}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-2 border-b">
+                        <span className="text-sm text-gray-600">Customs Fee Savings:</span>
+                        <span className="font-semibold text-green-700">{formatCurrency(customsCostSavings)}</span>
+                      </div>
+                      <div className="flex justify-between items-center pt-2">
+                        <span className="font-bold text-gray-900">Total P&L Improvement:</span>
+                        <span className="text-xl font-bold text-green-700">{formatCurrency(totalPLImpact)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Program Metrics</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Relevant Spend:</span>
+                        <span className="font-semibold">{formatCurrency(relevantSpend)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 pl-4">• International ({internationalSpendPct}%):</span>
+                        <span className="font-semibold text-blue-700">{formatCurrency(internationalSpend)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 pl-4">• Domestic ({100-internationalSpendPct}%):</span>
+                        <span className="font-semibold text-blue-700">{formatCurrency(domesticSpend)}</span>
+                      </div>
+                      <div className="flex justify-between pt-2 border-t">
+                        <span className="text-gray-600">Average Shipment Size:</span>
+                        <span className="font-semibold">{formatCurrency(avgShipmentSize)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Current DPO:</span>
+                        <span className="font-semibold">{currentDPO.toFixed(1)} days</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Target DPO:</span>
+                        <span className="font-semibold text-blue-700">{newDPO} days</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">DPO Extension:</span>
+                        <span className="font-semibold text-green-700">+{(newDPO - currentDPO).toFixed(1)} days</span>
+                      </div>
+                      <div className="flex justify-between pt-2 border-t">
+                        <span className="text-gray-600">Total Headcount Saved:</span>
+                        <span className="font-semibold text-purple-700">{formatNumber(apHeadcountSaved + tradeHeadcountSaved)} FTEs</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Supplier Uptake:</span>
+                        <span className="font-semibold">{uptakePct}%</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-          {/* 2) Early Payment Discounts & Working Capital */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-[#58A4B0]">2)</span> Early Payment Discounts & Working Capital
-              </h2>
-              <div className="space-y-1">
-                <SliderField
-                  label="Average payment term after shipment"
-                  value={currentPaymentTerms}
-                  onChange={setCurrentPaymentTerms}
-                  min={0}
-                  max={120}
-                  step={1}
-                  unit="days"
-                  note="60 days = suppliers paid 60 days after shipment."
-                />
-                <SliderField
-                  label="Additional payment term for suppliers"
-                  value={termExtension}
-                  onChange={setTermExtension}
-                  min={0}
-                  max={90}
-                  step={1}
-                  unit="days"
-                  note="Additional days beyond the current term."
-                />
-                <SliderField
-                  label="% of suppliers taking early payment option"
-                  value={supplierUptakePct}
-                  onChange={setSupplierUptakePct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note="% of invoices paid at shipment."
-                />
-                <SliderField
-                  label="Early payment discount for payment at shipment"
-                  value={earlyPaymentDiscount}
-                  onChange={setEarlyPaymentDiscount}
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  unit="%"
-                  note="Percent. reduction in the invoice amount."
-                />
-                <SliderField
-                  label="Days after shipment until early payment"
-                  value={daysToPayment}
-                  onChange={setDaysToPayment}
-                  min={0}
-                  max={30}
-                  step={1}
-                  unit="days"
-                  note="Time period for processing and payments"
-                />
-                <SliderField
-                  label="Share of early payments funded by banks / SCF"
-                  value={bankFundedPct}
-                  onChange={setBankFundedPct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note="Portion of early payments funded externally"
-                />
-                <SliderField
-                  label="Supply chain finance rate / cost of funds (annual)"
-                  value={scfRate}
-                  onChange={setScfRate}
-                  min={0}
-                  max={15}
-                  step={0.1}
-                  unit="%"
-                  note="Rate charged by the bank to fund early payments."
-                />
-                <SliderField
-                  label="Internal cost of funds"
-                  value={internalCostOfFunds}
-                  onChange={setInternalCostOfFunds}
-                  min={0}
-                  max={15}
-                  step={0.1}
-                  unit="%"
-                  note="Notional borrowing rate for internal funding."
-                />
-                <SliderField
-                  label="Rate for savings from working capital generated"
-                  value={wcInterestRate}
-                  onChange={setWcInterestRate}
-                  min={0}
-                  max={15}
-                  step={0.1}
-                  unit="%"
-                  note="Used to estimate annual value of lower borrowings"
-                />
-              </div>
-            </div>
-           {/* Early payment + working capital benefits aligned with box 2 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-2 lg:self-start">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
-              <div className="grid md:grid-cols-2 gap-6 text-sm">
-                <div className="space-y-3">
-                  <div className="font-semibold text-gray-800">Early payment details</div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Imports paid early:</span>
-                    <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
-                  </div>
-                  <div className="flex justify-between pl-4">
-                    <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(bankFundedAmount)}</span>
-                  </div>
-                  <div className="flex justify-between pl-4">
-                    <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(internalFundedAmount)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Total discount value:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Bank funding cost:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Internal funding cost:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Net discount benefit:</span>
-                    <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
-                  </div>
-                </div>
-                 <div className="space-y-3">
-                  <div className="font-semibold text-gray-800">Working capital benefits</div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">From longer payment terms:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Own cash used to pay early:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Net working capital:</span>
-                    <span className="text-green-700">{formatCurrency(netWorkingCapital)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
-                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(wcAnnualValue)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Headcount savings and other benefits aligned with box 3 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-2">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">AP FTEs saved:</span>
-                  <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">AP headcount savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Customs broker savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Trade FTEs saved:</span>
-                  <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Trade headcount savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pt-3">
-                  <span className="font-bold text-gray-900">Total P&L Benefit:</span>
-                  <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* 3) Accounts Payable (AP) Headcount Efficiency */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-[#58A4B0]">3)</span> Accounts Payable (AP) Headcount Efficiency
-              </h2>
-              <div className="space-y-1">
-                <SliderField
-                  label="Current AP team headcount"
-                  value={apHeadcount}
-                  onChange={setApHeadcount}
-                  min={0}
-                  max={50}
-                  step={1}
-                  unit="FTE"
-                  note="Number of FTE currently in AP."
-                />
-                <SliderField
-                  label="Fully loaded cost per AP FTE"
-                  value={apCostPerFte}
-                  onChange={setApCostPerFte}
-                  min={30000}
-                  max={150000}
-                  step={1000}
-                  unit="$ / yr"
-                  note="Salary + benefits + overhead."
-                  formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
-                />
-                <SliderField
-                  label="% headcount reduction achieved"
-                  value={apEfficiencyPct}
-                  onChange={setApEfficiencyPct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note="Headcount savings from more efficient processing"
-                />
-               </div>
-             </div>
-
-{/* 4) Customs & Trade Compliance Benefits */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-[#58A4B0]">4)</span> Customs & Trade Compliance Benefits
-              </h2>
-              <div className="space-y-1">
-                <SliderField
-                  label="Monthly number of import customs filings"
-                  value={customsFilings}
-                  onChange={setCustomsFilings}
-                  min={0}
-                  max={5000}
-                  step={50}
-                  unit="filings / month"
-                  note="Declarations currently handled via broker/forwarder."
-                />
-                <SliderField
-                  label="Customs broker fee per filing"
-                  value={brokerFeePerFiling}
-                  onChange={setBrokerFeePerFiling}
-                  min={0}
-                  max={200}
-                  step={1}
-                  unit="$ / filing"
-                  note="Total fee per filing charged by broker."
-                />
-                <SliderField
-                  label="% of filings moved to direct digital self-filing"
-                  value={selfFilingPct}
-                  onChange={setSelfFilingPct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note="Share posted directly into customs systems."
-                />
-                <SliderField
-                  label="Monthly # of shipments with forwarder doc fees"
-                  value={shipmentsWithFees}
-                  onChange={setShipmentsWithFees}
-                  min={0}
-                  max={5000}
-                  step={50}
-                  unit="shipments / month"
-                  note="Only include shipments where fees are avoided via digitisation."
-                />
-                <SliderField
-                  label="Forwarder/doc fee per shipment"
-                  value={forwarderFeePerShipment}
-                  onChange={setForwarderFeePerShipment}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="$ / shipment"
-                  note="Document handling, forwarding admin, etc."
-                />
-                <SliderField
-                  label="% of forwarder/doc fees eliminated"
-                  value={docFeesEliminatedPct}
-                  onChange={setDocFeesEliminatedPct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note="Often similar to % self-filing, but can differ."
-                />
-                <SliderField
-                  label="Current trade compliance team headcount"
-                  value={tradeComplianceHeadcount}
-                  onChange={setTradeComplianceHeadcount}
-                  min={0}
-                  max={30}
-                  step={1}
-                  unit="FTE"
-                  note="Number of FTE currently in trade compliance."
-                />
-                <SliderField
-                  label="Fully loaded cost per FTE"
-                  value={tradeCostPerFte}
-                  onChange={setTradeCostPerFte}
-                  min={30000}
-                  max={150000}
-                  step={1000}
-                  unit="$ / yr"
-                  note="Salary + benefits + overhead."
-                  formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
-                />
-                <SliderField
-                  label="% headcount reduction achievable"
-                  value={tradeEfficiencyPct}
-                  onChange={setTradeEfficiencyPct}
-                  min={0}
-                  max={100}
-                  step={1}
-                  unit="%"
-                  note="Headcount savings from more efficient processing"
-                />
-                </div>
-            </div>
+            )}
           </div>
-        ) : (
-          /* Simulation View */
-          <div className="space-y-6">
-            {/* Simulation Inputs */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
-              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures in millions to see the impact of digitalization</p>
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Left Column - P&L Items */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">P&L Extract</h3>
-                  <div className="space-y-3">
-                    <InputField
-                      label="Turnover / Revenue"
-                      value={turnover / 1000000}
-                      onChange={(v) => setTurnover(v * 1000000)}
-                      unit="$ MM"
-                      note="Total revenue"
-                      compact
-                    />
-                    <InputField
-                      label="Cost of Sales"
-                      value={costOfSales / 1000000}
-                      onChange={(v) => setCostOfSales(v * 1000000)}
-                      unit="$ MM"
-                      note="Direct costs"
-                      compact
-                    />
-                    <InputField
-                      label="Operating Profit"
-                      value={operatingProfit / 1000000}
-                      onChange={(v) => setOperatingProfit(v * 1000000)}
-                      unit="$ MM"
-                      note="EBIT"
-                      compact
-                    />
-                    <InputField
-                      label="Net Interest Payable"
-                      value={netInterest / 1000000}
-                      onChange={(v) => setNetInterest(v * 1000000)}
-                      unit="$ MM"
-                      note="Finance costs"
-                      compact
-                    />
-                    <InputField
-                      label="EBITDA"
-                      value={ebitda / 1000000}
-                      onChange={(v) => setEbitda(v * 1000000)}
-                      unit="$ MM"
-                      note="Earnings before interest, tax, depreciation & amortization"
-                      compact
-                    />
-                  </div>
-                </div>
-
-                {/* Right Column - Balance Sheet Items */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">Balance Sheet Extract</h3>
-                  <div className="space-y-3">
-                    <InputField
-                      label="Trade Payables"
-                      value={tradePayables / 1000000}
-                      onChange={(v) => setTradePayables(v * 1000000)}
-                      unit="$ MM"
-                      note="Amounts owed to suppliers"
-                      compact
-                    />
-                    <InputField
-                      label="Net Debt"
-                      value={netDebt / 1000000}
-                      onChange={(v) => setNetDebt(v * 1000000)}
-                      unit="$ MM"
-                      note="Total borrowings less cash"
-                      compact
-                    />
-                    <InputField
-                      label="Equity"
-                      value={equity / 1000000}
-                      onChange={(v) => setEquity(v * 1000000)}
-                      unit="$ MM"
-                      note="Shareholders' equity"
-                      compact
-                    />
-                    <InputField
-                      label="Free Cash Flow"
-                      value={freeCashFlow / 1000000}
-                      onChange={(v) => setFreeCashFlow(v * 1000000)}
-                      unit="$ MM"
-                      note="Cash available after capital expenditure"
-                      compact
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* P&L Comparison */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-[#58A4B0]" />
-                P&L (Extract)
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Item</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Turnover / revenue</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(turnover)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-[#0C7C59]">{formatCurrency(turnover)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Unchanged</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Cost of sales</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(costOfSales)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedCostOfSales)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Reduced by early payment discounts where funding is external</td>
-                    </tr>
-                    <tr className="bg-[#58A4B0]/10">
-                      <td className="py-3 px-4 text-sm font-semibold">Operating profit</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(operatingProfit)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedOperatingProfit)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Increased by the full P&L benefit</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Net interest payable</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(netInterest)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedNetInterest)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Reduced as lower borrowing because of working capital benefits</td>
-                    </tr>
-                    <tr className="bg-[#58A4B0]/10">
-                      <td className="py-3 px-4 text-sm font-semibold">EBITDA</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(ebitda)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedEbitda)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Increased by funded early payment discounts and operational wins</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Balance Sheet Comparison */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <DollarSign className="w-6 h-6 text-[#58A4B0]" />
-                Balance Sheet and Cash Flow (Extract)
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Item</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Trade payables</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(tradePayables)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-[#0C7C59]">{formatCurrency(adjustedTradePayables)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Goes up as suppliers are providing more credit</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Net debt</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(netDebt)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedNetDebt)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Reduced as lower borrowing because of working capital benefits</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Equity</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(equity)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedEquity)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Increased as earnings are higher over the period</td>
-                    </tr>
-                    <tr className="bg-[#58A4B0]/10">
-                      <td className="py-3 px-4 text-sm font-semibold">Free cash flow</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(freeCashFlow)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedFCF)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Increased as working capital generated</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Key Ratios */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <BarChart3 className="w-6 h-6 text-[#58A4B0]" />
-                Key Ratios
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Ratio</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr>
-                      <td className="py-3 px-4 text-sm">EBITDA margin</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatPercent(ebitdaMargin)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatPercent(adjustedEbitdaMargin)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Up because cost of sales is lower and operations more efficient</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Operating margin</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatPercent(operatingMargin)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatPercent(adjustedOperatingMargin)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Up because cost of sales is lower and operations more efficient</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Leverage (Net Debt / EBITDA)</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatNumber(leverage, 2)}x</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatNumber(adjustedLeverage, 2)}x</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Down because EBITDA is higher and net debt is lower</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Solvency (Debt / Equity)</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatNumber(solvency, 2)}x</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatNumber(adjustedSolvency, 2)}x</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Down because net debt is lower and equity is higher</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">FCF / Sales</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatPercent(fcfSales)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatPercent(adjustedFcfSales)}</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Up because working capital is generated</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 px-4 text-sm">Interest cover</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium">{formatNumber(interestCover, 2)}x</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatNumber(adjustedInterestCover, 2)}x</td>
-                      <td className="py-3 px-4 text-xs text-gray-600">Up because interest costs reduce and earnings increase</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Summary Card */}
-            <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg shadow-xl p-8 text-white">
-              <h2 className="text-2xl font-bold mb-6">Impact Summary</h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div>
-                  <div className="text-green-100 text-sm mb-2">P&L Improvement</div>
-                  <div className="text-4xl font-bold mb-1">{formatCurrency(adjustedOperatingProfit - operatingProfit)}</div>
-                  <div className="text-green-100 text-sm">Operating profit increase</div>
-                </div>
-                <div>
-                  <div className="text-green-100 text-sm mb-2">Working Capital Released</div>
-                  <div className="text-4xl font-bold mb-1">{formatCurrency(netWorkingCapital)}</div>
-                  <div className="text-green-100 text-sm">Additional cash available</div>
-                </div>
-                <div>
-                  <div className="text-green-100 text-sm mb-2">Leverage Improvement</div>
-                  <div className="text-4xl font-bold mb-1">{formatNumber(leverage - adjustedLeverage, 2)}x</div>
-                  <div className="text-green-100 text-sm">Net Debt / EBITDA reduction</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
