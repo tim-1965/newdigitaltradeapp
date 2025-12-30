@@ -177,67 +177,88 @@ export default function TradeSimulator() {
   };
 
   const InputField = ({ label, value, onChange, unit = '', note = '', type = 'number', step = '1' }) => (
-    <div className="border-b border-gray-200 py-3">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <label className="text-sm font-medium text-gray-700 block mb-1">{label}</label>
-          {note && <p className="text-xs text-gray-500 mt-1">{note}</p>}
+    <div className="border-b border-gray-200 py-2.5">
+      <div className="flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
+          {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
         </div>
-        <div className="flex items-center gap-2 min-w-[180px]">
+        <div className="flex items-center gap-2 w-64">
           <input
             type={type}
             value={value}
             onChange={(e) => onChange(type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)}
             step={step}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
+            className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
           />
-          {unit && <span className="text-sm text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
+          {unit && <span className="text-xs text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
         </div>
       </div>
     </div>
   );
 
-  const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue }) => (
-    <div className="border-b border-gray-200 py-3">
-      <div className="flex items-start justify-between gap-4 mb-2">
-        <div className="flex-1">
-          <label className="text-sm font-medium text-gray-700 block mb-1">{label}</label>
-          {note && <p className="text-xs text-gray-500 mt-1">{note}</p>}
-        </div>
-        <div className="text-right min-w-[120px]">
-          <span className="text-lg font-semibold text-blue-700">
-            {formatValue ? formatValue(value) : value}
-          </span>
-          {unit && <span className="text-sm text-gray-600 ml-2">{unit}</span>}
+  const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue }) => {
+    const [localValue, setLocalValue] = React.useState(value);
+    const [isChanging, setIsChanging] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!isChanging) {
+        setLocalValue(value);
+      }
+    }, [value, isChanging]);
+
+    const handleChange = (newValue) => {
+      setLocalValue(newValue);
+      setIsChanging(true);
+    };
+
+    const handleMouseUp = () => {
+      setIsChanging(false);
+      onChange(localValue);
+    };
+
+    return (
+      <div className="border-b border-gray-200 py-2.5">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
+            {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
+          </div>
+          <div className="flex items-center gap-2 w-64">
+            <input
+              type="range"
+              min={min}
+              max={max}
+              step={step}
+              value={localValue}
+              onChange={(e) => handleChange(parseFloat(e.target.value))}
+              onMouseUp={handleMouseUp}
+              onTouchEnd={handleMouseUp}
+              className="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              style={{
+                background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((localValue - min) / (max - min)) * 100}%, #e5e7eb ${((localValue - min) / (max - min)) * 100}%, #e5e7eb 100%)`
+              }}
+            />
+            <div className="text-right min-w-[60px]">
+              <span className="text-sm font-semibold text-blue-700">
+                {formatValue ? formatValue(localValue) : localValue}
+              </span>
+              {unit && <span className="text-xs text-gray-600 ml-1">{unit}</span>}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-500">{formatValue ? formatValue(min) : min}</span>
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(parseFloat(e.target.value))}
-          className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-          style={{
-            background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((value - min) / (max - min)) * 100}%, #e5e7eb ${((value - min) / (max - min)) * 100}%, #e5e7eb 100%)`
-          }}
-        />
-        <span className="text-xs text-gray-500">{formatValue ? formatValue(max) : max}</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const CalculatedField = ({ label, value, note = '' }) => (
-    <div className="bg-blue-50 border-l-4 border-blue-500 py-3 px-4 mb-2">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <label className="text-sm font-semibold text-gray-900 block">{label}</label>
-          {note && <p className="text-xs text-gray-600 mt-1">{note}</p>}
+    <div className="bg-blue-50 border-l-4 border-blue-500 py-2.5 px-3 mb-2">
+      <div className="flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <label className="text-xs font-semibold text-gray-900 block mb-0.5">{label}</label>
+          {note && <p className="text-xs text-gray-600 line-clamp-1">{note}</p>}
         </div>
-        <div className="text-lg font-bold text-blue-700 min-w-[180px] text-right">
+        <div className="text-base font-bold text-blue-700 min-w-[120px] text-right">
           {value}
         </div>
       </div>
