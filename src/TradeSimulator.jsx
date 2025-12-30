@@ -57,16 +57,27 @@ export default function TradeSimulator() {
   const [tradeCostPerFte, setTradeCostPerFte] = useState(() => loadSavedValue('tradeCostPerFte', 50000));
   const [tradeEfficiencyPct, setTradeEfficiencyPct] = useState(() => loadSavedValue('tradeEfficiencyPct', 40));
 
-  // Simulation inputs (for historic values)
-  const [turnover, setTurnover] = useState(() => loadSavedValue('turnover', 1000000000));
-  const [costOfSales, setCostOfSales] = useState(() => loadSavedValue('costOfSales', 700000000));
-  const [operatingProfit, setOperatingProfit] = useState(() => loadSavedValue('operatingProfit', 40000000));
-  const [netInterest, setNetInterest] = useState(() => loadSavedValue('netInterest', 50000000));
-  const [ebitda, setEbitda] = useState(() => loadSavedValue('ebitda', 120000000));
-  const [tradePayables, setTradePayables] = useState(() => loadSavedValue('tradePayables', 100000000));
-  const [netDebt, setNetDebt] = useState(() => loadSavedValue('netDebt', 500000000));
-  const [equity, setEquity] = useState(() => loadSavedValue('equity', 200000000));
-  const [freeCashFlow, setFreeCashFlow] = useState(() => loadSavedValue('freeCashFlow', 30000000));
+  // Simulation inputs (for historic values) - stored in millions
+  const [turnoverMM, setTurnoverMM] = useState(() => loadSavedValue('turnoverMM', 1000));
+  const [costOfSalesMM, setCostOfSalesMM] = useState(() => loadSavedValue('costOfSalesMM', 700));
+  const [operatingProfitMM, setOperatingProfitMM] = useState(() => loadSavedValue('operatingProfitMM', 40));
+  const [netInterestMM, setNetInterestMM] = useState(() => loadSavedValue('netInterestMM', 50));
+  const [ebitdaMM, setEbitdaMM] = useState(() => loadSavedValue('ebitdaMM', 120));
+  const [tradePayablesMM, setTradePayablesMM] = useState(() => loadSavedValue('tradePayablesMM', 100));
+  const [netDebtMM, setNetDebtMM] = useState(() => loadSavedValue('netDebtMM', 500));
+  const [equityMM, setEquityMM] = useState(() => loadSavedValue('equityMM', 200));
+  const [freeCashFlowMM, setFreeCashFlowMM] = useState(() => loadSavedValue('freeCashFlowMM', 30));
+  
+  // Convert millions to actual values for calculations
+  const turnover = turnoverMM * 1000000;
+  const costOfSales = costOfSalesMM * 1000000;
+  const operatingProfit = operatingProfitMM * 1000000;
+  const netInterest = netInterestMM * 1000000;
+  const ebitda = ebitdaMM * 1000000;
+  const tradePayables = tradePayablesMM * 1000000;
+  const netDebt = netDebtMM * 1000000;
+  const equity = equityMM * 1000000;
+  const freeCashFlow = freeCashFlowMM * 1000000;
 
   // Save all values to localStorage
   useEffect(() => {
@@ -79,8 +90,8 @@ export default function TradeSimulator() {
         customsFilings, brokerFeePerFiling, selfFilingPct, shipmentsWithFees, 
         forwarderFeePerShipment, docFeesEliminatedPct, tradeComplianceHeadcount, 
         tradeCostPerFte, tradeEfficiencyPct,
-        turnover, costOfSales, operatingProfit, netInterest, ebitda,
-        tradePayables, netDebt, equity, freeCashFlow
+        turnoverMM, costOfSalesMM, operatingProfitMM, netInterestMM, ebitdaMM,
+        tradePayablesMM, netDebtMM, equityMM, freeCashFlowMM
       };
       localStorage.setItem('tradeSimulator', JSON.stringify(allValues));
       
@@ -93,8 +104,8 @@ export default function TradeSimulator() {
       apHeadcount, apCostPerFte, apEfficiencyPct, customsFilings, brokerFeePerFiling, 
       selfFilingPct, shipmentsWithFees, forwarderFeePerShipment, docFeesEliminatedPct, 
       tradeComplianceHeadcount, tradeCostPerFte, tradeEfficiencyPct,
-      turnover, costOfSales, operatingProfit, netInterest, ebitda, tradePayables, 
-      netDebt, equity, freeCashFlow]);
+      turnoverMM, costOfSalesMM, operatingProfitMM, netInterestMM, ebitdaMM, tradePayablesMM, 
+      netDebtMM, equityMM, freeCashFlowMM]);
 
   // ===== CALCULATIONS =====
   
@@ -776,71 +787,78 @@ export default function TradeSimulator() {
             {/* Simulation Inputs */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
-              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures to see the impact of digitalization</p>
-              <div className="grid md:grid-cols-3 gap-4">
-                <InputField
-                  label="Turnover / Revenue"
-                  value={turnover}
-                  onChange={setTurnover}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Cost of Sales"
-                  value={costOfSales}
-                  onChange={setCostOfSales}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Operating Profit"
-                  value={operatingProfit}
-                  onChange={setOperatingProfit}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Net Interest Payable"
-                  value={netInterest}
-                  onChange={setNetInterest}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="EBITDA"
-                  value={ebitda}
-                  onChange={setEbitda}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Trade Payables"
-                  value={tradePayables}
-                  onChange={setTradePayables}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Net Debt"
-                  value={netDebt}
-                  onChange={setNetDebt}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Equity"
-                  value={equity}
-                  onChange={setEquity}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Free Cash Flow"
-                  value={freeCashFlow}
-                  onChange={setFreeCashFlow}
-                  unit="$"
-                  step="1000000"
-                />
+              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures in millions (e.g., enter 1000 for $1,000M)</p>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Left Column - P&L Items */}
+                <div className="space-y-4">
+                  <InputField
+                    label="Turnover / Revenue ($ MM)"
+                    value={turnoverMM}
+                    onChange={setTurnoverMM}
+                    unit="$ MM"
+                    step="10"
+                  />
+                  <InputField
+                    label="Cost of Sales ($ MM)"
+                    value={costOfSalesMM}
+                    onChange={setCostOfSalesMM}
+                    unit="$ MM"
+                    step="10"
+                  />
+                  <InputField
+                    label="Operating Profit ($ MM)"
+                    value={operatingProfitMM}
+                    onChange={setOperatingProfitMM}
+                    unit="$ MM"
+                    step="1"
+                  />
+                  <InputField
+                    label="Net Interest Payable ($ MM)"
+                    value={netInterestMM}
+                    onChange={setNetInterestMM}
+                    unit="$ MM"
+                    step="1"
+                  />
+                  <InputField
+                    label="EBITDA ($ MM)"
+                    value={ebitdaMM}
+                    onChange={setEbitdaMM}
+                    unit="$ MM"
+                    step="1"
+                  />
+                </div>
+
+                {/* Right Column - Balance Sheet Items */}
+                <div className="space-y-4">
+                  <InputField
+                    label="Trade Payables ($ MM)"
+                    value={tradePayablesMM}
+                    onChange={setTradePayablesMM}
+                    unit="$ MM"
+                    step="10"
+                  />
+                  <InputField
+                    label="Net Debt ($ MM)"
+                    value={netDebtMM}
+                    onChange={setNetDebtMM}
+                    unit="$ MM"
+                    step="10"
+                  />
+                  <InputField
+                    label="Equity ($ MM)"
+                    value={equityMM}
+                    onChange={setEquityMM}
+                    unit="$ MM"
+                    step="10"
+                  />
+                  <InputField
+                    label="Free Cash Flow ($ MM)"
+                    value={freeCashFlowMM}
+                    onChange={setFreeCashFlowMM}
+                    unit="$ MM"
+                    step="1"
+                  />
+                </div>
               </div>
             </div>
 
