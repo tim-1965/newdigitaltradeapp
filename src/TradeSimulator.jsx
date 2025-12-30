@@ -351,7 +351,7 @@ export default function TradeSimulator() {
             </div>
                             
             {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-lg shadow-xl p-6 text-white lg:row-start-1 lg:col-start-2">
+              <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-lg shadow-xl p-6 text-white lg:row-start-1 lg:col-start-2 lg:self-start">
               <div className="grid md:grid-cols-2 gap-6">
                 {/* P&L Section */}
                 <div>
@@ -444,7 +444,7 @@ export default function TradeSimulator() {
                 <div className="bg-gray-50 p-3 my-3 rounded">
                   <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>              
                 </div>
-               <SliderField
+                <SliderField
                   label="Days from shipment to payment under digitised process"
                   value={daysToPayment}
                   onChange={setDaysToPayment}
@@ -501,37 +501,59 @@ export default function TradeSimulator() {
                 />
               </div>
             </div>
-           {/* Early Payment Details follow under box 2 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-2 lg:mt-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Early Payment Details</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Participating spend:</span>
-                  <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
+           {/* Early payment + working capital benefits aligned with box 2 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-2 lg:self-start">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
+              <div className="grid md:grid-cols-2 gap-6 text-sm">
+                <div className="space-y-3">
+                  <div className="font-semibold text-gray-800">Early payment details</div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Participating spend:</span>
+                    <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
+                  </div>
+                  <div className="flex justify-between pl-4">
+                    <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
+                    <span className="font-semibold text-blue-700">{formatCurrency(bankFundedAmount)}</span>
+                  </div>
+                  <div className="flex justify-between pl-4">
+                    <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
+                    <span className="font-semibold text-blue-700">{formatCurrency(internalFundedAmount)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t">
+                    <span className="text-gray-600">Total discount value:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Bank funding cost:</span>
+                    <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Internal funding cost:</span>
+                    <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t font-bold">
+                    <span className="text-gray-900">Net discount benefit:</span>
+                    <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between pl-4">
-                  <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                  <span className="font-semibold text-blue-700">{formatCurrency(bankFundedAmount)}</span>
-                </div>
-                <div className="flex justify-between pl-4">
-                  <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                  <span className="font-semibold text-blue-700">{formatCurrency(internalFundedAmount)}</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t">
-                  <span className="text-gray-600">Total discount value:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Bank funding cost:</span>
-                  <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Internal funding cost:</span>
-                  <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t font-bold">
-                  <span className="text-gray-900">Net discount benefit:</span>
-                  <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                 <div className="space-y-3">
+                  <div className="font-semibold text-gray-800">Working capital benefits</div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Cash from payment term extension:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Cash used for early payments:</span>
+                    <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t font-bold">
+                    <span className="text-gray-900">Net working capital:</span>
+                    <span className="text-green-700">{formatCurrency(netWorkingCapital)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t">
+                    <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
+                    <span className="font-semibold text-blue-700">{formatCurrency(wcAnnualValue)}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -581,28 +603,6 @@ export default function TradeSimulator() {
               </div>
              </div>
 
-               {/* Working Capital Benefits - Aligns with Box 2 (Early Payment section) */}
-               <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Working Capital Benefits</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Cash from payment term extension:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Cash used for early payments:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Net working capital:</span>
-                    <span className="text-green-700">{formatCurrency(netWorkingCapital)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
-                    <span className="font-semibold text-blue-700">{formatCurrency(wcAnnualValue)}</span>
-                  </div>
-                </div>
-              </div>
             {/* Headcount Efficiency aligned with box 3 */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-2 lg:mt-12">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
