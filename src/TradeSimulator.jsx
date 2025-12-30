@@ -239,11 +239,11 @@ export default function TradeSimulator() {
               onTouchEnd={handleMouseUp}
               className="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
               style={{
-                background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((localValue - min) / (max - min)) * 100}%, #e5e7eb ${((localValue - min) / (max - min)) * 100}%, #e5e7eb 100%)`
+                background: `linear-gradient(to right, #58A4B0 0%, #58A4B0 ${((localValue - min) / (max - min)) * 100}%, #e5e7eb ${((localValue - min) / (max - min)) * 100}%, #e5e7eb 100%)`
               }}
             />
             <div className="text-right min-w-[60px]">
-              <span className="text-sm font-semibold text-blue-700">
+              <span className="text-sm font-semibold text-[#0C7C59]">
                 {formatValue ? formatValue(localValue) : localValue}
               </span>
               {unit && <span className="text-xs text-gray-600 ml-1">{unit}</span>}
@@ -255,13 +255,13 @@ export default function TradeSimulator() {
   };
 
   const CalculatedField = ({ label, value, note = '' }) => (
-    <div className="bg-blue-50 border-l-4 border-blue-500 py-2.5 px-3 mb-2">
+    <div className="bg-[#58A4B0]/10 border-l-4 border-[#58A4B0] py-2.5 px-3 mb-2">
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0">
           <label className="text-xs font-semibold text-gray-900 block mb-0.5">{label}</label>
           {note && <p className="text-xs text-gray-600 line-clamp-1">{note}</p>}
         </div>
-        <div className="text-base font-bold text-blue-700 min-w-[120px] text-right">
+        <div className="text-base font-bold text-[#0C7C59] min-w-[120px] text-right">
           {value}
         </div>
       </div>
@@ -269,18 +269,25 @@ export default function TradeSimulator() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#58A4B0]/5">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
+      <div className="bg-white border-b-2 border-[#D64933] shadow-sm">
         <div className="max-w-[1800px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Trade Digitalisation Benefits Calculator</h1>
-              <p className="text-sm text-gray-600 mt-1">Prima Trade - Cash Against Data Platform</p>
+            <div className="flex items-center gap-4">
+              <img 
+                src="/240417_PTS_red_logo.png" 
+                alt="Prima Trade" 
+                className="h-8 w-auto"
+              />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Trade Digitalisation Benefits Calculator</h1>
+                <p className="text-sm text-gray-600 mt-1">Cash Against Data Platform</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               {showSaved && (
-                <div className="flex items-center gap-2 text-green-600 text-sm">
+                <div className="flex items-center gap-2 text-[#0C7C59] text-sm">
                   <Check className="w-4 h-4" />
                   <span>Saved</span>
                 </div>
@@ -290,7 +297,7 @@ export default function TradeSimulator() {
                   onClick={() => setActiveView('inputs')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     activeView === 'inputs'
-                      ? 'bg-white text-blue-700 shadow-sm'
+                      ? 'bg-[#58A4B0] text-white shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -301,7 +308,7 @@ export default function TradeSimulator() {
                   onClick={() => setActiveView('simulation')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     activeView === 'simulation'
-                      ? 'bg-white text-blue-700 shadow-sm'
+                      ? 'bg-[#0C7C59] text-white shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -321,7 +328,7 @@ export default function TradeSimulator() {
             {/* 1) Company & Trade Volume */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-1 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-blue-600">1)</span> Company & Trade Volume
+                <span className="text-[#58A4B0]">1)</span> Company & Trade Volume
               </h2>
               <div className="space-y-1">
                 <InputField
@@ -351,25 +358,25 @@ export default function TradeSimulator() {
             </div>
                             
             {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-lg shadow-xl p-6 text-white lg:row-start-1 lg:col-start-2 lg:self-start">
+              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:row-start-1 lg:col-start-2 lg:self-start">
               <div className="grid md:grid-cols-2 gap-6">
                 {/* P&L Section */}
                 <div>
                   <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
-                  <p className="text-indigo-100 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
+                  <p className="text-white/80 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
                   <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
 
                   <div className="grid grid-cols-3 gap-2 text-xs">
                     <div>
-                      <div className="text-indigo-200 mb-1">Discounts</div>
+                      <div className="text-white/70 mb-1">Discounts</div>
                       <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
                     </div>
                     <div>
-                      <div className="text-indigo-200 mb-1">AP Efficiency</div>
+                      <div className="text-white/70 mb-1">AP Efficiency</div>
                       <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
                     </div>
                     <div>
-                      <div className="text-indigo-200 mb-1">Customs</div>
+                      <div className="text-white/70 mb-1">Customs</div>
                       <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
                     </div>
                   </div>
@@ -378,16 +385,16 @@ export default function TradeSimulator() {
               {/* Working Capital Section */}
                 <div className="border-l border-white/30 pl-6">
                   <h3 className="text-lg font-bold mb-1">Net Working Capital Generated</h3>
-                  <p className="text-blue-100 text-xs mb-3">Cash released via longer payment terms</p>
+                  <p className="text-white/80 text-xs mb-3">Cash released via longer payment terms</p>
                   <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
 
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <div className="text-blue-200 mb-1">From extension:</div>
+                      <div className="text-white/70 mb-1">From extension:</div>
                       <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
                     </div>
                     <div>
-                      <div className="text-blue-200 mb-1">Used for early pay:</div>
+                      <div className="text-white/70 mb-1">Used for early pay:</div>
                       <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
                     </div>
                    </div>
@@ -398,7 +405,7 @@ export default function TradeSimulator() {
  {/* 2) Early Payment Discounts & Working Capital */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-blue-600">2)</span> Early Payment Discounts & Working Capital
+                <span className="text-[#58A4B0]">2)</span> Early Payment Discounts & Working Capital
               </h2>
               <div className="space-y-1">
                 <SliderField
@@ -513,11 +520,11 @@ export default function TradeSimulator() {
                   </div>
                   <div className="flex justify-between pl-4">
                     <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-blue-700">{formatCurrency(bankFundedAmount)}</span>
+                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(bankFundedAmount)}</span>
                   </div>
                   <div className="flex justify-between pl-4">
                     <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-blue-700">{formatCurrency(internalFundedAmount)}</span>
+                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(internalFundedAmount)}</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t">
                     <span className="text-gray-600">Total discount value:</span>
@@ -552,7 +559,7 @@ export default function TradeSimulator() {
                   </div>
                   <div className="flex justify-between pt-2 border-t">
                     <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
-                    <span className="font-semibold text-blue-700">{formatCurrency(wcAnnualValue)}</span>
+                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(wcAnnualValue)}</span>
                   </div>
                 </div>
               </div>
@@ -561,7 +568,7 @@ export default function TradeSimulator() {
             {/* 3) Accounts Payable (AP) Headcount Efficiency */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-blue-600">3)</span> Accounts Payable (AP) Headcount Efficiency
+                <span className="text-[#58A4B0]">3)</span> Accounts Payable (AP) Headcount Efficiency
               </h2>
               <div className="space-y-1">
                 <SliderField
@@ -632,7 +639,7 @@ export default function TradeSimulator() {
 {/* 4) Customs & Trade Compliance Benefits */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                <span className="text-blue-600">4)</span> Customs & Trade Compliance Benefits
+                <span className="text-[#58A4B0]">4)</span> Customs & Trade Compliance Benefits
               </h2>
               <div className="space-y-1">
                 <SliderField
@@ -841,7 +848,7 @@ export default function TradeSimulator() {
             {/* P&L Comparison */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
+                <TrendingUp className="w-6 h-6 text-[#58A4B0]" />
                 P&L (Extract)
               </h2>
               <div className="overflow-x-auto">
@@ -850,7 +857,7 @@ export default function TradeSimulator() {
                     <tr className="border-b-2 border-gray-300">
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Item</th>
                       <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-blue-700">After PrimaTrade</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59]">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -858,7 +865,7 @@ export default function TradeSimulator() {
                     <tr>
                       <td className="py-3 px-4 text-sm">Turnover / revenue</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(turnover)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-blue-700">{formatCurrency(turnover)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-[#0C7C59]">{formatCurrency(turnover)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Unchanged</td>
                     </tr>
                     <tr>
@@ -867,7 +874,7 @@ export default function TradeSimulator() {
                       <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedCostOfSales)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced by early payment discounts where funding is external</td>
                     </tr>
-                    <tr className="bg-blue-50">
+                    <tr className="bg-[#58A4B0]/10">
                       <td className="py-3 px-4 text-sm font-semibold">Operating profit</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(operatingProfit)}</td>
                       <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedOperatingProfit)}</td>
@@ -879,7 +886,7 @@ export default function TradeSimulator() {
                       <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedNetInterest)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced as lower borrowing because of working capital benefits</td>
                     </tr>
-                    <tr className="bg-blue-50">
+                    <tr className="bg-[#58A4B0]/10">
                       <td className="py-3 px-4 text-sm font-semibold">EBITDA</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(ebitda)}</td>
                       <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedEbitda)}</td>
@@ -893,7 +900,7 @@ export default function TradeSimulator() {
             {/* Balance Sheet Comparison */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <DollarSign className="w-6 h-6 text-blue-600" />
+                <DollarSign className="w-6 h-6 text-[#58A4B0]" />
                 Balance Sheet and Cash Flow (Extract)
               </h2>
               <div className="overflow-x-auto">
@@ -902,7 +909,7 @@ export default function TradeSimulator() {
                     <tr className="border-b-2 border-gray-300">
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Item</th>
                       <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-blue-700">After PrimaTrade</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59]">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -910,7 +917,7 @@ export default function TradeSimulator() {
                     <tr>
                       <td className="py-3 px-4 text-sm">Trade payables</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(tradePayables)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-blue-700">{formatCurrency(adjustedTradePayables)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-[#0C7C59]">{formatCurrency(adjustedTradePayables)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Goes up as suppliers are providing more credit</td>
                     </tr>
                     <tr>
@@ -925,7 +932,7 @@ export default function TradeSimulator() {
                       <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedEquity)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Increased as earnings are higher over the period</td>
                     </tr>
-                    <tr className="bg-blue-50">
+                    <tr className="bg-[#58A4B0]/10">
                       <td className="py-3 px-4 text-sm font-semibold">Free cash flow</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(freeCashFlow)}</td>
                       <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedFCF)}</td>
@@ -939,7 +946,7 @@ export default function TradeSimulator() {
             {/* Key Ratios */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <BarChart3 className="w-6 h-6 text-blue-600" />
+                <BarChart3 className="w-6 h-6 text-[#58A4B0]" />
                 Key Ratios
               </h2>
               <div className="overflow-x-auto">
@@ -948,7 +955,7 @@ export default function TradeSimulator() {
                     <tr className="border-b-2 border-gray-300">
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Ratio</th>
                       <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-blue-700">After PrimaTrade</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59]">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
