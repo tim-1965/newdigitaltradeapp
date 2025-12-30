@@ -777,71 +777,93 @@ export default function TradeSimulator() {
             {/* Simulation Inputs */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
-              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures to see the impact of digitalization</p>
-              <div className="grid md:grid-cols-3 gap-4">
-                <InputField
-                  label="Turnover / Revenue"
-                  value={turnover}
-                  onChange={setTurnover}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Cost of Sales"
-                  value={costOfSales}
-                  onChange={setCostOfSales}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Operating Profit"
-                  value={operatingProfit}
-                  onChange={setOperatingProfit}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Net Interest Payable"
-                  value={netInterest}
-                  onChange={setNetInterest}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="EBITDA"
-                  value={ebitda}
-                  onChange={setEbitda}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Trade Payables"
-                  value={tradePayables}
-                  onChange={setTradePayables}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Net Debt"
-                  value={netDebt}
-                  onChange={setNetDebt}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Equity"
-                  value={equity}
-                  onChange={setEquity}
-                  unit="$"
-                  step="1000000"
-                />
-                <InputField
-                  label="Free Cash Flow"
-                  value={freeCashFlow}
-                  onChange={setFreeCashFlow}
-                  unit="$"
-                  step="1000000"
-                />
+              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures in millions to see the impact of digitalization</p>
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Left Column - P&L Items */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">P&L Extract</h3>
+                  <div className="space-y-3">
+                    <InputField
+                      label="Turnover / Revenue"
+                      value={turnover / 1000000}
+                      onChange={(v) => setTurnover(v * 1000000)}
+                      unit="$ MM"
+                      step="10"
+                      note="Total revenue"
+                    />
+                    <InputField
+                      label="Cost of Sales"
+                      value={costOfSales / 1000000}
+                      onChange={(v) => setCostOfSales(v * 1000000)}
+                      unit="$ MM"
+                      step="10"
+                      note="Direct costs"
+                    />
+                    <InputField
+                      label="Operating Profit"
+                      value={operatingProfit / 1000000}
+                      onChange={(v) => setOperatingProfit(v * 1000000)}
+                      unit="$ MM"
+                      step="1"
+                      note="EBIT"
+                    />
+                    <InputField
+                      label="Net Interest Payable"
+                      value={netInterest / 1000000}
+                      onChange={(v) => setNetInterest(v * 1000000)}
+                      unit="$ MM"
+                      step="1"
+                      note="Finance costs"
+                    />
+                    <InputField
+                      label="EBITDA"
+                      value={ebitda / 1000000}
+                      onChange={(v) => setEbitda(v * 1000000)}
+                      unit="$ MM"
+                      step="1"
+                      note="Earnings before interest, tax, depreciation & amortization"
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column - Balance Sheet Items */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">Balance Sheet Extract</h3>
+                  <div className="space-y-3">
+                    <InputField
+                      label="Trade Payables"
+                      value={tradePayables / 1000000}
+                      onChange={(v) => setTradePayables(v * 1000000)}
+                      unit="$ MM"
+                      step="10"
+                      note="Amounts owed to suppliers"
+                    />
+                    <InputField
+                      label="Net Debt"
+                      value={netDebt / 1000000}
+                      onChange={(v) => setNetDebt(v * 1000000)}
+                      unit="$ MM"
+                      step="10"
+                      note="Total borrowings less cash"
+                    />
+                    <InputField
+                      label="Equity"
+                      value={equity / 1000000}
+                      onChange={(v) => setEquity(v * 1000000)}
+                      unit="$ MM"
+                      step="10"
+                      note="Shareholders' equity"
+                    />
+                    <InputField
+                      label="Free Cash Flow"
+                      value={freeCashFlow / 1000000}
+                      onChange={(v) => setFreeCashFlow(v * 1000000)}
+                      unit="$ MM"
+                      step="1"
+                      note="Cash available after capital expenditure"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
