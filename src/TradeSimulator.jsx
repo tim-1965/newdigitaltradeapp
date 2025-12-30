@@ -654,7 +654,7 @@ export default function TradeSimulator() {
               </div>
 
               {/* Working Capital Benefits - Aligns with Box 2 (Early Payment section) */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6 mt-24">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Working Capital Benefits</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
@@ -712,7 +712,7 @@ export default function TradeSimulator() {
               </div>
 
               {/* Headcount Efficiency - Aligns with Box 3 (AP Headcount section) */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6 mt-24">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
@@ -738,9 +738,9 @@ export default function TradeSimulator() {
                 </div>
               </div>
 
-              {/* P&L Benefits After Costs - Aligns with Box 4 (Customs section) at bottom */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
+              {/* Summary of P&L Benefits - Aligns with Box 4 (Customs section) at bottom */}
+              <div className="bg-white rounded-lg shadow-md p-6 mt-24">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary of the P&L benefits</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b">
                     <span className="text-sm text-gray-600">Net discount benefit:</span>
