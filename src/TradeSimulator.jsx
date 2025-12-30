@@ -356,11 +356,10 @@ export default function TradeSimulator() {
 
       {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-6 py-6">
-        <div className="flex flex-col lg:flex-row gap-6" style={{alignItems: 'flex-start'}}>
-            {/* Left Column */}
-            <div className="flex-1 space-y-6">
+        {activeView === 'inputs' ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
             {/* 1) Company & Trade Volume */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">1)</span> Company & Trade Volume
               </h2>
@@ -384,9 +383,54 @@ export default function TradeSimulator() {
                 />
               </div>
             </div>
+                            
+            {/* Summary card aligned with top of panel */}
+              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:col-start-2 lg:self-start">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* P&L Section */}
+                <div>
+                  <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
+                  <p className="text-white/80 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
+                  <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
+
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div>
+                      <div className="text-white/70 mb-1">Discounts</div>
+                      <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
+                    </div>
+                    <div>
+                      <div className="text-white/70 mb-1">AP Efficiency</div>
+                      <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
+                    </div>
+                    <div>
+                      <div className="text-white/70 mb-1">Customs</div>
+                      <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
+                    </div>
+                  </div>
+                </div>
+              
+              {/* Working Capital Section */}
+                <div className="border-l border-white/30 pl-6">
+                  <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
+                  <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
+                  <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
+
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <div className="text-white/70 mb-1">From extension:</div>
+                      <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
+                    </div>
+                    <div>
+                      <div className="text-white/70 mb-1">Used for early pay:</div>
+                      <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
+                    </div>
+                   </div>
+                  </div>
+                </div>
+              </div>
 
  {/* 2) Early Payment Discounts & Working Capital */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">2)</span> Early Payment Discounts & Working Capital
               </h2>
@@ -483,9 +527,100 @@ export default function TradeSimulator() {
                 />
               </div>
             </div>
+           {/* Early payment + working capital benefits aligned with box 2 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-2 lg:self-start">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
+              <div className="grid md:grid-cols-2 gap-6 text-sm">
+                <div className="space-y-3">
+                  <div className="font-semibold text-gray-800">Early payment details</div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Imports paid early:</span>
+                    <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
+                  </div>
+                  <div className="flex justify-between pl-4">
+                    <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
+                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(bankFundedAmount)}</span>
+                  </div>
+                  <div className="flex justify-between pl-4">
+                    <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
+                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(internalFundedAmount)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t">
+                    <span className="text-gray-600">Total discount value:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Bank funding cost:</span>
+                    <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Internal funding cost:</span>
+                    <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t font-bold">
+                    <span className="text-gray-900">Net discount benefit:</span>
+                    <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                  </div>
+                </div>
+                 <div className="space-y-3">
+                  <div className="font-semibold text-gray-800">Working capital benefits</div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">From longer payment terms:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Own cash used to pay early:</span>
+                    <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t font-bold">
+                    <span className="text-gray-900">Net working capital:</span>
+                    <span className="text-green-700">{formatCurrency(netWorkingCapital)}</span>
+                  </div>
+                  <div className="flex justify-between pt-2 border-t">
+                    <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
+                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(wcAnnualValue)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Headcount savings and other benefits aligned with box 3 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">AP FTEs saved:</span>
+                  <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">AP headcount savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Customs broker savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Forwarder fee savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Trade FTEs saved:</span>
+                  <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Trade headcount savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pt-3">
+                  <span className="font-bold text-gray-900">Total P&L Benefit:</span>
+                  <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
+                </div>
+              </div>
+            </div>
 
             {/* 3) Accounts Payable (AP) Headcount Efficiency */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">3)</span> Accounts Payable (AP) Headcount Efficiency
               </h2>
@@ -525,7 +660,7 @@ export default function TradeSimulator() {
              </div>
 
 {/* 4) Customs & Trade Compliance Benefits */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">4)</span> Customs & Trade Compliance Benefits
               </h2>
@@ -623,150 +758,7 @@ export default function TradeSimulator() {
                 />
                 </div>
             </div>
-
-            </div>
-            
-            {/* Right Column */}
-            <div className="flex-1 space-y-6">
-            {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white">
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* P&L Section */}
-                <div>
-                  <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
-                  <p className="text-white/80 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
-                  <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
-
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div>
-                      <div className="text-white/70 mb-1">Discounts</div>
-                      <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
-                    </div>
-                    <div>
-                      <div className="text-white/70 mb-1">AP Efficiency</div>
-                      <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
-                    </div>
-                    <div>
-                      <div className="text-white/70 mb-1">Customs</div>
-                      <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
-                    </div>
-                  </div>
-                </div>
-              
-              {/* Working Capital Section */}
-                <div className="border-l border-white/30 pl-6">
-                  <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
-                  <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
-                  <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <div className="text-white/70 mb-1">From extension:</div>
-                      <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
-                    </div>
-                    <div>
-                      <div className="text-white/70 mb-1">Used for early pay:</div>
-                      <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
-                    </div>
-                   </div>
-                  </div>
-                </div>
-              </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
-              <div className="grid md:grid-cols-2 gap-6 text-sm">
-                <div className="space-y-3">
-                  <div className="font-semibold text-gray-800">Early payment details</div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Imports paid early:</span>
-                    <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
-                  </div>
-                  <div className="flex justify-between pl-4">
-                    <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(bankFundedAmount)}</span>
-                  </div>
-                  <div className="flex justify-between pl-4">
-                    <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(internalFundedAmount)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Total discount value:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Bank funding cost:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Internal funding cost:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Net discount benefit:</span>
-                    <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
-                  </div>
-                </div>
-                 <div className="space-y-3">
-                  <div className="font-semibold text-gray-800">Working capital benefits</div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">From longer payment terms:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Own cash used to pay early:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Net working capital:</span>
-                    <span className="text-green-700">{formatCurrency(netWorkingCapital)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
-                    <span className="font-semibold text-[#0C7C59]">{formatCurrency(wcAnnualValue)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Headcount savings and other benefits aligned with box 3 */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">AP FTEs saved:</span>
-                  <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">AP headcount savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Customs broker savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Trade FTEs saved:</span>
-                  <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Trade headcount savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pt-3">
-                  <span className="font-bold text-gray-900">Total P&L Benefit:</span>
-                  <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
-                </div>
-              </div>
-            </div>
-
-            </div>
           </div>
-                  </div>
         ) : (
           /* Simulation View */
           <div className="space-y-6">
