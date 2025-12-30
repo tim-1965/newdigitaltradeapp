@@ -179,26 +179,59 @@ export default function TradeSimulator() {
     return `${(value * 100).toFixed(2)}%`;
   };
 
-  const InputField = ({ label, value, onChange, unit = '', note = '', type = 'number', step = '1' }) => (
-    <div className="border-b border-gray-200 py-2.5">
-      <div className="flex items-center gap-3">
-        <div className="flex-1 min-w-0">
-          <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
-          {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
-        </div>
-        <div className="flex items-center gap-2 w-64">
-          <input
-            type={type}
-            value={value}
-            onChange={(e) => onChange(type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)}
-            step={step}
-            className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
-          />
-          {unit && <span className="text-xs text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
+  const InputField = ({ label, value, onChange, unit = '', note = '' }) => {
+    const [localValue, setLocalValue] = React.useState(value);
+    const [isEditing, setIsEditing] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!isEditing) {
+        setLocalValue(value);
+      }
+    }, [value, isEditing]);
+
+    const handleFocus = () => {
+      setIsEditing(true);
+    };
+
+    const handleBlur = () => {
+      setIsEditing(false);
+      const parsed = parseFloat(localValue);
+      if (!isNaN(parsed)) {
+        onChange(parsed);
+      } else {
+        setLocalValue(value);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        e.target.blur();
+      }
+    };
+
+    return (
+      <div className="border-b border-gray-200 py-2.5">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
+            {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
+          </div>
+          <div className="flex items-center gap-2 w-64">
+            <input
+              type="text"
+              value={localValue}
+              onChange={(e) => setLocalValue(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#58A4B0] text-right"
+            />
+            {unit && <span className="text-xs text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue }) => {
     const [localValue, setLocalValue] = React.useState(value);
@@ -337,7 +370,6 @@ export default function TradeSimulator() {
                   onChange={setAnnualVolumeMM}
                   unit="$ MM / year"
                   note="Total invoice face value in scope (imports/exports using digitised docs)."
-                  step="1"
                 />
                 <SliderField
                   label="% of that spend eligible for shipment-level approval / early payment"
@@ -788,7 +820,6 @@ export default function TradeSimulator() {
                       value={turnover / 1000000}
                       onChange={(v) => setTurnover(v * 1000000)}
                       unit="$ MM"
-                      step="10"
                       note="Total revenue"
                     />
                     <InputField
@@ -796,7 +827,6 @@ export default function TradeSimulator() {
                       value={costOfSales / 1000000}
                       onChange={(v) => setCostOfSales(v * 1000000)}
                       unit="$ MM"
-                      step="10"
                       note="Direct costs"
                     />
                     <InputField
@@ -804,7 +834,6 @@ export default function TradeSimulator() {
                       value={operatingProfit / 1000000}
                       onChange={(v) => setOperatingProfit(v * 1000000)}
                       unit="$ MM"
-                      step="1"
                       note="EBIT"
                     />
                     <InputField
@@ -812,7 +841,6 @@ export default function TradeSimulator() {
                       value={netInterest / 1000000}
                       onChange={(v) => setNetInterest(v * 1000000)}
                       unit="$ MM"
-                      step="1"
                       note="Finance costs"
                     />
                     <InputField
@@ -820,7 +848,6 @@ export default function TradeSimulator() {
                       value={ebitda / 1000000}
                       onChange={(v) => setEbitda(v * 1000000)}
                       unit="$ MM"
-                      step="1"
                       note="Earnings before interest, tax, depreciation & amortization"
                     />
                   </div>
@@ -835,7 +862,6 @@ export default function TradeSimulator() {
                       value={tradePayables / 1000000}
                       onChange={(v) => setTradePayables(v * 1000000)}
                       unit="$ MM"
-                      step="10"
                       note="Amounts owed to suppliers"
                     />
                     <InputField
@@ -843,7 +869,6 @@ export default function TradeSimulator() {
                       value={netDebt / 1000000}
                       onChange={(v) => setNetDebt(v * 1000000)}
                       unit="$ MM"
-                      step="10"
                       note="Total borrowings less cash"
                     />
                     <InputField
@@ -851,7 +876,6 @@ export default function TradeSimulator() {
                       value={equity / 1000000}
                       onChange={(v) => setEquity(v * 1000000)}
                       unit="$ MM"
-                      step="10"
                       note="Shareholders' equity"
                     />
                     <InputField
@@ -859,7 +883,6 @@ export default function TradeSimulator() {
                       value={freeCashFlow / 1000000}
                       onChange={(v) => setFreeCashFlow(v * 1000000)}
                       unit="$ MM"
-                      step="1"
                       note="Cash available after capital expenditure"
                     />
                   </div>
