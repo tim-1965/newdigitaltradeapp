@@ -653,36 +653,7 @@ export default function TradeSimulator() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Net discount benefit:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(netDiscountBenefit)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">AP headcount savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Customs broker savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Trade compliance savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pt-3">
-                    <span className="font-bold text-gray-900">Total P&L Benefit:</span>
-                    <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
-                  </div>
-                </div>
-              </div>
-
+              {/* Working Capital Benefits - Aligns with Box 2 (Early Payment section) */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Working Capital Benefits</h3>
                 <div className="space-y-3 text-sm">
@@ -705,6 +676,7 @@ export default function TradeSimulator() {
                 </div>
               </div>
 
+              {/* Early Payment Details - Below Working Capital Benefits */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Early Payment Details</h3>
                 <div className="space-y-3 text-sm">
@@ -739,6 +711,7 @@ export default function TradeSimulator() {
                 </div>
               </div>
 
+              {/* Headcount Efficiency - Aligns with Box 3 (AP Headcount section) */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
                 <div className="space-y-3 text-sm">
@@ -761,6 +734,37 @@ export default function TradeSimulator() {
                   <div className="flex justify-between pt-2 border-t font-bold">
                     <span className="text-gray-900">Total FTEs saved:</span>
                     <span className="text-purple-700">{formatNumber(apFteSaved + tradeFteSaved, 1)} FTEs</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* P&L Benefits After Costs - Aligns with Box 4 (Customs section) at bottom */}
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-2 border-b">
+                    <span className="text-sm text-gray-600">Net discount benefit:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b">
+                    <span className="text-sm text-gray-600">AP headcount savings:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b">
+                    <span className="text-sm text-gray-600">Customs broker savings:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b">
+                    <span className="text-sm text-gray-600">Forwarder fee savings:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-2 border-b">
+                    <span className="text-sm text-gray-600">Trade compliance savings:</span>
+                    <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-3">
+                    <span className="font-bold text-gray-900">Total P&L Benefit:</span>
+                    <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
                   </div>
                 </div>
               </div>
