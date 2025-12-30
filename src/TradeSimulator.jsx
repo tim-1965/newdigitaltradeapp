@@ -96,7 +96,6 @@ export default function TradeSimulator() {
       turnover, costOfSales, operatingProfit, netInterest, ebitda, tradePayables, 
       netDebt, equity, freeCashFlow]);
 
-
   // ===== CALCULATIONS =====
   
   // Volume being digitised
@@ -318,7 +317,7 @@ export default function TradeSimulator() {
       {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-6 py-6">
         {activeView === 'inputs' ? (
-           <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6">
             {/* Left Panel - Inputs */}
             <div className="space-y-6">
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -351,7 +350,8 @@ export default function TradeSimulator() {
                   />
                 </div>
               </div>
-             <div className="bg-white rounded-lg shadow-md p-6">
+              
+              <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                   <span className="text-blue-600">2)</span> Early Payment Discounts & Working Capital
                 </h2>
@@ -398,12 +398,8 @@ export default function TradeSimulator() {
                   />
                   <div className="bg-gray-50 p-3 my-3 rounded">
                     <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>
-                    <div>
-                      <div className="text-indigo-200 mb-1">Customs</div>
-                      <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
-                    </div>
-                  </div>
-                <SliderField
+                                      </div>
+                  <SliderField
                     label="Days from shipment to payment under digitised process"
                     value={daysToPayment}
                     onChange={setDaysToPayment}
@@ -656,9 +652,9 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               </div>
-              
-            {/* Working Capital Benefits - Aligns with Box 2 (Early Payment section) */}
-              <div className="bg-white rounded-lg shadow-md p-6">          
+           
+               {/* Working Capital Benefits - Aligns with Box 2 (Early Payment section) */}
+               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Working Capital Benefits</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
@@ -680,8 +676,8 @@ export default function TradeSimulator() {
                 </div>
               </div>
 
- {/* Early Payment Details - Below Working Capital Benefits */}
-               <div className="bg-white rounded-lg shadow-md p-6">
+              {/* Early Payment Details - Below Working Capital Benefits */}
+                <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Early Payment Details</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
@@ -714,15 +710,16 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               </div>
-{/* Headcount Efficiency - Aligns with Box 3 (AP Headcount section) */}
+
+              {/* Headcount Efficiency - Aligns with Box 3 (AP Headcount section) */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">AP FTEs saved:</span>
-                    <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span></div>
-                </div>  
-             <div className="flex justify-between">
+                    <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">AP annual savings:</span>
                     <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
                   </div>
@@ -740,9 +737,8 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               </div>
-            </div>
-
- {/* P&L Benefits After Costs - Aligns with Box 4 (Customs section) at bottom */}
+            
+            {/* P&L Benefits After Costs - Aligns with Box 4 (Customs section) at bottom */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
                 <div className="space-y-3">
@@ -770,7 +766,7 @@ export default function TradeSimulator() {
                     <span className="font-bold text-gray-900">Total P&L Benefit:</span>
                     <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
                   </div>
-                 </div>
+                </div>
               </div>
             </div>
           </div>
@@ -780,7 +776,7 @@ export default function TradeSimulator() {
             {/* Simulation Inputs */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
-                   <p className="text-sm text-gray-600 mb-4">Enter your current financial figures to see the impact of digitalization</p>
+              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures to see the impact of digitalization</p>
               <div className="grid md:grid-cols-3 gap-4">
                 <InputField
                   label="Turnover / Revenue"
