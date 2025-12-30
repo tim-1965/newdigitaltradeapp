@@ -24,8 +24,11 @@ export default function TradeSimulator() {
   };
 
   // 1) Company & trade volume
-  const [annualVolume, setAnnualVolume] = useState(() => loadSavedValue('annualVolume', 200000000));
+  const [annualVolumeMM, setAnnualVolumeMM] = useState(() => loadSavedValue('annualVolumeMM', 200));
   const [digitisationPct, setDigitisationPct] = useState(() => loadSavedValue('digitisationPct', 100));
+  
+  // Convert millions to actual value for calculations
+  const annualVolume = annualVolumeMM * 1000000;
 
   // 2) Early payment discounts & working capital
   const [currentPaymentTerms, setCurrentPaymentTerms] = useState(() => loadSavedValue('currentPaymentTerms', 60));
@@ -69,7 +72,7 @@ export default function TradeSimulator() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const allValues = {
-        annualVolume, digitisationPct,
+        annualVolumeMM, digitisationPct,
         currentPaymentTerms, termExtension, supplierUptakePct, earlyPaymentDiscount, 
         daysToPayment, bankFundedPct, scfRate, internalCostOfFunds, wcInterestRate,
         apHeadcount, apCostPerFte, apEfficiencyPct,
@@ -85,7 +88,7 @@ export default function TradeSimulator() {
       const timer = setTimeout(() => setShowSaved(false), 1500);
       return () => clearTimeout(timer);
     }
-  }, [annualVolume, digitisationPct, currentPaymentTerms, termExtension, supplierUptakePct, 
+  }, [annualVolumeMM, digitisationPct, currentPaymentTerms, termExtension, supplierUptakePct, 
       earlyPaymentDiscount, daysToPayment, bankFundedPct, scfRate, internalCostOfFunds, wcInterestRate,
       apHeadcount, apCostPerFte, apEfficiencyPct, customsFilings, brokerFeePerFiling, 
       selfFilingPct, shipmentsWithFees, forwarderFeePerShipment, docFeesEliminatedPct, 
@@ -324,11 +327,11 @@ export default function TradeSimulator() {
                 <div className="space-y-1">
                   <InputField
                     label="International supply chain: annual volume"
-                    value={annualVolume}
-                    onChange={setAnnualVolume}
-                    unit="$ / year"
+                    value={annualVolumeMM}
+                    onChange={setAnnualVolumeMM}
+                    unit="$ MM / year"
                     note="Total invoice face value in scope (imports/exports using digitised docs)."
-                    step="1000000"
+                    step="1"
                   />
                   <SliderField
                     label="% of that spend eligible for shipment-level approval / early payment"
@@ -605,48 +608,47 @@ export default function TradeSimulator() {
 
             {/* Right Panel - Results */}
             <div className="space-y-6">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-xl p-8 text-white sticky top-6">
-                <div className="flex items-center justify-between mb-6">
+              {/* Combined P&L and Working Capital Card */}
+              <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-lg shadow-xl p-6 text-white">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* P&L Section */}
                   <div>
-                    <h2 className="text-2xl font-bold mb-2">Total Annual Recurring P&L Benefit</h2>
-                    <p className="text-indigo-100">Early payment discounts, headcount savings, and digital customs processes</p>
+                    <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
+                    <p className="text-indigo-100 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
+                    <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
+                    
+                    <div className="grid grid-cols-3 gap-2 text-xs">
+                      <div>
+                        <div className="text-indigo-200 mb-1">Discounts</div>
+                        <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
+                      </div>
+                      <div>
+                        <div className="text-indigo-200 mb-1">AP Efficiency</div>
+                        <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
+                      </div>
+                      <div>
+                        <div className="text-indigo-200 mb-1">Customs</div>
+                        <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="text-6xl font-bold mb-8">{formatCurrency(totalPLBenefit)}</div>
-                
-                <div className="grid grid-cols-3 gap-4 pt-6 border-t border-indigo-400">
-                  <div>
-                    <div className="text-indigo-200 text-sm mb-1">Discount Benefit</div>
-                    <div className="text-2xl font-bold">{formatCurrency(netDiscountBenefit)}</div>
-                  </div>
-                  <div>
-                    <div className="text-indigo-200 text-sm mb-1">AP Efficiency</div>
-                    <div className="text-2xl font-bold">{formatCurrency(apSavings)}</div>
-                  </div>
-                  <div>
-                    <div className="text-indigo-200 text-sm mb-1">Customs Savings</div>
-                    <div className="text-2xl font-bold">{formatCurrency(totalCustomsSavings)}</div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg shadow-xl p-8 text-white">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold mb-2">Net Additional Working Capital Generated</h2>
-                    <p className="text-blue-100 text-sm">Working capital generated via longer payment terms from suppliers</p>
-                  </div>
-                </div>
-                <div className="text-5xl font-bold mb-6">{formatCurrency(netWorkingCapital)}</div>
-                
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <div className="text-blue-200 mb-1">From term extension:</div>
-                    <div className="text-lg font-bold">{formatCurrency(wcFromExtension)}</div>
-                  </div>
-                  <div>
-                    <div className="text-blue-200 mb-1">Used for early payments:</div>
-                    <div className="text-lg font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
+                  {/* Working Capital Section */}
+                  <div className="border-l border-white/30 pl-6">
+                    <h3 className="text-lg font-bold mb-1">Net Working Capital Generated</h3>
+                    <p className="text-blue-100 text-xs mb-3">Cash released via longer payment terms</p>
+                    <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <div className="text-blue-200 mb-1">From extension:</div>
+                        <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
+                      </div>
+                      <div>
+                        <div className="text-blue-200 mb-1">Used for early pay:</div>
+                        <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
