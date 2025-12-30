@@ -197,6 +197,39 @@ export default function TradeSimulator() {
     </div>
   );
 
+  const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue }) => (
+    <div className="border-b border-gray-200 py-3">
+      <div className="flex items-start justify-between gap-4 mb-2">
+        <div className="flex-1">
+          <label className="text-sm font-medium text-gray-700 block mb-1">{label}</label>
+          {note && <p className="text-xs text-gray-500 mt-1">{note}</p>}
+        </div>
+        <div className="text-right min-w-[120px]">
+          <span className="text-lg font-semibold text-blue-700">
+            {formatValue ? formatValue(value) : value}
+          </span>
+          {unit && <span className="text-sm text-gray-600 ml-2">{unit}</span>}
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-500">{formatValue ? formatValue(min) : min}</span>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(parseFloat(e.target.value))}
+          className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+          style={{
+            background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((value - min) / (max - min)) * 100}%, #e5e7eb ${((value - min) / (max - min)) * 100}%, #e5e7eb 100%)`
+          }}
+        />
+        <span className="text-xs text-gray-500">{formatValue ? formatValue(max) : max}</span>
+      </div>
+    </div>
+  );
+
   const CalculatedField = ({ label, value, note = '' }) => (
     <div className="bg-blue-50 border-l-4 border-blue-500 py-3 px-4 mb-2">
       <div className="flex items-start justify-between gap-4">
@@ -276,10 +309,13 @@ export default function TradeSimulator() {
                     note="Total invoice face value in scope (imports/exports using digitised docs)."
                     step="1000000"
                   />
-                  <InputField
+                  <SliderField
                     label="% of that spend eligible for shipment-level approval / early payment"
                     value={digitisationPct}
                     onChange={setDigitisationPct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="Proportion of the international supply chain that digitises its paperwork"
                   />
@@ -296,43 +332,56 @@ export default function TradeSimulator() {
                   <span className="text-blue-600">2)</span> Early Payment Discounts & Working Capital
                 </h2>
                 <div className="space-y-1">
-                  <InputField
+                  <SliderField
                     label="Current average payment terms (days from shipment to payment)"
                     value={currentPaymentTerms}
                     onChange={setCurrentPaymentTerms}
+                    min={0}
+                    max={120}
+                    step={1}
                     unit="days"
                     note="E.g., 60 days = suppliers are paid 60 days after shipment."
                   />
-                  <InputField
+                  <SliderField
                     label="Term extension for digitised invoices (all of them)"
                     value={termExtension}
                     onChange={setTermExtension}
+                    min={0}
+                    max={90}
+                    step={1}
                     unit="days"
                     note="Days beyond current terms (suppliers can take early payment at shipment)."
                   />
-                  <InputField
+                  <SliderField
                     label="Suppliers taking early payment (% of eligible spend participating)"
                     value={supplierUptakePct}
                     onChange={setSupplierUptakePct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="Portion of eligible suppliers/invoices that participate."
-                    step="0.1"
                   />
-                  <InputField
+                  <SliderField
                     label="Discount for paying at shipment (% of invoice face value)"
                     value={earlyPaymentDiscount}
                     onChange={setEarlyPaymentDiscount}
+                    min={0}
+                    max={10}
+                    step={0.1}
                     unit="%"
                     note="Average discount negotiated for payment at shipment."
-                    step="0.1"
                   />
                   <div className="bg-gray-50 p-3 my-3 rounded">
                     <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>
                   </div>
-                  <InputField
+                  <SliderField
                     label="Days from shipment to payment under digitised process"
                     value={daysToPayment}
                     onChange={setDaysToPayment}
+                    min={0}
+                    max={30}
+                    step={1}
                     unit="days"
                     note="Days between shipment and payment when documents are digitised"
                   />
@@ -341,37 +390,45 @@ export default function TradeSimulator() {
                     value={`${formatNumber(daysAccelerated, 0)} days`}
                     note="This is the funding period for early payments"
                   />
-                  <InputField
+                  <SliderField
                     label="Share of early payments funded by banks / SCF"
                     value={bankFundedPct}
                     onChange={setBankFundedPct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="0% = internal funds only; 100% = bank (ie: SCF) only."
-                    step="0.1"
                   />
-                  <InputField
+                  <SliderField
                     label="International supply chain finance cost (annual, bank interest rate)"
                     value={scfRate}
                     onChange={setScfRate}
+                    min={0}
+                    max={15}
+                    step={0.1}
                     unit="%"
                     note="Annualised cost charged by the bank to fund early payments to suppliers."
-                    step="0.1"
                   />
-                  <InputField
+                  <SliderField
                     label="Internal cost of funds (annual rate notionally applied to funds used)"
                     value={internalCostOfFunds}
                     onChange={setInternalCostOfFunds}
+                    min={0}
+                    max={15}
+                    step={0.1}
                     unit="%"
                     note="Opportunity cost / WACC / borrowing rate for internal funding."
-                    step="0.1"
                   />
-                  <InputField
+                  <SliderField
                     label="Interest rate to value working capital (annual, interest savings)"
                     value={wcInterestRate}
                     onChange={setWcInterestRate}
+                    min={0}
+                    max={15}
+                    step={0.1}
                     unit="%"
                     note="Used to estimate annual value of cash released/used as borrowing is lower"
-                    step="0.1"
                   />
                 </div>
               </div>
@@ -381,28 +438,36 @@ export default function TradeSimulator() {
                   <span className="text-blue-600">3)</span> Accounts Payable (AP) Headcount Efficiency
                 </h2>
                 <div className="space-y-1">
-                  <InputField
+                  <SliderField
                     label="Current AP team headcount"
                     value={apHeadcount}
                     onChange={setApHeadcount}
+                    min={0}
+                    max={50}
+                    step={1}
                     unit="FTE"
                     note="Number of FTE currently in AP."
                   />
-                  <InputField
+                  <SliderField
                     label="Fully loaded cost per AP FTE"
                     value={apCostPerFte}
                     onChange={setApCostPerFte}
+                    min={30000}
+                    max={150000}
+                    step={1000}
                     unit="$ / yr"
                     note="Salary + benefits + overhead."
-                    step="1000"
+                    formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
                   />
-                  <InputField
+                  <SliderField
                     label="% headcount reduction achievable at full adoption"
                     value={apEfficiencyPct}
                     onChange={setApEfficiencyPct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="Headcount savings as a result of more efficient processing"
-                    step="0.1"
                   />
                   <CalculatedField
                     label="AP headcount efficiencies"
@@ -417,72 +482,96 @@ export default function TradeSimulator() {
                   <span className="text-blue-600">4)</span> Customs & Trade Compliance Benefits
                 </h2>
                 <div className="space-y-1">
-                  <InputField
+                  <SliderField
                     label="Annual number of import customs filings"
                     value={customsFilings}
                     onChange={setCustomsFilings}
+                    min={0}
+                    max={5000}
+                    step={50}
                     unit="filings / yr"
                     note="Declarations currently handled via broker/forwarder."
                   />
-                  <InputField
+                  <SliderField
                     label="Customs broker fee per filing"
                     value={brokerFeePerFiling}
                     onChange={setBrokerFeePerFiling}
+                    min={0}
+                    max={200}
+                    step={5}
                     unit="$ / filing"
                     note="Average broker fee per import entry/filing."
                   />
-                  <InputField
+                  <SliderField
                     label="% of filings moved to direct digital self-filing"
                     value={selfFilingPct}
                     onChange={setSelfFilingPct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="Share posted directly into customs systems."
-                    step="0.1"
                   />
-                  <InputField
+                  <SliderField
                     label="Annual number of shipments incurring forwarder doc/admin fees"
                     value={shipmentsWithFees}
                     onChange={setShipmentsWithFees}
+                    min={0}
+                    max={10000}
+                    step={100}
                     unit="shipments / yr"
                     note="Only include shipments where fees are avoidable via digital docs."
                   />
-                  <InputField
+                  <SliderField
                     label="Forwarder/doc fee per shipment"
                     value={forwarderFeePerShipment}
                     onChange={setForwarderFeePerShipment}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="$ / shipment"
                     note="Document handling, forwarding admin, etc."
                   />
-                  <InputField
+                  <SliderField
                     label="% of forwarder/doc fees eliminated via digital trade docs"
                     value={docFeesEliminatedPct}
                     onChange={setDocFeesEliminatedPct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="Often similar to % self-filing, but can differ."
-                    step="0.1"
                   />
-                  <InputField
+                  <SliderField
                     label="Current trade compliance team headcount"
                     value={tradeComplianceHeadcount}
                     onChange={setTradeComplianceHeadcount}
+                    min={0}
+                    max={30}
+                    step={1}
                     unit="FTE"
                     note="Number of FTE currently in trade compliance."
                   />
-                  <InputField
+                  <SliderField
                     label="Fully loaded cost per FTE"
                     value={tradeCostPerFte}
                     onChange={setTradeCostPerFte}
+                    min={30000}
+                    max={150000}
+                    step={1000}
                     unit="$ / yr"
                     note="Salary + benefits + overhead."
-                    step="1000"
+                    formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
                   />
-                  <InputField
+                  <SliderField
                     label="% headcount reduction achievable at full adoption"
                     value={tradeEfficiencyPct}
                     onChange={setTradeEfficiencyPct}
+                    min={0}
+                    max={100}
+                    step={1}
                     unit="%"
                     note="Headcount savings as a result of more efficient processing"
-                    step="0.1"
                   />
                   <CalculatedField
                     label="Trade compliance efficiencies"
