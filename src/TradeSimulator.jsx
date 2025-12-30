@@ -358,8 +358,9 @@ export default function TradeSimulator() {
       <div className="max-w-[1800px] mx-auto px-6 py-6">
         {activeView === 'inputs' ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+           <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-0">
             {/* 1) Company & Trade Volume */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:rounded-r-none lg:border-r lg:border-gray-100">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">1)</span> Company & Trade Volume
               </h2>
@@ -385,7 +386,7 @@ export default function TradeSimulator() {
             </div>
                             
             {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:col-start-2 lg:self-start">
+               <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:rounded-l-none lg:self-stretch">
               <div className="grid md:grid-cols-2 gap-6">
                 {/* P&L Section */}
                 <div>
@@ -409,7 +410,7 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               
-              {/* Working Capital Section */}
+                {/* Working Capital Section */}
                 <div className="border-l border-white/30 pl-6">
                   <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
                   <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
@@ -428,8 +429,9 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               </div>
+            </div>
 
- {/* 2) Early Payment Discounts & Working Capital */}
+          {/* 2) Early Payment Discounts & Working Capital */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">2)</span> Early Payment Discounts & Working Capital
