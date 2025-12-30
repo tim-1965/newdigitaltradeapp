@@ -357,9 +357,9 @@ export default function TradeSimulator() {
       {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-6 py-6">
         {activeView === 'inputs' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_auto_auto_auto] gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
             {/* 1) Company & Trade Volume */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-1 lg:col-start-1">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">1)</span> Company & Trade Volume
               </h2>
@@ -385,7 +385,7 @@ export default function TradeSimulator() {
             </div>
                             
             {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:row-start-1 lg:col-start-2 lg:self-start">
+              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white lg:col-start-2 lg:self-start">
               <div className="grid md:grid-cols-2 gap-6">
                 {/* P&L Section */}
                 <div>
@@ -430,7 +430,7 @@ export default function TradeSimulator() {
               </div>
 
  {/* 2) Early Payment Discounts & Working Capital */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-1">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">2)</span> Early Payment Discounts & Working Capital
               </h2>
@@ -528,7 +528,7 @@ export default function TradeSimulator() {
               </div>
             </div>
            {/* Early payment + working capital benefits aligned with box 2 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-2 lg:self-start">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-2 lg:self-start">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
               <div className="grid md:grid-cols-2 gap-6 text-sm">
                 <div className="space-y-3">
@@ -585,7 +585,7 @@ export default function TradeSimulator() {
             </div>
 
             {/* Headcount savings and other benefits aligned with box 3 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-2">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-2">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-2 border-b">
@@ -620,7 +620,7 @@ export default function TradeSimulator() {
             </div>
 
             {/* 3) Accounts Payable (AP) Headcount Efficiency */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-1">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">3)</span> Accounts Payable (AP) Headcount Efficiency
               </h2>
@@ -660,7 +660,7 @@ export default function TradeSimulator() {
              </div>
 
 {/* 4) Customs & Trade Compliance Benefits */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-1">
+            <div className="bg-white rounded-lg shadow-md p-6 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                 <span className="text-[#58A4B0]">4)</span> Customs & Trade Compliance Benefits
               </h2>
