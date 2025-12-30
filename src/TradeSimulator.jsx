@@ -365,26 +365,26 @@ export default function TradeSimulator() {
               </h2>
               <div className="space-y-1">
                 <InputField
-                  label="International supply chain: annual volume"
+                  label="Import supply chain: annual volume"
                   value={annualVolumeMM}
                   onChange={setAnnualVolumeMM}
                   unit="$ MM / year"
-                  note="Total invoice face value in scope (imports/exports using digitised docs)."
+                  note="Total invoice face value of imports."
                 />
                 <SliderField
-                  label="% of that spend eligible for shipment-level approval / early payment"
+                  label="Proportion of import supply chain digitising paperwork"
                   value={digitisationPct}
                   onChange={setDigitisationPct}
                   min={0}
                   max={100}
                   step={1}
                   unit="%"
-                  note="Proportion of the international supply chain that digitises its paperwork"
+                  note=""
                 />
                 <CalculatedField
-                  label="International supply chain being digitised"
+                  label="Import supply chain being digitised"
                   value={formatCurrency(digitisedVolume)}
-                  note="Annual volume times percentage of suppliers digitising"
+                  note="Annual import volume times the percentage that is digitising"
                 />
               </div>
             </div>
@@ -416,8 +416,8 @@ export default function TradeSimulator() {
               
               {/* Working Capital Section */}
                 <div className="border-l border-white/30 pl-6">
-                  <h3 className="text-lg font-bold mb-1">Net Working Capital Generated</h3>
-                  <p className="text-white/80 text-xs mb-3">Cash released via longer payment terms</p>
+                  <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
+                  <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
                   <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
 
                   <div className="grid grid-cols-2 gap-2 text-xs">
@@ -441,60 +441,60 @@ export default function TradeSimulator() {
               </h2>
               <div className="space-y-1">
                 <SliderField
-                  label="Current average payment terms (days from shipment to payment)"
+                  label="Average payment term after shipment"
                   value={currentPaymentTerms}
                   onChange={setCurrentPaymentTerms}
                   min={0}
                   max={120}
                   step={1}
                   unit="days"
-                  note="E.g., 60 days = suppliers are paid 60 days after shipment."
+                  note="60 days = suppliers paid 60 days after shipment."
                 />
                 <SliderField
-                  label="Term extension for digitised invoices (all of them)"
+                  label="Additional payment term for suppliers"
                   value={termExtension}
                   onChange={setTermExtension}
                   min={0}
                   max={90}
                   step={1}
                   unit="days"
-                  note="Days beyond current terms (suppliers can take early payment at shipment)."
+                  note="Additional days beyond the current term."
                 />
                 <SliderField
-                  label="Suppliers taking early payment (% of eligible spend participating)"
+                  label="% of suppliers taking early payment option"
                   value={supplierUptakePct}
                   onChange={setSupplierUptakePct}
                   min={0}
                   max={100}
                   step={1}
                   unit="%"
-                  note="Portion of eligible suppliers/invoices that participate."
+                  note="% of invoices paid at shipment."
                 />
                 <SliderField
-                  label="Discount for paying at shipment (% of invoice face value)"
+                  label="Early payment discount for payment at shipment"
                   value={earlyPaymentDiscount}
                   onChange={setEarlyPaymentDiscount}
                   min={0}
                   max={10}
                   step={0.1}
                   unit="%"
-                  note="Average discount negotiated for payment at shipment."
+                  note="Percent. reduction in the invoice amount."
                 />
                 <div className="bg-gray-50 p-3 my-3 rounded">
                   <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>              
                 </div>
                 <SliderField
-                  label="Days from shipment to payment under digitised process"
+                  label="Days after shipment when early payments are made"
                   value={daysToPayment}
                   onChange={setDaysToPayment}
                   min={0}
                   max={30}
                   step={1}
                   unit="days"
-                  note="Days between shipment and payment when documents are digitised"
+                  note="Time period for processing and payments"
                 />
                 <CalculatedField
-                  label="Days accelerated (how much earlier the supplier is paid)"
+                  label="Days accelerated (how much earlier the supplier is paid?)"
                   value={`${formatNumber(daysAccelerated, 0)} days`}
                   note="This is the funding period for early payments"
                 />
@@ -506,7 +506,7 @@ export default function TradeSimulator() {
                   max={100}
                   step={1}
                   unit="%"
-                  note="Portion of accelerated payments funded externally"
+                  note="Portion of early payments funded externally"
                 />
                 <SliderField
                   label="Supply chain finance rate / cost of funds (annual)"
@@ -516,27 +516,27 @@ export default function TradeSimulator() {
                   max={15}
                   step={0.1}
                   unit="%"
-                  note="Annualised cost charged by the bank to fund early payments to suppliers."
+                  note="Rate charged by the bank to fund early payments."
                 />
                 <SliderField
-                  label="Internal cost of funds (annual rate notionally applied to funds used)"
+                  label="Internal cost of funds"
                   value={internalCostOfFunds}
                   onChange={setInternalCostOfFunds}
                   min={0}
                   max={15}
                   step={0.1}
                   unit="%"
-                  note="Opportunity cost / WACC / borrowing rate for internal funding."
+                  note="Notional borrowing rate for internal funding."
                 />
                 <SliderField
-                  label="Interest rate to value working capital (annual, interest savings)"
+                  label="Rate for interest savings from working capital generated"
                   value={wcInterestRate}
                   onChange={setWcInterestRate}
                   min={0}
                   max={15}
                   step={0.1}
                   unit="%"
-                  note="Used to estimate annual value of cash released/used as borrowing is lower"
+                  note="Used to estimate annual value of lower borrowings"
                 />
               </div>
             </div>
@@ -547,7 +547,7 @@ export default function TradeSimulator() {
                 <div className="space-y-3">
                   <div className="font-semibold text-gray-800">Early payment details</div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Participating spend:</span>
+                    <span className="text-gray-600">Imports paid early:</span>
                     <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
                   </div>
                   <div className="flex justify-between pl-4">
@@ -578,11 +578,11 @@ export default function TradeSimulator() {
                  <div className="space-y-3">
                   <div className="font-semibold text-gray-800">Working capital benefits</div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Cash from payment term extension:</span>
+                    <span className="text-gray-600">From longer payment terms:</span>
                     <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Cash used for early payments:</span>
+                    <span className="text-gray-600">Own cash used to pay early:</span>
                     <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t font-bold">
@@ -634,10 +634,10 @@ export default function TradeSimulator() {
                   unit="%"
                   note="Headcount savings as a result of more efficient processing"
                 />
-                <CalculatedField
-                  label="AP headcount efficiencies"
-                  value={formatCurrency(apSavings)}
-                  note="Paperwork digitised at source instead of at head office"
+ //               <CalculatedField
+ //                 label="AP headcount efficiencies"
+ //                 value={formatCurrency(apSavings)}
+ //                 note="Paperwork digitised at source instead of at head office"
                 />
               </div>
              </div>
@@ -725,7 +725,7 @@ export default function TradeSimulator() {
                   note="Document handling, forwarding admin, etc."
                 />
                 <SliderField
-                  label="% of forwarder/doc fees eliminated via digital trade docs"
+                  label="% of forwarder/doc fees eliminated"
                   value={docFeesEliminatedPct}
                   onChange={setDocFeesEliminatedPct}
                   min={0}
@@ -756,19 +756,19 @@ export default function TradeSimulator() {
                   formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
                 />
                 <SliderField
-                  label="% headcount reduction achievable at full adoption"
+                  label="% headcount reduction achievable"
                   value={tradeEfficiencyPct}
                   onChange={setTradeEfficiencyPct}
                   min={0}
                   max={100}
                   step={1}
                   unit="%"
-                  note="Headcount savings as a result of more efficient processing"
+                  note="Headcount savings from more efficient processing"
                 />
-                <CalculatedField
-                  label="Trade compliance efficiencies"
-                  value={formatCurrency(totalCustomsSavings)}
-                  note="Lower fees to third parties and more efficient internal processes"
+  //              <CalculatedField
+  //                label="Trade compliance efficiencies"
+  //                value={formatCurrency(totalCustomsSavings)}
+  //                note="Lower fees to third parties and more efficient internal processes"
                 />
               </div>
             </div>
