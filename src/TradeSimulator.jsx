@@ -47,10 +47,10 @@ export default function TradeSimulator() {
   const [apEfficiencyPct, setApEfficiencyPct] = useState(() => loadSavedValue('apEfficiencyPct', 40));
 
   // 4) Customs & trade compliance benefits
-  const [customsFilings, setCustomsFilings] = useState(() => loadSavedValue('customsFilings', 1000));
+  const [customsFilings, setCustomsFilings] = useState(() => loadSavedValue('customsFilings', 100));
   const [brokerFeePerFiling, setBrokerFeePerFiling] = useState(() => loadSavedValue('brokerFeePerFiling', 55));
   const [selfFilingPct, setSelfFilingPct] = useState(() => loadSavedValue('selfFilingPct', 90));
-  const [shipmentsWithFees, setShipmentsWithFees] = useState(() => loadSavedValue('shipmentsWithFees', 3500));
+  const [shipmentsWithFees, setShipmentsWithFees] = useState(() => loadSavedValue('shipmentsWithFees', 300));
   const [forwarderFeePerShipment, setForwarderFeePerShipment] = useState(() => loadSavedValue('forwarderFeePerShipment', 20));
   const [docFeesEliminatedPct, setDocFeesEliminatedPct] = useState(() => loadSavedValue('docFeesEliminatedPct', 35));
   const [tradeComplianceHeadcount, setTradeComplianceHeadcount] = useState(() => loadSavedValue('tradeComplianceHeadcount', 8));
@@ -127,8 +127,8 @@ export default function TradeSimulator() {
   const apSavings = apFteSaved * apCostPerFte;
 
   // Customs efficiency
-  const brokerSavings = customsFilings * brokerFeePerFiling * (selfFilingPct / 100);
-  const forwarderSavings = shipmentsWithFees * forwarderFeePerShipment * (docFeesEliminatedPct / 100);
+  const brokerSavings = customsFilings * 12 * brokerFeePerFiling * (selfFilingPct / 100);
+  const forwarderSavings = shipmentsWithFees * 12 * forwarderFeePerShipment * (docFeesEliminatedPct / 100);
   const tradeFteSaved = tradeComplianceHeadcount * (tradeEfficiencyPct / 100);
   const tradeHeadcountSavings = tradeFteSaved * tradeCostPerFte;
   const totalCustomsSavings = brokerSavings + forwarderSavings + tradeHeadcountSavings;
@@ -675,13 +675,13 @@ export default function TradeSimulator() {
               </h2>
               <div className="space-y-1">
                 <SliderField
-                  label="Annual number of import customs filings"
+                  label="Monthly number of import customs filings"
                   value={customsFilings}
                   onChange={setCustomsFilings}
                   min={0}
                   max={5000}
                   step={50}
-                  unit="filings / yr"
+                  unit="filings / month"
                   note="Declarations currently handled via broker/forwarder."
                 />
                 <SliderField
@@ -705,13 +705,13 @@ export default function TradeSimulator() {
                   note="Share posted directly into customs systems."
                 />
                 <SliderField
-                  label="Annual number of shipments incurring forwarder doc/admin fees"
+                  label="Monthly number of shipments incurring forwarder doc/admin fees"
                   value={shipmentsWithFees}
                   onChange={setShipmentsWithFees}
                   min={0}
-                  max={10000}
-                  step={100}
-                  unit="shipments / yr"
+                  max={5000}
+                  step={50}
+                  unit="shipments / month"
                   note="Only include shipments where fees are avoidable via digital docs."
                 />
                 <SliderField
