@@ -381,11 +381,6 @@ export default function TradeSimulator() {
                   unit="%"
                   note=""
                 />
-                <CalculatedField
-                  label="Import supply chain being digitised"
-                  value={formatCurrency(digitisedVolume)}
-                  note="Annual import volume times the percentage that is digitising"
-                />
               </div>
             </div>
                             
@@ -626,12 +621,7 @@ export default function TradeSimulator() {
                   unit="%"
                   note="Headcount savings from more efficient processing"
                 />
- //               <CalculatedField
- //                 label="AP headcount efficiencies"
- //                 value={formatCurrency(apSavings)}
- //                 note="Paperwork digitised at source instead of at head office"
-                />
-              </div>
+               </div>
              </div>
 
             {/* Headcount Efficiency aligned with box 3 */}
@@ -697,14 +687,14 @@ export default function TradeSimulator() {
                   note="Share posted directly into customs systems."
                 />
                 <SliderField
-                  label="Monthly # of shipments with forwarder doc/admin fees"
+                  label="Monthly # of shipments with forwarder doc fees"
                   value={shipmentsWithFees}
                   onChange={setShipmentsWithFees}
                   min={0}
                   max={5000}
                   step={50}
                   unit="shipments / month"
-                  note="Only include shipments where fees are avoided via digital docs."
+                  note="Only include shipments where fees are avoided via digitisation."
                 />
                 <SliderField
                   label="Forwarder/doc fee per shipment"
