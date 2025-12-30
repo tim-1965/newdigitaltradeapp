@@ -179,7 +179,7 @@ export default function TradeSimulator() {
     return `${(value * 100).toFixed(2)}%`;
   };
 
-  const InputField = ({ label, value, onChange, unit = '', note = '' }) => {
+  const InputField = ({ label, value, onChange, unit = '', note = '', compact = false }) => {
     const [localValue, setLocalValue] = React.useState(value);
     const [isEditing, setIsEditing] = React.useState(false);
 
@@ -216,7 +216,7 @@ export default function TradeSimulator() {
             <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
             {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
           </div>
-          <div className="flex items-center gap-2 w-64">
+          <div className={`flex items-center gap-2 ${compact ? 'w-40' : 'w-64'}`}>
             <input
               type="text"
               value={localValue}
@@ -798,34 +798,35 @@ export default function TradeSimulator() {
                       onChange={(v) => setTurnover(v * 1000000)}
                       unit="$ MM"
                       note="Total revenue"
+                      compact
                     />
                     <InputField
                       label="Cost of Sales"
                       value={costOfSales / 1000000}
                       onChange={(v) => setCostOfSales(v * 1000000)}
                       unit="$ MM"
-                      note="Direct costs"
+                      note="Direct costs" compact
                     />
                     <InputField
                       label="Operating Profit"
                       value={operatingProfit / 1000000}
                       onChange={(v) => setOperatingProfit(v * 1000000)}
                       unit="$ MM"
-                      note="EBIT"
+                      note="EBIT" compact
                     />
                     <InputField
                       label="Net Interest Payable"
                       value={netInterest / 1000000}
                       onChange={(v) => setNetInterest(v * 1000000)}
                       unit="$ MM"
-                      note="Finance costs"
+                      note="Finance costs" compact
                     />
                     <InputField
                       label="EBITDA"
                       value={ebitda / 1000000}
                       onChange={(v) => setEbitda(v * 1000000)}
                       unit="$ MM"
-                      note="Earnings before interest, tax, depreciation & amortization"
+                      note="Earnings before interest, tax, depreciation & amortization" compact
                     />
                   </div>
                 </div>
@@ -839,28 +840,28 @@ export default function TradeSimulator() {
                       value={tradePayables / 1000000}
                       onChange={(v) => setTradePayables(v * 1000000)}
                       unit="$ MM"
-                      note="Amounts owed to suppliers"
+                      note="Amounts owed to suppliers" compact
                     />
                     <InputField
                       label="Net Debt"
                       value={netDebt / 1000000}
                       onChange={(v) => setNetDebt(v * 1000000)}
                       unit="$ MM"
-                      note="Total borrowings less cash"
+                      note="Total borrowings less cash" compact
                     />
                     <InputField
                       label="Equity"
                       value={equity / 1000000}
                       onChange={(v) => setEquity(v * 1000000)}
                       unit="$ MM"
-                      note="Shareholders' equity"
+                      note="Shareholders' equity" compact
                     />
                     <InputField
                       label="Free Cash Flow"
                       value={freeCashFlow / 1000000}
                       onChange={(v) => setFreeCashFlow(v * 1000000)}
                       unit="$ MM"
-                      note="Cash available after capital expenditure"
+                      note="Cash available after capital expenditure" compact
                     />
                   </div>
                 </div>
@@ -877,9 +878,9 @@ export default function TradeSimulator() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Item</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59]">After PrimaTrade</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Item</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -929,9 +930,9 @@ export default function TradeSimulator() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Item</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59]">After PrimaTrade</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Item</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -975,9 +976,9 @@ export default function TradeSimulator() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Ratio</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59]">After PrimaTrade</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Ratio</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
