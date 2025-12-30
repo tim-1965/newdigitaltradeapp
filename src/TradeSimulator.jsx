@@ -480,11 +480,8 @@ export default function TradeSimulator() {
                   unit="%"
                   note="Percent. reduction in the invoice amount."
                 />
-                <div className="bg-gray-50 p-3 my-3 rounded">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>              
-                </div>
                 <SliderField
-                  label="Days after shipment when early payments are made"
+                  label="Days after shipment until early payment"
                   value={daysToPayment}
                   onChange={setDaysToPayment}
                   min={0}
@@ -492,11 +489,6 @@ export default function TradeSimulator() {
                   step={1}
                   unit="days"
                   note="Time period for processing and payments"
-                />
-                <CalculatedField
-                  label="Days accelerated (how much earlier the supplier is paid?)"
-                  value={`${formatNumber(daysAccelerated, 0)} days`}
-                  note="This is the funding period for early payments"
                 />
                 <SliderField
                   label="Share of early payments funded by banks / SCF"
@@ -529,7 +521,7 @@ export default function TradeSimulator() {
                   note="Notional borrowing rate for internal funding."
                 />
                 <SliderField
-                  label="Rate for interest savings from working capital generated"
+                  label="Rate for savings from working capital generated"
                   value={wcInterestRate}
                   onChange={setWcInterestRate}
                   min={0}
@@ -625,14 +617,14 @@ export default function TradeSimulator() {
                   formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
                 />
                 <SliderField
-                  label="% headcount reduction achievable at full adoption"
+                  label="% headcount reduction achieved"
                   value={apEfficiencyPct}
                   onChange={setApEfficiencyPct}
                   min={0}
                   max={100}
                   step={1}
                   unit="%"
-                  note="Headcount savings as a result of more efficient processing"
+                  note="Headcount savings from more efficient processing"
                 />
  //               <CalculatedField
  //                 label="AP headcount efficiencies"
@@ -705,14 +697,14 @@ export default function TradeSimulator() {
                   note="Share posted directly into customs systems."
                 />
                 <SliderField
-                  label="Monthly number of shipments incurring forwarder doc/admin fees"
+                  label="Monthly # of shipments with forwarder doc/admin fees"
                   value={shipmentsWithFees}
                   onChange={setShipmentsWithFees}
                   min={0}
                   max={5000}
                   step={50}
                   unit="shipments / month"
-                  note="Only include shipments where fees are avoidable via digital docs."
+                  note="Only include shipments where fees are avoided via digital docs."
                 />
                 <SliderField
                   label="Forwarder/doc fee per shipment"
@@ -765,12 +757,7 @@ export default function TradeSimulator() {
                   unit="%"
                   note="Headcount savings from more efficient processing"
                 />
-  //              <CalculatedField
-  //                label="Trade compliance efficiencies"
-  //                value={formatCurrency(totalCustomsSavings)}
-  //                note="Lower fees to third parties and more efficient internal processes"
-                />
-              </div>
+                </div>
             </div>
             {/* P&L Benefits After Costs aligned with box 4 */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-2 lg:mt-12">
