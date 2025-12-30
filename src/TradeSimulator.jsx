@@ -584,6 +584,41 @@ export default function TradeSimulator() {
               </div>
             </div>
 
+            {/* Headcount savings and other benefits aligned with box 3 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">AP FTEs saved:</span>
+                  <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">AP headcount savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Customs broker savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Forwarder fee savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Trade FTEs saved:</span>
+                  <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Trade headcount savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pt-3">
+                  <span className="font-bold text-gray-900">Total P&L Benefit:</span>
+                  <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
+                </div>
+              </div>
+            </div>
+
             {/* 3) Accounts Payable (AP) Headcount Efficiency */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
@@ -624,32 +659,6 @@ export default function TradeSimulator() {
                </div>
              </div>
 
-            {/* Headcount Efficiency aligned with box 3 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-2 lg:mt-12">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">AP FTEs saved:</span>
-                  <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">AP annual savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t">
-                  <span className="text-gray-600">Trade FTEs saved:</span>
-                  <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Trade headcount savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t font-bold">
-                  <span className="text-gray-900">Total FTEs saved:</span>
-                  <span className="text-purple-700">{formatNumber(apFteSaved + tradeFteSaved, 1)} FTEs</span>
-                </div>
-              </div>
-            </div>
 {/* 4) Customs & Trade Compliance Benefits */}
             <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-1">
               <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
@@ -749,36 +758,6 @@ export default function TradeSimulator() {
                 />
                 </div>
             </div>
-            {/* P&L Benefits After Costs aligned with box 4 */}
-            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-2 lg:mt-12">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Net discount benefit:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(netDiscountBenefit)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">AP headcount savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Customs broker savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-sm text-gray-600">Trade compliance savings:</span>
-                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                </div>
-                <div className="flex justify-between items-center pt-3">
-                  <span className="font-bold text-gray-900">Total P&L Benefit:</span>
-                  <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
-                </div>
-              </div>
-            </div>
           </div>
         ) : (
           /* Simulation View */
@@ -805,28 +784,32 @@ export default function TradeSimulator() {
                       value={costOfSales / 1000000}
                       onChange={(v) => setCostOfSales(v * 1000000)}
                       unit="$ MM"
-                      note="Direct costs" compact
+                      note="Direct costs"
+                      compact
                     />
                     <InputField
                       label="Operating Profit"
                       value={operatingProfit / 1000000}
                       onChange={(v) => setOperatingProfit(v * 1000000)}
                       unit="$ MM"
-                      note="EBIT" compact
+                      note="EBIT"
+                      compact
                     />
                     <InputField
                       label="Net Interest Payable"
                       value={netInterest / 1000000}
                       onChange={(v) => setNetInterest(v * 1000000)}
                       unit="$ MM"
-                      note="Finance costs" compact
+                      note="Finance costs"
+                      compact
                     />
                     <InputField
                       label="EBITDA"
                       value={ebitda / 1000000}
                       onChange={(v) => setEbitda(v * 1000000)}
                       unit="$ MM"
-                      note="Earnings before interest, tax, depreciation & amortization" compact
+                      note="Earnings before interest, tax, depreciation & amortization"
+                      compact
                     />
                   </div>
                 </div>
@@ -840,28 +823,32 @@ export default function TradeSimulator() {
                       value={tradePayables / 1000000}
                       onChange={(v) => setTradePayables(v * 1000000)}
                       unit="$ MM"
-                      note="Amounts owed to suppliers" compact
+                      note="Amounts owed to suppliers"
+                      compact
                     />
                     <InputField
                       label="Net Debt"
                       value={netDebt / 1000000}
                       onChange={(v) => setNetDebt(v * 1000000)}
                       unit="$ MM"
-                      note="Total borrowings less cash" compact
+                      note="Total borrowings less cash"
+                      compact
                     />
                     <InputField
                       label="Equity"
                       value={equity / 1000000}
                       onChange={(v) => setEquity(v * 1000000)}
                       unit="$ MM"
-                      note="Shareholders' equity" compact
+                      note="Shareholders' equity"
+                      compact
                     />
                     <InputField
                       label="Free Cash Flow"
                       value={freeCashFlow / 1000000}
                       onChange={(v) => setFreeCashFlow(v * 1000000)}
                       unit="$ MM"
-                      note="Cash available after capital expenditure" compact
+                      note="Cash available after capital expenditure"
+                      compact
                     />
                   </div>
                 </div>
