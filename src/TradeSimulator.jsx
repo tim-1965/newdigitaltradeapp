@@ -317,342 +317,270 @@ export default function TradeSimulator() {
       {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-6 py-6">
         {activeView === 'inputs' ? (
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Left Panel - Inputs */}
-            <div className="space-y-6">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-blue-600">1)</span> Company & Trade Volume
-                </h2>
-                <div className="space-y-1">
-                  <InputField
-                    label="International supply chain: annual volume"
-                    value={annualVolumeMM}
-                    onChange={setAnnualVolumeMM}
-                    unit="$ MM / year"
-                    note="Total invoice face value in scope (imports/exports using digitised docs)."
-                    step="1"
-                  />
-                  <SliderField
-                    label="% of that spend eligible for shipment-level approval / early payment"
-                    value={digitisationPct}
-                    onChange={setDigitisationPct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="Proportion of the international supply chain that digitises its paperwork"
-                  />
-                  <CalculatedField
-                    label="International supply chain being digitised"
-                    value={formatCurrency(digitisedVolume)}
-                    note="Annual volume times percentage of suppliers digitising"
-                  />
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_auto_auto_auto] gap-6 items-start">
+            {/* 1) Company & Trade Volume */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-1 lg:col-start-1">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                <span className="text-blue-600">1)</span> Company & Trade Volume
+              </h2>
+              <div className="space-y-1">
+                <InputField
+                  label="International supply chain: annual volume"
+                  value={annualVolumeMM}
+                  onChange={setAnnualVolumeMM}
+                  unit="$ MM / year"
+                  note="Total invoice face value in scope (imports/exports using digitised docs)."
+                  step="1"
+                />
+                <SliderField
+                  label="% of that spend eligible for shipment-level approval / early payment"
+                  value={digitisationPct}
+                  onChange={setDigitisationPct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Proportion of the international supply chain that digitises its paperwork"
+                />
+                <CalculatedField
+                  label="International supply chain being digitised"
+                  value={formatCurrency(digitisedVolume)}
+                  note="Annual volume times percentage of suppliers digitising"
+                />
               </div>
+            </div>
+                            
+            {/* Summary card aligned with top of panel */}
+              <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-lg shadow-xl p-6 text-white lg:row-start-1 lg:col-start-2">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* P&L Section */}
+                <div>
+                  <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
+                  <p className="text-indigo-100 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
+                  <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
+
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div>
+                      <div className="text-indigo-200 mb-1">Discounts</div>
+                      <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
+                    </div>
+                    <div>
+                      <div className="text-indigo-200 mb-1">AP Efficiency</div>
+                      <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
+                    </div>
+                    <div>
+                      <div className="text-indigo-200 mb-1">Customs</div>
+                      <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
+                    </div>
+                  </div>
+                </div>
               
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-blue-600">2)</span> Early Payment Discounts & Working Capital
-                </h2>
-                <div className="space-y-1">
-                  <SliderField
-                    label="Current average payment terms (days from shipment to payment)"
-                    value={currentPaymentTerms}
-                    onChange={setCurrentPaymentTerms}
-                    min={0}
-                    max={120}
-                    step={1}
-                    unit="days"
-                    note="E.g., 60 days = suppliers are paid 60 days after shipment."
-                  />
-                  <SliderField
-                    label="Term extension for digitised invoices (all of them)"
-                    value={termExtension}
-                    onChange={setTermExtension}
-                    min={0}
-                    max={90}
-                    step={1}
-                    unit="days"
-                    note="Days beyond current terms (suppliers can take early payment at shipment)."
-                  />
-                  <SliderField
-                    label="Suppliers taking early payment (% of eligible spend participating)"
-                    value={supplierUptakePct}
-                    onChange={setSupplierUptakePct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="Portion of eligible suppliers/invoices that participate."
-                  />
-                  <SliderField
-                    label="Discount for paying at shipment (% of invoice face value)"
-                    value={earlyPaymentDiscount}
-                    onChange={setEarlyPaymentDiscount}
-                    min={0}
-                    max={10}
-                    step={0.1}
-                    unit="%"
-                    note="Average discount negotiated for payment at shipment."
-                  />
-                  <div className="bg-gray-50 p-3 my-3 rounded">
-                    <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>
-                                      </div>
-                  <SliderField
-                    label="Days from shipment to payment under digitised process"
-                    value={daysToPayment}
-                    onChange={setDaysToPayment}
-                    min={0}
-                    max={30}
-                    step={1}
-                    unit="days"
-                    note="Days between shipment and payment when documents are digitised"
-                  />
-                  <CalculatedField
-                    label="Days accelerated (how much earlier the supplier is paid)"
-                    value={`${formatNumber(daysAccelerated, 0)} days`}
-                    note="This is the funding period for early payments"
-                  />
-                  <SliderField
-                    label="Share of early payments funded by banks / SCF"
-                    value={bankFundedPct}
-                    onChange={setBankFundedPct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="0% = internal funds only; 100% = bank (ie: SCF) only."
-                  />
-                  <SliderField
-                    label="International supply chain finance cost (annual, bank interest rate)"
-                    value={scfRate}
-                    onChange={setScfRate}
-                    min={0}
-                    max={15}
-                    step={0.1}
-                    unit="%"
-                    note="Annualised cost charged by the bank to fund early payments to suppliers."
-                  />
-                  <SliderField
-                    label="Internal cost of funds (annual rate notionally applied to funds used)"
-                    value={internalCostOfFunds}
-                    onChange={setInternalCostOfFunds}
-                    min={0}
-                    max={15}
-                    step={0.1}
-                    unit="%"
-                    note="Opportunity cost / WACC / borrowing rate for internal funding."
-                  />
-                  <SliderField
-                    label="Interest rate to value working capital (annual, interest savings)"
-                    value={wcInterestRate}
-                    onChange={setWcInterestRate}
-                    min={0}
-                    max={15}
-                    step={0.1}
-                    unit="%"
-                    note="Used to estimate annual value of cash released/used as borrowing is lower"
-                  />
+              {/* Working Capital Section */}
+                <div className="border-l border-white/30 pl-6">
+                  <h3 className="text-lg font-bold mb-1">Net Working Capital Generated</h3>
+                  <p className="text-blue-100 text-xs mb-3">Cash released via longer payment terms</p>
+                  <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
+
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <div className="text-blue-200 mb-1">From extension:</div>
+                      <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
+                    </div>
+                    <div>
+                      <div className="text-blue-200 mb-1">Used for early pay:</div>
+                      <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
+                    </div>
+                   </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-blue-600">3)</span> Accounts Payable (AP) Headcount Efficiency
-                </h2>
-                <div className="space-y-1">
-                  <SliderField
-                    label="Current AP team headcount"
-                    value={apHeadcount}
-                    onChange={setApHeadcount}
-                    min={0}
-                    max={50}
-                    step={1}
-                    unit="FTE"
-                    note="Number of FTE currently in AP."
-                  />
-                  <SliderField
-                    label="Fully loaded cost per AP FTE"
-                    value={apCostPerFte}
-                    onChange={setApCostPerFte}
-                    min={30000}
-                    max={150000}
-                    step={1000}
-                    unit="$ / yr"
-                    note="Salary + benefits + overhead."
-                    formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
-                  />
-                  <SliderField
-                    label="% headcount reduction achievable at full adoption"
-                    value={apEfficiencyPct}
-                    onChange={setApEfficiencyPct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="Headcount savings as a result of more efficient processing"
-                  />
-                  <CalculatedField
-                    label="AP headcount efficiencies"
-                    value={formatCurrency(apSavings)}
-                    note="Paperwork digitised at source instead of at head office"
-                  />
+ {/* 2) Early Payment Discounts & Working Capital */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-1">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                <span className="text-blue-600">2)</span> Early Payment Discounts & Working Capital
+              </h2>
+              <div className="space-y-1">
+                <SliderField
+                  label="Current average payment terms (days from shipment to payment)"
+                  value={currentPaymentTerms}
+                  onChange={setCurrentPaymentTerms}
+                  min={0}
+                  max={120}
+                  step={1}
+                  unit="days"
+                  note="E.g., 60 days = suppliers are paid 60 days after shipment."
+                />
+                <SliderField
+                  label="Term extension for digitised invoices (all of them)"
+                  value={termExtension}
+                  onChange={setTermExtension}
+                  min={0}
+                  max={90}
+                  step={1}
+                  unit="days"
+                  note="Days beyond current terms (suppliers can take early payment at shipment)."
+                />
+                <SliderField
+                  label="Suppliers taking early payment (% of eligible spend participating)"
+                  value={supplierUptakePct}
+                  onChange={setSupplierUptakePct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Portion of eligible suppliers/invoices that participate."
+                />
+                <SliderField
+                  label="Discount for paying at shipment (% of invoice face value)"
+                  value={earlyPaymentDiscount}
+                  onChange={setEarlyPaymentDiscount}
+                  min={0}
+                  max={10}
+                  step={0.1}
+                  unit="%"
+                  note="Average discount negotiated for payment at shipment."
+                />
+                <div className="bg-gray-50 p-3 my-3 rounded">
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Early payment process</h3>              
                 </div>
+               <SliderField
+                  label="Days from shipment to payment under digitised process"
+                  value={daysToPayment}
+                  onChange={setDaysToPayment}
+                  min={0}
+                  max={30}
+                  step={1}
+                  unit="days"
+                  note="Days between shipment and payment when documents are digitised"
+                />
+                <CalculatedField
+                  label="Days accelerated (how much earlier the supplier is paid)"
+                  value={`${formatNumber(daysAccelerated, 0)} days`}
+                  note="This is the funding period for early payments"
+                />
+                <SliderField
+                  label="Share of early payments funded by banks / SCF"
+                  value={bankFundedPct}
+                  onChange={setBankFundedPct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Portion of accelerated payments funded externally"
+                />
+                <SliderField
+                  label="Supply chain finance rate / cost of funds (annual)"
+                  value={scfRate}
+                  onChange={setScfRate}
+                  min={0}
+                  max={15}
+                  step={0.1}
+                  unit="%"
+                  note="Annualised cost charged by the bank to fund early payments to suppliers."
+                />
+                <SliderField
+                  label="Internal cost of funds (annual rate notionally applied to funds used)"
+                  value={internalCostOfFunds}
+                  onChange={setInternalCostOfFunds}
+                  min={0}
+                  max={15}
+                  step={0.1}
+                  unit="%"
+                  note="Opportunity cost / WACC / borrowing rate for internal funding."
+                />
+                <SliderField
+                  label="Interest rate to value working capital (annual, interest savings)"
+                  value={wcInterestRate}
+                  onChange={setWcInterestRate}
+                  min={0}
+                  max={15}
+                  step={0.1}
+                  unit="%"
+                  note="Used to estimate annual value of cash released/used as borrowing is lower"
+                />
               </div>
-
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-blue-600">4)</span> Customs & Trade Compliance Benefits
-                </h2>
-                <div className="space-y-1">
-                  <SliderField
-                    label="Annual number of import customs filings"
-                    value={customsFilings}
-                    onChange={setCustomsFilings}
-                    min={0}
-                    max={5000}
-                    step={50}
-                    unit="filings / yr"
-                    note="Declarations currently handled via broker/forwarder."
-                  />
-                  <SliderField
-                    label="Customs broker fee per filing"
-                    value={brokerFeePerFiling}
-                    onChange={setBrokerFeePerFiling}
-                    min={0}
-                    max={200}
-                    step={5}
-                    unit="$ / filing"
-                    note="Average broker fee per import entry/filing."
-                  />
-                  <SliderField
-                    label="% of filings moved to direct digital self-filing"
-                    value={selfFilingPct}
-                    onChange={setSelfFilingPct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="Share posted directly into customs systems."
-                  />
-                  <SliderField
-                    label="Annual number of shipments incurring forwarder doc/admin fees"
-                    value={shipmentsWithFees}
-                    onChange={setShipmentsWithFees}
-                    min={0}
-                    max={10000}
-                    step={100}
-                    unit="shipments / yr"
-                    note="Only include shipments where fees are avoidable via digital docs."
-                  />
-                  <SliderField
-                    label="Forwarder/doc fee per shipment"
-                    value={forwarderFeePerShipment}
-                    onChange={setForwarderFeePerShipment}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="$ / shipment"
-                    note="Document handling, forwarding admin, etc."
-                  />
-                  <SliderField
-                    label="% of forwarder/doc fees eliminated via digital trade docs"
-                    value={docFeesEliminatedPct}
-                    onChange={setDocFeesEliminatedPct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="Often similar to % self-filing, but can differ."
-                  />
-                  <SliderField
-                    label="Current trade compliance team headcount"
-                    value={tradeComplianceHeadcount}
-                    onChange={setTradeComplianceHeadcount}
-                    min={0}
-                    max={30}
-                    step={1}
-                    unit="FTE"
-                    note="Number of FTE currently in trade compliance."
-                  />
-                  <SliderField
-                    label="Fully loaded cost per FTE"
-                    value={tradeCostPerFte}
-                    onChange={setTradeCostPerFte}
-                    min={30000}
-                    max={150000}
-                    step={1000}
-                    unit="$ / yr"
-                    note="Salary + benefits + overhead."
-                    formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
-                  />
-                  <SliderField
-                    label="% headcount reduction achievable at full adoption"
-                    value={tradeEfficiencyPct}
-                    onChange={setTradeEfficiencyPct}
-                    min={0}
-                    max={100}
-                    step={1}
-                    unit="%"
-                    note="Headcount savings as a result of more efficient processing"
-                  />
-                  <CalculatedField
-                    label="Trade compliance efficiencies"
-                    value={formatCurrency(totalCustomsSavings)}
-                    note="Lower fees to third parties and more efficient internal processes"
-                  />
+            </div>
+           {/* Early Payment Details follow under box 2 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-2 lg:col-start-2 lg:mt-24">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Early Payment Details</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Participating spend:</span>
+                  <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
+                </div>
+                <div className="flex justify-between pl-4">
+                  <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
+                  <span className="font-semibold text-blue-700">{formatCurrency(bankFundedAmount)}</span>
+                </div>
+                <div className="flex justify-between pl-4">
+                  <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
+                  <span className="font-semibold text-blue-700">{formatCurrency(internalFundedAmount)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t">
+                  <span className="text-gray-600">Total discount value:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Bank funding cost:</span>
+                  <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Internal funding cost:</span>
+                  <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t font-bold">
+                  <span className="text-gray-900">Net discount benefit:</span>
+                  <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Panel - Results */}
-            <div className="space-y-6">
-              {/* Combined P&L and Working Capital Card */}
-              <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-lg shadow-xl p-6 text-white">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* P&L Section */}
-                  <div>
-                    <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
-                    <p className="text-indigo-100 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
-                    <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
-                    
-                    <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div>
-                        <div className="text-indigo-200 mb-1">Discounts</div>
-                        <div className="text-sm font-bold">{formatCurrency(netDiscountBenefit)}</div>
-                      </div>
-                      <div>
-                        <div className="text-indigo-200 mb-1">AP Efficiency</div>
-                        <div className="text-sm font-bold">{formatCurrency(apSavings)}</div>
-                      </div>
-                      <div>
-                        <div className="text-indigo-200 mb-1">Customs</div>
-                        <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Working Capital Section */}
-                  <div className="border-l border-white/30 pl-6">
-                    <h3 className="text-lg font-bold mb-1">Net Working Capital Generated</h3>
-                    <p className="text-blue-100 text-xs mb-3">Cash released via longer payment terms</p>
-                    <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
-                    
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div>
-                        <div className="text-blue-200 mb-1">From extension:</div>
-                        <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
-                      </div>
-                      <div>
-                        <div className="text-blue-200 mb-1">Used for early pay:</div>
-                        <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* 3) Accounts Payable (AP) Headcount Efficiency */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-1">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                <span className="text-blue-600">3)</span> Accounts Payable (AP) Headcount Efficiency
+              </h2>
+              <div className="space-y-1">
+                <SliderField
+                  label="Current AP team headcount"
+                  value={apHeadcount}
+                  onChange={setApHeadcount}
+                  min={0}
+                  max={50}
+                  step={1}
+                  unit="FTE"
+                  note="Number of FTE currently in AP."
+                />
+                <SliderField
+                  label="Fully loaded cost per AP FTE"
+                  value={apCostPerFte}
+                  onChange={setApCostPerFte}
+                  min={30000}
+                  max={150000}
+                  step={1000}
+                  unit="$ / yr"
+                  note="Salary + benefits + overhead."
+                  formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
+                />
+                <SliderField
+                  label="% headcount reduction achievable at full adoption"
+                  value={apEfficiencyPct}
+                  onChange={setApEfficiencyPct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Headcount savings as a result of more efficient processing"
+                />
+                <CalculatedField
+                  label="AP headcount efficiencies"
+                  value={formatCurrency(apSavings)}
+                  note="Paperwork digitised at source instead of at head office"
+                />
               </div>
-           
+             </div>
+
                {/* Working Capital Benefits - Aligns with Box 2 (Early Payment section) */}
                <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Working Capital Benefits</h3>
@@ -675,97 +603,163 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               </div>
-
-              {/* Early Payment Details - Below Working Capital Benefits */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Early Payment Details</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Participating spend:</span>
-                    <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
-                  </div>
-                  <div className="flex justify-between pl-4">
-                    <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-blue-700">{formatCurrency(bankFundedAmount)}</span>
-                  </div>
-                  <div className="flex justify-between pl-4">
-                    <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                    <span className="font-semibold text-blue-700">{formatCurrency(internalFundedAmount)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Total discount value:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Bank funding cost:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Internal funding cost:</span>
-                    <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Net discount benefit:</span>
-                    <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
-                  </div>
+            {/* Headcount Efficiency aligned with box 3 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-3 lg:col-start-2 lg:mt-12">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">AP FTEs saved:</span>
+                  <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">AP annual savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t">
+                  <span className="text-gray-600">Trade FTEs saved:</span>
+                  <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Trade headcount savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t font-bold">
+                  <span className="text-gray-900">Total FTEs saved:</span>
+                  <span className="text-purple-700">{formatNumber(apFteSaved + tradeFteSaved, 1)} FTEs</span>
                 </div>
               </div>
-
-              {/* Headcount Efficiency - Aligns with Box 3 (AP Headcount section) */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount Efficiency</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">AP FTEs saved:</span>
-                    <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">AP annual savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="text-gray-600">Trade FTEs saved:</span>
-                    <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Trade headcount savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t font-bold">
-                    <span className="text-gray-900">Total FTEs saved:</span>
-                    <span className="text-purple-700">{formatNumber(apFteSaved + tradeFteSaved, 1)} FTEs</span>
-                  </div>
-                </div>
+            </div>
+{/* 4) Customs & Trade Compliance Benefits */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-1">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                <span className="text-blue-600">4)</span> Customs & Trade Compliance Benefits
+              </h2>
+              <div className="space-y-1">
+                <SliderField
+                  label="Annual number of import customs filings"
+                  value={customsFilings}
+                  onChange={setCustomsFilings}
+                  min={0}
+                  max={5000}
+                  step={50}
+                  unit="filings / yr"
+                  note="Declarations currently handled via broker/forwarder."
+                />
+                <SliderField
+                  label="Customs broker fee per filing"
+                  value={brokerFeePerFiling}
+                  onChange={setBrokerFeePerFiling}
+                  min={0}
+                  max={200}
+                  step={1}
+                  unit="$ / filing"
+                  note="Total fee per filing charged by broker."
+                />
+                <SliderField
+                  label="% of filings moved to direct digital self-filing"
+                  value={selfFilingPct}
+                  onChange={setSelfFilingPct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Share posted directly into customs systems."
+                />
+                <SliderField
+                  label="Annual number of shipments incurring forwarder doc/admin fees"
+                  value={shipmentsWithFees}
+                  onChange={setShipmentsWithFees}
+                  min={0}
+                  max={10000}
+                  step={100}
+                  unit="shipments / yr"
+                  note="Only include shipments where fees are avoidable via digital docs."
+                />
+                <SliderField
+                  label="Forwarder/doc fee per shipment"
+                  value={forwarderFeePerShipment}
+                  onChange={setForwarderFeePerShipment}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="$ / shipment"
+                  note="Document handling, forwarding admin, etc."
+                />
+                <SliderField
+                  label="% of forwarder/doc fees eliminated via digital trade docs"
+                  value={docFeesEliminatedPct}
+                  onChange={setDocFeesEliminatedPct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Often similar to % self-filing, but can differ."
+                />
+                <SliderField
+                  label="Current trade compliance team headcount"
+                  value={tradeComplianceHeadcount}
+                  onChange={setTradeComplianceHeadcount}
+                  min={0}
+                  max={30}
+                  step={1}
+                  unit="FTE"
+                  note="Number of FTE currently in trade compliance."
+                />
+                <SliderField
+                  label="Fully loaded cost per FTE"
+                  value={tradeCostPerFte}
+                  onChange={setTradeCostPerFte}
+                  min={30000}
+                  max={150000}
+                  step={1000}
+                  unit="$ / yr"
+                  note="Salary + benefits + overhead."
+                  formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
+                />
+                <SliderField
+                  label="% headcount reduction achievable at full adoption"
+                  value={tradeEfficiencyPct}
+                  onChange={setTradeEfficiencyPct}
+                  min={0}
+                  max={100}
+                  step={1}
+                  unit="%"
+                  note="Headcount savings as a result of more efficient processing"
+                />
+                <CalculatedField
+                  label="Trade compliance efficiencies"
+                  value={formatCurrency(totalCustomsSavings)}
+                  note="Lower fees to third parties and more efficient internal processes"
+                />
               </div>
-            
-            {/* P&L Benefits After Costs - Aligns with Box 4 (Customs section) at bottom */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Net discount benefit:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(netDiscountBenefit)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">AP headcount savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Customs broker savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Trade compliance savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pt-3">
-                    <span className="font-bold text-gray-900">Total P&L Benefit:</span>
-                    <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
-                  </div>
+            </div>
+            {/* P&L Benefits After Costs aligned with box 4 */}
+            <div className="bg-white rounded-lg shadow-md p-6 lg:row-start-4 lg:col-start-2 lg:mt-12">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">P&L Benefits After Costs</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Net discount benefit:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">AP headcount savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Customs broker savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Forwarder fee savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <span className="text-sm text-gray-600">Trade compliance savings:</span>
+                  <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
+                </div>
+                <div className="flex justify-between items-center pt-3">
+                  <span className="font-bold text-gray-900">Total P&L Benefit:</span>
+                  <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
                 </div>
               </div>
             </div>
