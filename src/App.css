@@ -314,6 +314,22 @@ input[type="range"].slider:focus::-moz-range-thumb {
     color: black !important;
   }
 
+  /* Force all text in white boxes to be black */
+  .bg-white,
+  .bg-white * {
+    color: black !important;
+  }
+
+  /* Re-apply colored text where needed */
+  .bg-white .text-red-700,
+  .bg-white .text-\\[\\#D64933\\] {
+    color: #D64933 !important;
+  }
+
+  .bg-white .text-purple-700 {
+    color: #7c3aed !important;
+  }
+
   /* Fix input fields - black text on white background */
   input[type="number"],
   input[type="text"],
@@ -331,20 +347,44 @@ input[type="range"].slider:focus::-moz-range-thumb {
     color: #6b7280 !important;
   }
 
-  /* Override any white text */
-  .text-white {
+  /* Override any white text in non-gradient boxes */
+  .bg-white .text-white {
+    color: black !important;
+  }
+
+  /* But keep white text in gradient backgrounds */
+  .bg-gradient-to-r .text-white,
+  .from-red-600 .text-white,
+  .to-orange-600 .text-white {
     color: white !important;
   }
 
-  /* But in light backgrounds, text should be black */
-  .bg-white .text-white,
-  .bg-gradient-to-br.from-white .text-white {
+  /* Ensure labels are black */
+  label,
+  span,
+  p,
+  div {
     color: black !important;
   }
 
-  /* Ensure labels are black */
-  label {
-    color: black !important;
+  /* Re-apply specific colors after blanket black rule */
+  .text-red-700,
+  .text-\\[\\#D64933\\],
+  .font-semibold.text-red-700,
+  .font-bold.text-red-700 {
+    color: #D64933 !important;
+  }
+
+  .text-purple-700,
+  .font-semibold.text-purple-700 {
+    color: #7c3aed !important;
+  }
+
+  /* White text only in dark backgrounds */
+  .bg-gradient-to-r *,
+  .from-red-600 *,
+  .to-orange-600 * {
+    color: white !important;
   }
 
   /* Ensure visibility of all content */
