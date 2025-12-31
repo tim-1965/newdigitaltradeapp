@@ -835,92 +835,144 @@ export default function TradeSimulator() {
             {/* Simulation Inputs */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
-              <p className="text-sm text-gray-600 mb-4">Enter your current financial figures in millions to see the impact of digitalization</p>
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Left Column - P&L Items */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">P&L Extract</h3>
-                  <div className="space-y-3">
-                    <InputField
-                      label="Turnover / Revenue"
-                      value={turnover / 1000000}
-                      onChange={(v) => setTurnover(v * 1000000)}
-                      unit="$ MM"
-                      note="Total revenue"
-                      compact
-                    />
-                    <InputField
-                      label="Cost of Sales"
-                      value={costOfSales / 1000000}
-                      onChange={(v) => setCostOfSales(v * 1000000)}
-                      unit="$ MM"
-                      note="Direct costs"
-                      compact
-                    />
-                    <InputField
-                      label="Operating Profit"
-                      value={operatingProfit / 1000000}
-                      onChange={(v) => setOperatingProfit(v * 1000000)}
-                      unit="$ MM"
-                      note="EBIT"
-                      compact
-                    />
-                    <InputField
-                      label="Net Interest Payable"
-                      value={netInterest / 1000000}
-                      onChange={(v) => setNetInterest(v * 1000000)}
-                      unit="$ MM"
-                      note="Finance costs"
-                      compact
-                    />
-                    <InputField
-                      label="EBITDA"
-                      value={ebitda / 1000000}
-                      onChange={(v) => setEbitda(v * 1000000)}
-                      unit="$ MM"
-                      note="Earnings before interest, tax, depreciation & amortization"
-                      compact
-                    />
+              <p className="text-sm text-gray-600 mb-6">Enter your current financial figures in millions to see the impact of digitalization</p>
+              
+              <div className="flex gap-8">
+                {/* Input Fields - Two Columns */}
+                <div className="flex-1 max-w-3xl">
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {/* Left Column - P&L Items */}
+                    <div className="space-y-4">
+                      <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">P&L Extract</h3>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Turnover / Revenue</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={turnover / 1000000}
+                            onChange={(e) => setTurnover(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Cost of Sales</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={costOfSales / 1000000}
+                            onChange={(e) => setCostOfSales(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Operating Profit</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={operatingProfit / 1000000}
+                            onChange={(e) => setOperatingProfit(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Net Interest Payable</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={netInterest / 1000000}
+                            onChange={(e) => setNetInterest(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">EBITDA</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={ebitda / 1000000}
+                            onChange={(e) => setEbitda(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column - Balance Sheet Items */}
+                    <div className="space-y-4">
+                      <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">Balance Sheet Extract</h3>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Trade Payables</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={tradePayables / 1000000}
+                            onChange={(e) => setTradePayables(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Net Debt</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={netDebt / 1000000}
+                            onChange={(e) => setNetDebt(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Equity</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={equity / 1000000}
+                            onChange={(e) => setEquity(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-sm text-gray-700 flex-1">Free Cash Flow</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={freeCashFlow / 1000000}
+                            onChange={(e) => setFreeCashFlow(parseFloat(e.target.value || 0) * 1000000)}
+                            className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
+                          />
+                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                {/* Right Column - Balance Sheet Items */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">Balance Sheet Extract</h3>
-                  <div className="space-y-3">
-                    <InputField
-                      label="Trade Payables"
-                      value={tradePayables / 1000000}
-                      onChange={(v) => setTradePayables(v * 1000000)}
-                      unit="$ MM"
-                      note="Amounts owed to suppliers"
-                      compact
-                    />
-                    <InputField
-                      label="Net Debt"
-                      value={netDebt / 1000000}
-                      onChange={(v) => setNetDebt(v * 1000000)}
-                      unit="$ MM"
-                      note="Total borrowings less cash"
-                      compact
-                    />
-                    <InputField
-                      label="Equity"
-                      value={equity / 1000000}
-                      onChange={(v) => setEquity(v * 1000000)}
-                      unit="$ MM"
-                      note="Shareholders' equity"
-                      compact
-                    />
-                    <InputField
-                      label="Free Cash Flow"
-                      value={freeCashFlow / 1000000}
-                      onChange={(v) => setFreeCashFlow(v * 1000000)}
-                      unit="$ MM"
-                      note="Cash available after capital expenditure"
-                      compact
-                    />
-                  </div>
+                
+                {/* Right Side - Space for Explanatory Text (to be added) */}
+                <div className="flex-1 min-w-[300px]">
+                  {/* Space reserved for explanatory text box */}
                 </div>
               </div>
             </div>
