@@ -954,7 +954,7 @@ export default function TradeSimulator() {
 
                     {/* Right Column - Balance Sheet Items */}
                     <div className="space-y-4">
-                      <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">Key figures: balance sheet and cash flow</h3>
+                      <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">Balance sheet and cash flow</h3>
                       
                       <div className="flex items-center justify-between gap-3">
                         <label className="text-sm text-gray-700 flex-1">Trade Payables</label>
