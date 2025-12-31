@@ -24,6 +24,7 @@ export default function TradeSimulator() {
   };
 
   // 1) Company & trade volume
+  const [currencySymbol, setCurrencySymbol] = useState(() => loadSavedValue('currencySymbol', '$'));
   const [annualVolumeMM, setAnnualVolumeMM] = useState(() => loadSavedValue('annualVolumeMM', 200));
   const [digitisationPct, setDigitisationPct] = useState(() => loadSavedValue('digitisationPct', 100));
   
@@ -72,7 +73,7 @@ export default function TradeSimulator() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const allValues = {
-        annualVolumeMM, digitisationPct,
+        currencySymbol, annualVolumeMM, digitisationPct,
         currentPaymentTerms, termExtension, supplierUptakePct, earlyPaymentDiscount, 
         daysToPayment, bankFundedPct, scfRate, internalCostOfFunds, wcInterestRate,
         apHeadcount, apCostPerFte, apEfficiencyPct,
@@ -88,7 +89,7 @@ export default function TradeSimulator() {
       const timer = setTimeout(() => setShowSaved(false), 1500);
       return () => clearTimeout(timer);
     }
-  }, [annualVolumeMM, digitisationPct, currentPaymentTerms, termExtension, supplierUptakePct, 
+  }, [currencySymbol, annualVolumeMM, digitisationPct, currentPaymentTerms, termExtension, supplierUptakePct, 
       earlyPaymentDiscount, daysToPayment, bankFundedPct, scfRate, internalCostOfFunds, wcInterestRate,
       apHeadcount, apCostPerFte, apEfficiencyPct, customsFilings, brokerFeePerFiling, 
       selfFilingPct, shipmentsWithFees, forwarderFeePerShipment, docFeesEliminatedPct, 
@@ -165,11 +166,11 @@ export default function TradeSimulator() {
   // Formatting functions
   const formatCurrency = (value) => {
     if (Math.abs(value) >= 1000000) {
-      return `$${(value / 1000000).toFixed(2)}M`;
+      return `${currencySymbol}${(value / 1000000).toFixed(2)}M`;
     } else if (Math.abs(value) >= 1000) {
-      return `$${(value / 1000).toFixed(0)}K`;
+      return `${currencySymbol}${(value / 1000).toFixed(0)}K`;
     }
-    return `$${value.toFixed(0)}`;
+    return `${currencySymbol}${value.toFixed(0)}`;
   };
 
   const formatNumber = (value, decimals = 1) => {
@@ -383,15 +384,31 @@ export default function TradeSimulator() {
             <div className="space-y-6">
               {/* 1) Company & Trade Volume */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#F08070]">1)</span> Company & Trade Volume
-                </h2>
+                <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+                  <h2 className="text-xl font-bold text-gray-900">
+                    <span className="text-[#F08070]">1)</span> Company & Trade Volume
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700">Currency:</label>
+                    <select
+                      value={currencySymbol}
+                      onChange={(e) => setCurrencySymbol(e.target.value)}
+                      className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] bg-white"
+                    >
+                      <option value="£">£ (GBP)</option>
+                      <option value="$">$ (USD)</option>
+                      <option value="€">€ (EUR)</option>
+                      <option value="¥">¥ (JPY/CNY)</option>
+                      <option value="₹">₹ (INR)</option>
+                    </select>
+                  </div>
+                </div>
                 <div className="space-y-1">
                   <InputField
                     label="Import supply chain: annual volume"
                     value={annualVolumeMM}
                     onChange={setAnnualVolumeMM}
-                    unit="$ MM / year"
+                    unit={`${currencySymbol} MM / year`}
                     note="Total invoice face value of imports."
                   />
                   <SliderField
@@ -529,9 +546,9 @@ export default function TradeSimulator() {
                     min={30000}
                     max={150000}
                     step={1000}
-                    unit="$ / yr"
+                    unit={`${currencySymbol} / yr`}
                     note="Salary + benefits + overhead."
-                    formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
+                    formatValue={(v) => `${currencySymbol}${(v/1000).toFixed(0)}K`}
                   />
                   <SliderField
                     label="% headcount reduction achievable"
@@ -569,7 +586,7 @@ export default function TradeSimulator() {
                     min={0}
                     max={200}
                     step={1}
-                    unit="$ / filing"
+                    unit={`${currencySymbol} / filing`}
                     note="Total fee per filing charged by broker."
                   />
                   <SliderField
@@ -599,7 +616,7 @@ export default function TradeSimulator() {
                     min={0}
                     max={100}
                     step={1}
-                    unit="$ / shipment"
+                    unit={`${currencySymbol} / shipment`}
                     note="Document handling, forwarding admin, etc."
                   />
                   <SliderField
@@ -629,9 +646,9 @@ export default function TradeSimulator() {
                     min={30000}
                     max={150000}
                     step={1000}
-                    unit="$ / yr"
+                    unit={`${currencySymbol} / yr`}
                     note="Salary + benefits + overhead."
-                    formatValue={(v) => `$${(v/1000).toFixed(0)}K`}
+                    formatValue={(v) => `${currencySymbol}${(v/1000).toFixed(0)}K`}
                   />
                   <SliderField
                     label="% headcount reduction achievable"
@@ -854,7 +871,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setTurnover(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -867,7 +884,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setCostOfSales(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -880,7 +897,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setOperatingProfit(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -893,7 +910,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setNetInterest(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -906,7 +923,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setEbitda(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                     </div>
@@ -924,7 +941,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setTradePayables(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -937,7 +954,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setNetDebt(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -950,7 +967,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setEquity(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                       
@@ -963,7 +980,7 @@ export default function TradeSimulator() {
                             onChange={(e) => setFreeCashFlow(parseFloat(e.target.value || 0) * 1000000)}
                             className="w-28 px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
                           />
-                          <span className="text-xs text-gray-600 w-10">$ MM</span>
+                          <span className="text-xs text-gray-600 w-10">{currencySymbol} MM</span>
                         </div>
                       </div>
                     </div>
