@@ -329,50 +329,48 @@ export default function TradeSimulator() {
           </div>
         </div>
         
-        {/* Tab Navigation */}
+        {/* Tab Navigation - Full Width */}
         <div className="border-t border-gray-200">
-          <div className="max-w-[1800px] mx-auto px-6">
-            <div className="flex gap-1">
-              <button
-                onClick={() => setActiveView('inputs')}
-                className={`relative px-8 py-4 text-left transition-all ${
-                  activeView === 'inputs'
-                    ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-1">
-                  <Calculator className="w-5 h-5" />
-                  <span className="text-lg font-bold">Panel 1: Inputs & Results</span>
-                </div>
-                <p className={`text-xs ${activeView === 'inputs' ? 'text-white/80' : 'text-gray-500'}`}>
-                  Enter your company data and see immediate benefit calculations
-                </p>
-                {activeView === 'inputs' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
-                )}
-              </button>
-              
-              <button
-                onClick={() => setActiveView('simulation')}
-                className={`relative px-8 py-4 text-left transition-all ${
-                  activeView === 'simulation'
-                    ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-1">
-                  <BarChart3 className="w-5 h-5" />
-                  <span className="text-lg font-bold">Panel 2: Before & After Simulation</span>
-                </div>
-                <p className={`text-xs ${activeView === 'simulation' ? 'text-white/80' : 'text-gray-500'}`}>
-                  Compare your historic financials with projected improvements
-                </p>
-                {activeView === 'simulation' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
-                )}
-              </button>
-            </div>
+          <div className="flex gap-1 px-6">
+            <button
+              onClick={() => setActiveView('inputs')}
+              className={`relative flex-1 px-8 py-4 text-left transition-all ${
+                activeView === 'inputs'
+                  ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <div className="flex items-center gap-3 mb-1">
+                <Calculator className="w-5 h-5" />
+                <span className="text-lg font-bold">Panel 1: Inputs & Results</span>
+              </div>
+              <p className={`text-xs ${activeView === 'inputs' ? 'text-white/80' : 'text-gray-500'}`}>
+                Enter your company data and see immediate benefit calculations
+              </p>
+              {activeView === 'inputs' && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
+              )}
+            </button>
+            
+            <button
+              onClick={() => setActiveView('simulation')}
+              className={`relative flex-1 px-8 py-4 text-left transition-all ${
+                activeView === 'simulation'
+                  ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <div className="flex items-center gap-3 mb-1">
+                <BarChart3 className="w-5 h-5" />
+                <span className="text-lg font-bold">Panel 2: Before & After Simulation</span>
+              </div>
+              <p className={`text-xs ${activeView === 'simulation' ? 'text-white/80' : 'text-gray-500'}`}>
+                Compare your historic financials with projected improvements
+              </p>
+              {activeView === 'simulation' && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
+              )}
+            </button>
           </div>
         </div>
       </div>
