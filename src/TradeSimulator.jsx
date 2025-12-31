@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, DollarSign, BarChart3, Calculator, FileText, Save, Check, Printer } from 'lucide-react';
+import { TrendingUp, DollarSign, BarChart3, Calculator, FileText, Save, Check, Printer, Info } from 'lucide-react';
 
 export default function TradeSimulator() {
   const [activeView, setActiveView] = useState('inputs'); // 'inputs' or 'simulation'
@@ -248,9 +248,10 @@ export default function TradeSimulator() {
     );
   };
 
-  const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue }) => {
+  const SliderField = ({ label, value, onChange, min, max, step, unit = '', note = '', formatValue, tooltip = '' }) => {
     const [localValue, setLocalValue] = React.useState(value);
     const [isChanging, setIsChanging] = React.useState(false);
+    const [showTooltip, setShowTooltip] = React.useState(false);
 
     React.useEffect(() => {
       if (!isChanging) {
@@ -268,13 +269,39 @@ export default function TradeSimulator() {
       onChange(localValue);
     };
 
+    const toggleTooltip = () => {
+      setShowTooltip(!showTooltip);
+    };
+
     return (
       <div className="border-b border-gray-200 py-2.5">
         {/* Mobile: Vertical Stack, Desktop: Horizontal */}
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
           {/* Label - Full width on mobile, flex-1 on desktop */}
           <div className="md:flex-1 md:min-w-0">
-            <label className="text-xs font-medium text-gray-700 block">{label}</label>
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-gray-700 block">{label}</label>
+              {tooltip && (
+                <div className="relative inline-block">
+                  <button
+                    type="button"
+                    onClick={toggleTooltip}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                    aria-label="More information"
+                  >
+                    <Info className="w-3.5 h-3.5" />
+                  </button>
+                  {showTooltip && (
+                    <div className="absolute left-0 top-full mt-1 z-50 w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                      <div className="absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                      {tooltip}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
             {/* Note shows ONLY on desktop - next to label */}
             {note && <p className="hidden md:block text-[10px] text-gray-500 mt-0.5 leading-tight">{note}</p>}
           </div>
@@ -477,6 +504,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="days"
                     note="Additional days beyond the current term."
+                    tooltip="If you offer suppliers the option to be paid at shipment, it is then possible to ask them to extend payment terms - since suppliers can always opt for early payment at a discount if they prefer not to wait a longer period for their money."
                   />
                   <SliderField
                     label="% of suppliers taking early payment option"
