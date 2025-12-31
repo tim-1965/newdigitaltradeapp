@@ -243,8 +243,24 @@ input[type="range"].slider:focus::-moz-range-thumb {
     color: white !important;
   }
 
+  /* Lighten explainer boxes for better readability */
+  .bg-gradient-to-br.from-white {
+    background: #fef2f2 !important;
+    color: black !important;
+    border: 2px solid #F08070 !important;
+  }
+
+  /* Keep summary card with strong colors */
   .from-red-600.to-orange-600 {
     background: linear-gradient(to right, #dc2626, #ea580c) !important;
+    color: white !important;
+  }
+
+  /* Ensure all heading text in light boxes is black */
+  .bg-gradient-to-br.from-white h3,
+  .bg-gradient-to-br.from-white p,
+  .bg-gradient-to-br.from-white span {
+    color: black !important;
   }
 
   /* Adjust spacing */
@@ -292,6 +308,12 @@ input[type="range"].slider:focus::-moz-range-thumb {
     color: #7c3aed !important;
   }
 
+  .text-gray-700,
+  .text-gray-600,
+  .text-gray-900 {
+    color: black !important;
+  }
+
   /* Fix input fields - black text on white background */
   input[type="number"],
   input[type="text"],
@@ -307,6 +329,22 @@ input[type="range"].slider:focus::-moz-range-thumb {
   /* Ensure all text in inputs is visible */
   input::placeholder {
     color: #6b7280 !important;
+  }
+
+  /* Override any white text */
+  .text-white {
+    color: white !important;
+  }
+
+  /* But in light backgrounds, text should be black */
+  .bg-white .text-white,
+  .bg-gradient-to-br.from-white .text-white {
+    color: black !important;
+  }
+
+  /* Ensure labels are black */
+  label {
+    color: black !important;
   }
 
   /* Ensure visibility of all content */
