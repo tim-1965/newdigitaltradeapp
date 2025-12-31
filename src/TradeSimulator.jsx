@@ -672,6 +672,48 @@ export default function TradeSimulator() {
                 </div>
               </div>
 
+              {/* How Trade Digitalisation Works - Informational Box */}
+              <div className="bg-gradient-to-br from-white to-[#F08070]/5 rounded-lg shadow-md p-6 border-l-4 border-[#D64933]">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-[#D64933]" />
+                  How Trade Digitalisation Works
+                </h3>
+                
+                <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                  Trade digitalisation means digitising trade documents and then using the resulting data to deliver working capital, P&L and operational wins.
+                </p>
+                
+                <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                  The most efficient system is one where exporting suppliers are able to upload their paperwork as they ship to a secure portal like PrimaTrade. Each document is converted to useful data by the platform as it is uploaded, checked and warranted by the exporter.
+                </p>
+                
+                <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                  With the shipping documents (invoices, certificates, packing lists, transport documents) converted into structured data, exporters can be asked to select and match which purchase orders are being fulfilled, confirming price and quantity.
+                </p>
+                
+                <div className="bg-white/60 rounded-md p-4 mt-4">
+                  <p className="text-sm font-semibold text-gray-900 mb-3">This process enables:</p>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li className="flex gap-3">
+                      <span className="text-[#D64933] font-bold mt-0.5">•</span>
+                      <span className="leading-relaxed">Invoices to be immediately approved for payment via a 3-way match between invoices, POs and shipping documents.</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-[#D64933] font-bold mt-0.5">•</span>
+                      <span className="leading-relaxed">Cash to be accelerated to suppliers in return for discount on the invoice (often 2%, 3% or more), and this can be organised using finance to preserve the importer's working capital.</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-[#D64933] font-bold mt-0.5">•</span>
+                      <span className="leading-relaxed">Matched invoices to be posted directly to the importer's ERP, reducing work for AP teams.</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-[#D64933] font-bold mt-0.5">•</span>
+                      <span className="leading-relaxed">The data provided by exporters can be used to drive internal systems dealing with receiving the goods being shipped, to create and post customs filings and to reduce headcount in trade processing and compliance teams.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
                    {/* Early payment + working capital benefits aligned with box 2 */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
