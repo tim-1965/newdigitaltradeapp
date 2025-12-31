@@ -398,8 +398,9 @@ export default function TradeSimulator() {
       {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
         {activeView === 'inputs' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
-            <div className="space-y-4 sm:space-y-6">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 sm:gap-6 lg:items-start">
+            {/* Box 1 - Left column on desktop, order-1 on mobile */}
+            <div className="space-y-4 sm:space-y-6 order-1 lg:col-start-1 lg:row-start-1">
               {/* 1) Company & Trade Volume */}
               <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pb-3 border-b border-gray-200">
@@ -441,7 +442,10 @@ export default function TradeSimulator() {
                   />
                 </div>
               </div>
+            </div>
 
+            {/* Boxes 2-4 - order-3 on mobile, left column on desktop */}
+            <div className="space-y-4 sm:space-y-6 order-3 lg:col-start-1 lg:row-start-2">
               {/* 2) Early Payment Discounts & Working Capital */}
               <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
@@ -682,12 +686,12 @@ export default function TradeSimulator() {
               </div>
             </div>
                             
-            <div className="space-y-4 sm:space-y-6">
-              {/* Summary card aligned with top of panel */}
+            {/* Benefits Summary Card - order-2 on mobile, right column on desktop */}
+            <div className="order-2 lg:col-start-2 lg:row-start-1">
               <div className="bg-gradient-to-br from-[#D64933] via-[#F08070] to-[#F08070] rounded-lg shadow-xl p-4 sm:p-6 text-white">
-                <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-                  {/* P&L Section */}
-                  <div>
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-4 sm:gap-6">
+                  {/* P&L Section - Centered on mobile */}
+                  <div className="text-center md:text-left">
                     <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
                     <p className="text-white/80 text-xs mb-3">Early payment discounts, operational savings</p>
                     <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
@@ -706,10 +710,10 @@ export default function TradeSimulator() {
                         <div className="text-sm font-bold">{formatCurrency(totalCustomsSavings)}</div>
                       </div>
                     </div>
-                     </div>
+                   </div>
 
-                  {/* Working Capital Section */}
-                  <div className="border-l border-white/30 pl-6">
+                  {/* Working Capital Section - Already centered */}
+                  <div className="md:border-l border-white/30 md:pl-6 text-center md:text-left">
                     <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
                     <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
                     <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
@@ -727,8 +731,10 @@ export default function TradeSimulator() {
                   </div>
                 </div>
               </div>
-
-              {/* How Trade Digitalisation Works - Informational Box */}
+            </div>
+            
+            {/* Right column results - order-4 on mobile, right column on desktop */}
+            <div className="space-y-4 sm:space-y-6 order-4 lg:col-start-2 lg:row-start-2">              {/* How Trade Digitalisation Works - Informational Box */}
               <div className="bg-gradient-to-br from-white to-[#F08070]/5 rounded-lg shadow-md p-6 border-l-4 border-[#D64933]">
                 <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-[#D64933]" />
