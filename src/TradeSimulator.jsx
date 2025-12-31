@@ -970,9 +970,28 @@ export default function TradeSimulator() {
                   </div>
                 </div>
                 
-                {/* Right Side - Space for Explanatory Text (to be added) */}
+                {/* Right Side - Explanatory Text Box */}
                 <div className="flex-1 min-w-[300px]">
-                  {/* Space reserved for explanatory text box */}
+                  <div className="bg-gradient-to-br from-white to-[#F08070]/5 rounded-lg border-2 border-[#F08070]/30 p-6 h-full">
+                    <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-[#D64933]" />
+                      Enterprise-Wide Impact
+                    </h3>
+                    
+                    <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
+                      <p>
+                        Trade digitalisation can make a difference to the whole of your enterprise. In this tab, you can enter some key financial numbers from your P&L, balance sheet and cash flow - and we simulate the impact of trade digitalisation on those numbers and your ratios.
+                      </p>
+                      
+                      <p>
+                        Most clients can deliver a material improvement in their key ratios (eg: interest cover, leverage, margins) as a result of the efficiencies which digitalisation brings.
+                      </p>
+                      
+                      <p>
+                        This is not an accounting trick - these efficiencies are real. It is simply more efficient to have suppliers digitise their trade documents so that payments can be made more quickly, work in head office can be reduced, and the re-processing of paperwork by third parties (customs brokers, forwarders) can be stopped. PrimaTrade's platform surfaces these benefits and enables the importer to receive them without significant changes to processes or systems.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
