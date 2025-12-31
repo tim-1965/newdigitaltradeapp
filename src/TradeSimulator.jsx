@@ -218,8 +218,8 @@ export default function TradeSimulator() {
           {/* Label - Full width on mobile, flex-1 on desktop */}
           <div className="md:flex-1 md:min-w-0">
             <label className="text-xs font-medium text-gray-700 block">{label}</label>
-            {/* Note shows on desktop only - next to label */}
-            {note && <p className="hidden md:block text-[10px] text-gray-500 line-clamp-1 mt-0.5 leading-tight">{note}</p>}
+            {/* Note shows ONLY on desktop - next to label */}
+            {note && <p className="hidden md:block text-[10px] text-gray-500 mt-0.5 leading-tight">{note}</p>}
           </div>
           
           {/* Input + Unit - Full width on mobile, fixed width on desktop */}
@@ -237,8 +237,8 @@ export default function TradeSimulator() {
           </div>
         </div>
         
-        {/* Note shows below input on mobile only - smaller font to prevent wrapping */}
-        {note && <p className="block md:hidden text-[10px] text-gray-500 mt-1 leading-tight">{note}</p>}
+        {/* Note shows ONLY on mobile - below input, smaller font to prevent wrapping */}
+        {note && <p className="md:hidden text-[10px] text-gray-500 mt-1 leading-tight">{note}</p>}
       </div>
     );
   };
@@ -270,8 +270,8 @@ export default function TradeSimulator() {
           {/* Label - Full width on mobile, flex-1 on desktop */}
           <div className="md:flex-1 md:min-w-0">
             <label className="text-xs font-medium text-gray-700 block">{label}</label>
-            {/* Note shows on desktop only - next to label */}
-            {note && <p className="hidden md:block text-[10px] text-gray-500 line-clamp-1 mt-0.5 leading-tight">{note}</p>}
+            {/* Note shows ONLY on desktop - next to label */}
+            {note && <p className="hidden md:block text-[10px] text-gray-500 mt-0.5 leading-tight">{note}</p>}
           </div>
           
           {/* Slider + Value - Full width on mobile, fixed width on desktop */}
@@ -299,8 +299,8 @@ export default function TradeSimulator() {
           </div>
         </div>
         
-        {/* Note shows below slider on mobile only - smaller font to prevent wrapping */}
-        {note && <p className="block md:hidden text-[10px] text-gray-500 mt-1 leading-tight">{note}</p>}
+        {/* Note shows ONLY on mobile - below slider, smaller font to prevent wrapping */}
+        {note && <p className="md:hidden text-[10px] text-gray-500 mt-1 leading-tight">{note}</p>}
       </div>
     );
   };
@@ -311,14 +311,15 @@ export default function TradeSimulator() {
       <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
         <div className="md:flex-1 md:min-w-0">
           <label className="text-xs font-semibold text-gray-900 block">{label}</label>
-          {note && <p className="hidden md:block text-[10px] text-gray-600 line-clamp-1 mt-0.5 leading-tight">{note}</p>}
+          {/* Note shows ONLY on desktop - next to label */}
+          {note && <p className="hidden md:block text-[10px] text-gray-600 mt-0.5 leading-tight">{note}</p>}
         </div>
         <div className="text-base font-bold text-[#D64933] md:min-w-[120px] md:text-right">
           {value}
         </div>
       </div>
-      {/* Note shows below value on mobile only - smaller font to prevent wrapping */}
-      {note && <p className="block md:hidden text-[10px] text-gray-600 mt-1 leading-tight">{note}</p>}
+      {/* Note shows ONLY on mobile - below value, smaller font to prevent wrapping */}
+      {note && <p className="md:hidden text-[10px] text-gray-600 mt-1 leading-tight">{note}</p>}
     </div>
   );
 
