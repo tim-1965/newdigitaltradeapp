@@ -186,9 +186,10 @@ export default function TradeSimulator() {
     return `${(value * 100).toFixed(2)}%`;
   };
 
-  const InputField = ({ label, value, onChange, unit = '', note = '', compact = false }) => {
+  const InputField = ({ label, value, onChange, unit = '', note = '', compact = false, tooltip = '' }) => {
     const [localValue, setLocalValue] = React.useState(value);
     const [isEditing, setIsEditing] = React.useState(false);
+    const [showTooltip, setShowTooltip] = React.useState(false);
 
     React.useEffect(() => {
       if (!isEditing) {
@@ -216,13 +217,39 @@ export default function TradeSimulator() {
       }
     };
 
+    const toggleTooltip = () => {
+      setShowTooltip(!showTooltip);
+    };
+
     return (
       <div className="border-b border-gray-200 py-2.5">
         {/* Mobile: Vertical Stack, Desktop: Horizontal */}
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
           {/* Label - Full width on mobile, flex-1 on desktop */}
           <div className="md:flex-1 md:min-w-0">
-            <label className="text-xs font-medium text-gray-700 block">{label}</label>
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-gray-700 block">{label}</label>
+              {tooltip && (
+                <div className="relative inline-block">
+                  <button
+                    type="button"
+                    onClick={toggleTooltip}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                    aria-label="More information"
+                  >
+                    <Info className="w-3.5 h-3.5" />
+                  </button>
+                  {showTooltip && (
+                    <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                      <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                      {tooltip}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
             {/* Note shows ONLY on desktop - next to label */}
             {note && <p className="hidden md:block text-[10px] text-gray-500 mt-0.5 leading-tight">{note}</p>}
           </div>
@@ -529,6 +556,7 @@ export default function TradeSimulator() {
                     onChange={setAnnualVolumeMM}
                     unit={`${currencySymbol} MM / year`}
                     note="Total invoice face value of imports."
+                    tooltip="This is the total amount of goods that you import from all suppliers, whether consumed in your business or simply imported and then re-sold to customers."
                   />
                   <SliderField
                     label="Proportion of import supply chain digitising paperwork"
@@ -539,6 +567,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note=""
+                    tooltip="This is the proportion of what you buy where suppliers digitise their shipping and commercial paperwork. It might be less than 100%, for example, if some larger suppliers decline to participate in the digitisation process."
                   />
                 </div>
               </div>
@@ -548,8 +577,31 @@ export default function TradeSimulator() {
             <div className="space-y-4 sm:space-y-6 order-3 lg:col-start-1 lg:row-start-2">
               {/* 2) Early Payment Discounts & Working Capital */}
               <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#F08070]">2)</span> Early Payment Discounts & Working Capital
+                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200 flex items-center gap-2">
+                  <span><span className="text-[#F08070]">2)</span> Early Payment Discounts & Working Capital</span>
+                  {(() => {
+                    const [showTooltip, setShowTooltip] = React.useState(false);
+                    return (
+                      <div className="relative inline-block">
+                        <button
+                          type="button"
+                          onClick={() => setShowTooltip(!showTooltip)}
+                          onMouseEnter={() => setShowTooltip(true)}
+                          onMouseLeave={() => setShowTooltip(false)}
+                          className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                          aria-label="More information"
+                        >
+                          <Info className="w-4 h-4" />
+                        </button>
+                        {showTooltip && (
+                          <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                            <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                            Trade digitisation enables invoices to be safely approved for payment at shipment, and further enabling suppliers to be paid at shipment. This is very valuable for suppliers and can generate discounts on invoices and the ability to lengthen invoice terms.
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </h2>
                 <div className="space-y-1">
                   <SliderField
@@ -656,8 +708,31 @@ export default function TradeSimulator() {
 
               {/* 3) Accounts Payable (AP) Headcount Efficiency */}
               <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#F08070]">3)</span> Accounts Payable (AP) Headcount Efficiency
+                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200 flex items-center gap-2">
+                  <span><span className="text-[#F08070]">3)</span> Accounts Payable (AP) Headcount Efficiency</span>
+                  {(() => {
+                    const [showTooltip, setShowTooltip] = React.useState(false);
+                    return (
+                      <div className="relative inline-block">
+                        <button
+                          type="button"
+                          onClick={() => setShowTooltip(!showTooltip)}
+                          onMouseEnter={() => setShowTooltip(true)}
+                          onMouseLeave={() => setShowTooltip(false)}
+                          className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                          aria-label="More information"
+                        >
+                          <Info className="w-4 h-4" />
+                        </button>
+                        {showTooltip && (
+                          <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                            <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                            Getting suppliers to digitise their paperwork at source means it no longer needs to be done at head office. Suppliers can also digitally match invoices to purchase orders further reducing head office work - as this enables direct and real-time posting of invoices to the ERP.
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </h2>
                 <div className="space-y-1">
                   <SliderField
@@ -699,8 +774,31 @@ export default function TradeSimulator() {
 
               {/* 4) Customs & Trade Compliance Benefits */}
               <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#F08070]">4)</span> Customs & Trade Compliance Benefits
+                <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200 flex items-center gap-2">
+                  <span><span className="text-[#F08070]">4)</span> Customs & Trade Compliance Benefits</span>
+                  {(() => {
+                    const [showTooltip, setShowTooltip] = React.useState(false);
+                    return (
+                      <div className="relative inline-block">
+                        <button
+                          type="button"
+                          onClick={() => setShowTooltip(!showTooltip)}
+                          onMouseEnter={() => setShowTooltip(true)}
+                          onMouseLeave={() => setShowTooltip(false)}
+                          className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                          aria-label="More information"
+                        >
+                          <Info className="w-4 h-4" />
+                        </button>
+                        {showTooltip && (
+                          <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                            <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                            Trade digitisation by exporting suppliers provides the data you need for customs filings and your own internal systems - without you having to do the work. This saves costs and effort in your trade / trade data / compliance teams.
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </h2>
                 <div className="space-y-1">
                   <SliderField
@@ -907,18 +1005,30 @@ export default function TradeSimulator() {
                 <div className="grid md:grid-cols-2 gap-6 text-sm">
                   <div className="space-y-3">
                     <div className="font-semibold text-gray-800">Early payment details</div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Imports paid early:</span>
-                      <span className="font-semibold">{formatCurrency(participatingSpend)}</span>
-                    </div>
-                    <div className="flex justify-between pl-4">
-                      <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                      <span className="font-semibold text-[#D64933]">{formatCurrency(bankFundedAmount)}</span>
-                    </div>
-                    <div className="flex justify-between pl-4">
-                      <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                      <span className="font-semibold text-[#D64933]">{formatCurrency(internalFundedAmount)}</span>
-                    </div>
+                    <ResultRow 
+                      label="Imports paid early:"
+                      value={formatCurrency(participatingSpend)}
+                      tooltip="This is the amount of imports paid early at shipment based on the percentage of suppliers that opt for early payment rather than waiting for the full payment term of their invoice."
+                      className="flex justify-between"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold"
+                    />
+                    <ResultRow 
+                      label={`• Bank funded (${formatNumber(bankFundedPct, 0)}%):`}
+                      value={formatCurrency(bankFundedAmount)}
+                      tooltip="Of the amount that is paid early to suppliers, this is the part that is funded by banks (or specialist trade funds) rather than paid early using your own cash. The cost of the early payment is netted against the early payment discount and not paid by you."
+                      className="flex justify-between pl-4"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-[#D64933]"
+                    />
+                    <ResultRow 
+                      label={`• Internally funded (${formatNumber(100 - bankFundedPct, 0)}%):`}
+                      value={formatCurrency(internalFundedAmount)}
+                      tooltip="This is the balancing part of the early payment where you have decided to use your own funds to pay invoices early rather than have suppliers fund their early payment themselves. This uses your working capital but means all the early payment discount is earned by you."
+                      className="flex justify-between pl-4"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-[#D64933]"
+                    />
                     <ResultRow 
                       label="Total discount value:"
                       value={formatCurrency(discountValue)}
@@ -970,7 +1080,7 @@ export default function TradeSimulator() {
                       labelClassName="text-gray-600"
                       valueClassName="font-semibold text-red-700"
                     />
-                    <div className="flex justify-between pt-2 border-t font-bold">
+                    <div className="flex justify-between items-center pt-2 border-t font-bold">
                       <span className="text-gray-900">Net working capital:</span>
                       <span className="text-2xl font-bold text-red-700">{formatCurrency(netWorkingCapital)}</span>
                     </div>
