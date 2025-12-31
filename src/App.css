@@ -102,3 +102,210 @@ input[type="range"].slider:focus::-moz-range-thumb {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
+
+/* Print Styles */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm 1cm;
+  }
+
+  body {
+    background: white !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Hide elements not needed in print */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Hide header/navigation */
+  .bg-white.shadow-sm {
+    display: none !important;
+  }
+
+  /* Show both panels */
+  [data-panel] {
+    display: block !important;
+  }
+
+  /* Main container - stack panels vertically */
+  .max-w-\\[1800px\\] {
+    max-width: 100% !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  /* Panel 1 - no page break before */
+  [data-panel="inputs"] {
+    page-break-before: auto;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  /* Panel 2 - always start on new page */
+  [data-panel="simulation"] {
+    page-break-before: always;
+    break-before: page;
+    page-break-after: auto;
+  }
+
+  /* Prevent page breaks inside cards/sections */
+  .bg-white.rounded-lg.shadow-md,
+  .bg-gradient-to-r,
+  .bg-gradient-to-br {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 0.75rem !important;
+    padding: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  /* Prevent breaks in the two-column layout of Panel 1 */
+  .flex.flex-col.lg\\:grid.lg\\:grid-cols-2 {
+    display: block !important;
+  }
+
+  /* Individual boxes in Panel 1 */
+  .space-y-4.sm\\:space-y-6 > div,
+  .space-y-6 > div {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Tables should not break */
+  table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    font-size: 9pt !important;
+    width: 100% !important;
+  }
+
+  table th,
+  table td {
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  /* Headings stay with content */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Font sizes for print */
+  h1 {
+    font-size: 18pt !important;
+  }
+
+  h2 {
+    font-size: 14pt !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  h3 {
+    font-size: 11pt !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .text-base {
+    font-size: 10pt !important;
+  }
+
+  .text-sm {
+    font-size: 9pt !important;
+  }
+
+  .text-xs {
+    font-size: 8pt !important;
+  }
+
+  .text-xl {
+    font-size: 12pt !important;
+  }
+
+  .text-2xl {
+    font-size: 16pt !important;
+  }
+
+  .text-4xl {
+    font-size: 20pt !important;
+  }
+
+  /* Make gradient backgrounds print */
+  .bg-gradient-to-r,
+  .bg-gradient-to-br {
+    background: linear-gradient(to right, #D64933, #F08070) !important;
+    color: white !important;
+  }
+
+  .from-red-600.to-orange-600 {
+    background: linear-gradient(to right, #dc2626, #ea580c) !important;
+  }
+
+  /* Adjust spacing */
+  .p-4, .p-6, .p-8 {
+    padding: 0.6rem !important;
+  }
+
+  .sm\\:p-6 {
+    padding: 0.6rem !important;
+  }
+
+  .mb-4, .mb-6 {
+    margin-bottom: 0.4rem !important;
+  }
+
+  .space-y-3 > * + * {
+    margin-top: 0.3rem !important;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 0.5rem !important;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 0.6rem !important;
+  }
+
+  /* Hide shadows in print */
+  .shadow-md, .shadow-lg, .shadow-xl, .shadow-sm {
+    box-shadow: none !important;
+  }
+
+  /* Compact grid layouts */
+  .grid {
+    gap: 0.5rem !important;
+  }
+
+  /* Ensure colored text prints */
+  .text-red-700,
+  .text-\\[\\#D64933\\] {
+    color: #D64933 !important;
+  }
+
+  .text-purple-700 {
+    color: #7c3aed !important;
+  }
+
+  /* Ensure visibility of all content */
+  * {
+    overflow: visible !important;
+  }
+
+  /* Summary card - keep together */
+  .bg-gradient-to-r.from-red-600 {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Logo and header adjustments */
+  img {
+    max-width: 150px !important;
+    height: auto !important;
+  }
+}
