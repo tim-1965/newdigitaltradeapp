@@ -292,6 +292,23 @@ input[type="range"].slider:focus::-moz-range-thumb {
     color: #7c3aed !important;
   }
 
+  /* Fix input fields - black text on white background */
+  input[type="number"],
+  input[type="text"],
+  input[type="range"],
+  select {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #d1d5db !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+
+  /* Ensure all text in inputs is visible */
+  input::placeholder {
+    color: #6b7280 !important;
+  }
+
   /* Ensure visibility of all content */
   * {
     overflow: visible !important;
