@@ -213,12 +213,17 @@ export default function TradeSimulator() {
 
     return (
       <div className="border-b border-gray-200 py-2.5">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 min-w-0">
-            <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
-            {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
+        {/* Mobile: Vertical Stack, Desktop: Horizontal */}
+        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
+          {/* Label - Full width on mobile, flex-1 on desktop */}
+          <div className="md:flex-1 md:min-w-0">
+            <label className="text-xs font-medium text-gray-700 block">{label}</label>
+            {/* Note shows on desktop only */}
+            {note && <p className="hidden md:block text-xs text-gray-500 line-clamp-1 mt-0.5">{note}</p>}
           </div>
-          <div className={`flex items-center gap-2 ${compact ? 'w-40' : 'w-64'}`}>
+          
+          {/* Input + Unit - Full width on mobile, fixed width on desktop */}
+          <div className={`flex items-center gap-2 w-full ${compact ? 'md:w-40' : 'md:w-64'}`}>
             <input
               type="text"
               value={localValue}
@@ -231,6 +236,9 @@ export default function TradeSimulator() {
             {unit && <span className="text-xs text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
           </div>
         </div>
+        
+        {/* Note shows below input on mobile only */}
+        {note && <p className="md:hidden text-xs text-gray-500 mt-1">{note}</p>}
       </div>
     );
   };
@@ -257,12 +265,17 @@ export default function TradeSimulator() {
 
     return (
       <div className="border-b border-gray-200 py-2.5">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 min-w-0">
-            <label className="text-xs font-medium text-gray-700 block mb-0.5">{label}</label>
-            {note && <p className="text-xs text-gray-500 line-clamp-1">{note}</p>}
+        {/* Mobile: Vertical Stack, Desktop: Horizontal */}
+        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
+          {/* Label - Full width on mobile, flex-1 on desktop */}
+          <div className="md:flex-1 md:min-w-0">
+            <label className="text-xs font-medium text-gray-700 block">{label}</label>
+            {/* Note shows on desktop only */}
+            {note && <p className="hidden md:block text-xs text-gray-500 line-clamp-1 mt-0.5">{note}</p>}
           </div>
-          <div className="flex items-center gap-2 w-64">
+          
+          {/* Slider + Value - Full width on mobile, fixed width on desktop */}
+          <div className="flex items-center gap-2 w-full md:w-64">
             <input
               type="range"
               min={min}
@@ -285,21 +298,27 @@ export default function TradeSimulator() {
             </div>
           </div>
         </div>
+        
+        {/* Note shows below slider on mobile only */}
+        {note && <p className="md:hidden text-xs text-gray-500 mt-1">{note}</p>}
       </div>
     );
   };
 
   const CalculatedField = ({ label, value, note = '' }) => (
     <div className="bg-[#F08070]/10 border-l-4 border-[#F08070] py-2.5 px-3 mb-2">
-      <div className="flex items-center gap-3">
-        <div className="flex-1 min-w-0">
-          <label className="text-xs font-semibold text-gray-900 block mb-0.5">{label}</label>
-          {note && <p className="text-xs text-gray-600 line-clamp-1">{note}</p>}
+      {/* Mobile: Vertical Stack, Desktop: Horizontal */}
+      <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
+        <div className="md:flex-1 md:min-w-0">
+          <label className="text-xs font-semibold text-gray-900 block">{label}</label>
+          {note && <p className="hidden md:block text-xs text-gray-600 line-clamp-1 mt-0.5">{note}</p>}
         </div>
-        <div className="text-base font-bold text-[#D64933] min-w-[120px] text-right">
+        <div className="text-base font-bold text-[#D64933] md:min-w-[120px] md:text-right">
           {value}
         </div>
       </div>
+      {/* Note shows below value on mobile only */}
+      {note && <p className="md:hidden text-xs text-gray-600 mt-1">{note}</p>}
     </div>
   );
 
@@ -307,23 +326,23 @@ export default function TradeSimulator() {
     <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#F08070]/5">
       {/* Header */}
       <div className="bg-white shadow-sm">
-        <div className="max-w-[1800px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="max-w-[1800px] mx-auto px-3 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
               <img 
                 src="/240417_PTS_red_logo.png" 
                 alt="Prima Trade" 
-                className="h-8 w-auto"
+                className="h-6 sm:h-8 w-auto flex-shrink-0"
               />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Trade Digitalisation Benefits Calculator</h1>
-                <p className="text-sm text-gray-600 mt-1">Cash Against Data Platform</p>
+              <div className="min-w-0">
+                <h1 className="text-base sm:text-2xl font-bold text-gray-900 truncate">Trade Digitalisation Benefits Calculator</h1>
+                <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 hidden sm:block">Cash Against Data Platform</p>
               </div>
             </div>
             {showSaved && (
-              <div className="flex items-center gap-2 text-[#D64933] text-sm">
+              <div className="flex items-center gap-2 text-[#D64933] text-sm flex-shrink-0">
                 <Check className="w-4 h-4" />
-                <span>Saved</span>
+                <span className="hidden sm:inline">Saved</span>
               </div>
             )}
           </div>
@@ -331,20 +350,20 @@ export default function TradeSimulator() {
         
         {/* Tab Navigation - Full Width */}
         <div className="border-t border-gray-200">
-          <div className="flex gap-1 px-6">
+          <div className="flex gap-0.5 sm:gap-1 px-2 sm:px-6">
             <button
               onClick={() => setActiveView('inputs')}
-              className={`relative flex-1 px-8 py-4 text-left transition-all ${
+              className={`relative flex-1 px-3 sm:px-8 py-3 sm:py-4 text-left transition-all ${
                 activeView === 'inputs'
                   ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
                   : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <div className="flex items-center gap-3 mb-1">
-                <Calculator className="w-5 h-5" />
-                <span className="text-lg font-bold">Panel 1: Inputs & Results</span>
+              <div className="flex items-center gap-2 sm:gap-3 mb-0.5 sm:mb-1">
+                <Calculator className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-lg font-bold">Panel 1: Inputs & Results</span>
               </div>
-              <p className={`text-xs ${activeView === 'inputs' ? 'text-white/80' : 'text-gray-500'}`}>
+              <p className={`text-xs hidden sm:block ${activeView === 'inputs' ? 'text-white/80' : 'text-gray-500'}`}>
                 Enter your company data and see immediate benefit calculations
               </p>
               {activeView === 'inputs' && (
@@ -354,17 +373,17 @@ export default function TradeSimulator() {
             
             <button
               onClick={() => setActiveView('simulation')}
-              className={`relative flex-1 px-8 py-4 text-left transition-all ${
+              className={`relative flex-1 px-3 sm:px-8 py-3 sm:py-4 text-left transition-all ${
                 activeView === 'simulation'
                   ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
                   : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <div className="flex items-center gap-3 mb-1">
-                <BarChart3 className="w-5 h-5" />
-                <span className="text-lg font-bold">Panel 2: Before & After Simulation</span>
+              <div className="flex items-center gap-2 sm:gap-3 mb-0.5 sm:mb-1">
+                <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-lg font-bold">Panel 2: Before & After Simulation</span>
               </div>
-              <p className={`text-xs ${activeView === 'simulation' ? 'text-white/80' : 'text-gray-500'}`}>
+              <p className={`text-xs hidden sm:block ${activeView === 'simulation' ? 'text-white/80' : 'text-gray-500'}`}>
                 Compare your historic financials with projected improvements
               </p>
               {activeView === 'simulation' && (
@@ -376,13 +395,13 @@ export default function TradeSimulator() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1800px] mx-auto px-6 py-6">
+      <div className="max-w-[1800px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
         {activeView === 'inputs' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-            <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
+            <div className="space-y-4 sm:space-y-6">
               {/* 1) Company & Trade Volume */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pb-3 border-b border-gray-200">
                   <h2 className="text-xl font-bold text-gray-900">
                     <span className="text-[#F08070]">1)</span> Company & Trade Volume
                   </h2>
@@ -423,7 +442,7 @@ export default function TradeSimulator() {
               </div>
 
               {/* 2) Early Payment Discounts & Working Capital */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                   <span className="text-[#F08070]">2)</span> Early Payment Discounts & Working Capital
                 </h2>
@@ -522,7 +541,7 @@ export default function TradeSimulator() {
               </div>
 
               {/* 3) Accounts Payable (AP) Headcount Efficiency */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                   <span className="text-[#F08070]">3)</span> Accounts Payable (AP) Headcount Efficiency
                 </h2>
@@ -562,7 +581,7 @@ export default function TradeSimulator() {
               </div>
 
               {/* 4) Customs & Trade Compliance Benefits */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                   <span className="text-[#F08070]">4)</span> Customs & Trade Compliance Benefits
                 </h2>
@@ -662,10 +681,10 @@ export default function TradeSimulator() {
               </div>
             </div>
                             
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-[#D64933] via-[#F08070] to-[#F08070] rounded-lg shadow-xl p-6 text-white">
-                <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-[#D64933] via-[#F08070] to-[#F08070] rounded-lg shadow-xl p-4 sm:p-6 text-white">
+                <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
                   {/* P&L Section */}
                   <div>
                     <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
@@ -751,7 +770,7 @@ export default function TradeSimulator() {
               </div>
 
                    {/* Early payment + working capital benefits aligned with box 2 */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Working capital and early payment benefits</h3>
                 <div className="grid md:grid-cols-2 gap-6 text-sm">
                   <div className="space-y-3">
@@ -808,7 +827,7 @@ export default function TradeSimulator() {
               </div>
             
              {/* Headcount savings and other benefits aligned with box 3 */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
                   <div className="space-y-3">
                   <div className="flex justify-between items-center pb-2 border-b">
@@ -848,7 +867,7 @@ export default function TradeSimulator() {
           {/* Simulation View */}
           <div className="space-y-6">
             {/* Simulation Inputs */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
               <p className="text-sm text-gray-600 mb-6">Enter your current financial figures in millions to see the impact of digitalization</p>
               
@@ -1012,7 +1031,7 @@ export default function TradeSimulator() {
             </div>
 
             {/* P&L Comparison */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <TrendingUp className="w-6 h-6 text-[#F08070]" />
                 P&L (Extract)
@@ -1064,7 +1083,7 @@ export default function TradeSimulator() {
             </div>
 
             {/* Balance Sheet Comparison */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <DollarSign className="w-6 h-6 text-[#F08070]" />
                 Balance Sheet and Cash Flow (Extract)
@@ -1110,7 +1129,7 @@ export default function TradeSimulator() {
             </div>
 
             {/* Key Ratios */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <BarChart3 className="w-6 h-6 text-[#F08070]" />
                 Key Ratios
