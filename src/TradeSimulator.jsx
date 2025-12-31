@@ -134,7 +134,8 @@ export default function TradeSimulator() {
   const totalCustomsSavings = brokerSavings + forwarderSavings + tradeHeadcountSavings;
 
   // Total benefits
-  const totalPLBenefit = netDiscountBenefit + apSavings + totalCustomsSavings;
+  const totalOperationalSavings = apSavings + totalCustomsSavings;
+  const totalPLBenefit = netDiscountBenefit + totalOperationalSavings;
   const plBenefitAfterCosts = totalPLBenefit; // Platform costs could be added here
 
   // Simulation calculations
@@ -757,8 +758,8 @@ export default function TradeSimulator() {
                     <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
                   </div>
                 <div className="flex justify-between items-center pt-3">
-                    <span className="font-bold text-gray-900">Total P&L Benefit:</span>
-                    <span className="text-2xl font-bold text-green-700">{formatCurrency(totalPLBenefit)}</span>
+                    <span className="font-bold text-gray-900">Total benefit from operational savings:</span>
+                    <span className="text-2xl font-bold text-green-700">{formatCurrency(totalOperationalSavings)}</span>
                   </div>
                 </div>
               </div>
