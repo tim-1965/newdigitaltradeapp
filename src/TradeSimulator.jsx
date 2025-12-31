@@ -633,7 +633,7 @@ export default function TradeSimulator() {
                   {/* P&L Section */}
                   <div>
                     <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
-                    <p className="text-white/80 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
+                    <p className="text-white/80 text-xs mb-3">Early payment discounts, operational savings</p>
                     <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
 
                     <div className="grid grid-cols-3 gap-2 text-xs">
@@ -684,7 +684,7 @@ export default function TradeSimulator() {
                 </p>
                 
                 <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                  The most efficient system is one where exporting suppliers are able to upload their paperwork as they ship to a secure portal like PrimaTrade. Each document is converted to useful data by the platform as it is uploaded, checked and warranted by the exporter.
+                  The most efficient system is one where exporting suppliers are able to upload their paperwork as they ship to a secure portal like PrimaTrade. Each document is converted to useful data by the platform as it is uploaded, with the data checked and warranted by the exporter.
                 </p>
                 
                 <p className="text-sm text-gray-700 leading-relaxed mb-4">
