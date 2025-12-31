@@ -225,7 +225,7 @@ export default function TradeSimulator() {
               onFocus={handleFocus}
               onBlur={handleBlur}
               onKeyDown={handleKeyDown}
-              className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#58A4B0] text-right"
+              className="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08070] text-right"
             />
             {unit && <span className="text-xs text-gray-600 whitespace-nowrap min-w-[60px]">{unit}</span>}
           </div>
@@ -273,7 +273,7 @@ export default function TradeSimulator() {
               onTouchEnd={handleMouseUp}
               className="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
               style={{
-                background: `linear-gradient(to right, #58A4B0 0%, #58A4B0 ${((localValue - min) / (max - min)) * 100}%, #e5e7eb ${((localValue - min) / (max - min)) * 100}%, #e5e7eb 100%)`
+                background: `linear-gradient(to right, #F08070 0%, #F08070 ${((localValue - min) / (max - min)) * 100}%, #e5e7eb ${((localValue - min) / (max - min)) * 100}%, #e5e7eb 100%)`
               }}
             />
             <div className="text-right min-w-[60px]">
@@ -289,7 +289,7 @@ export default function TradeSimulator() {
   };
 
   const CalculatedField = ({ label, value, note = '' }) => (
-    <div className="bg-[#58A4B0]/10 border-l-4 border-[#58A4B0] py-2.5 px-3 mb-2">
+    <div className="bg-[#F08070]/10 border-l-4 border-[#F08070] py-2.5 px-3 mb-2">
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0">
           <label className="text-xs font-semibold text-gray-900 block mb-0.5">{label}</label>
@@ -303,7 +303,7 @@ export default function TradeSimulator() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#58A4B0]/5">
+    <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#F08070]/5">
       {/* Header */}
       <div className="bg-white border-b-2 border-[#D64933] shadow-sm">
         <div className="max-w-[1800px] mx-auto px-6 py-4">
@@ -331,7 +331,7 @@ export default function TradeSimulator() {
                   onClick={() => setActiveView('inputs')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     activeView === 'inputs'
-                      ? 'bg-[#58A4B0] text-white shadow-sm'
+                      ? 'bg-[#F08070] text-white shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -363,7 +363,7 @@ export default function TradeSimulator() {
               {/* 1) Company & Trade Volume */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#58A4B0]">1)</span> Company & Trade Volume
+                  <span className="text-[#F08070]">1)</span> Company & Trade Volume
                 </h2>
                 <div className="space-y-1">
                   <InputField
@@ -389,7 +389,7 @@ export default function TradeSimulator() {
               {/* 2) Early Payment Discounts & Working Capital */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#58A4B0]">2)</span> Early Payment Discounts & Working Capital
+                  <span className="text-[#F08070]">2)</span> Early Payment Discounts & Working Capital
                 </h2>
                 <div className="space-y-1">
                   <SliderField
@@ -488,7 +488,7 @@ export default function TradeSimulator() {
               {/* 3) Accounts Payable (AP) Headcount Efficiency */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#58A4B0]">3)</span> Accounts Payable (AP) Headcount Efficiency
+                  <span className="text-[#F08070]">3)</span> Accounts Payable (AP) Headcount Efficiency
                 </h2>
                 <div className="space-y-1">
                   <SliderField
@@ -528,7 +528,7 @@ export default function TradeSimulator() {
               {/* 4) Customs & Trade Compliance Benefits */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                  <span className="text-[#58A4B0]">4)</span> Customs & Trade Compliance Benefits
+                  <span className="text-[#F08070]">4)</span> Customs & Trade Compliance Benefits
                 </h2>
                 <div className="space-y-1">
                   <SliderField
@@ -628,7 +628,7 @@ export default function TradeSimulator() {
                             
             <div className="space-y-6">
               {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-[#D64933] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white">
+              <div className="bg-gradient-to-br from-[#D64933] via-[#F08070] to-[#F08070] rounded-lg shadow-xl p-6 text-white">
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* P&L Section */}
                   <div>
@@ -865,7 +865,7 @@ export default function TradeSimulator() {
             {/* P&L Comparison */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-[#58A4B0]" />
+                <TrendingUp className="w-6 h-6 text-[#F08070]" />
                 P&L (Extract)
               </h2>
               <div className="overflow-x-auto">
@@ -891,7 +891,7 @@ export default function TradeSimulator() {
                       <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedCostOfSales)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced by early payment discounts where funding is external</td>
                     </tr>
-                    <tr className="bg-[#58A4B0]/10">
+                    <tr className="bg-[#F08070]/10">
                       <td className="py-3 px-4 text-sm font-semibold">Operating profit</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(operatingProfit)}</td>
                       <td className="py-3 px-4 text-sm text-right font-bold text-red-700">{formatCurrency(adjustedOperatingProfit)}</td>
@@ -903,7 +903,7 @@ export default function TradeSimulator() {
                       <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedNetInterest)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced as lower borrowing because of working capital benefits</td>
                     </tr>
-                    <tr className="bg-[#58A4B0]/10">
+                    <tr className="bg-[#F08070]/10">
                       <td className="py-3 px-4 text-sm font-semibold">EBITDA</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(ebitda)}</td>
                       <td className="py-3 px-4 text-sm text-right font-bold text-red-700">{formatCurrency(adjustedEbitda)}</td>
@@ -917,7 +917,7 @@ export default function TradeSimulator() {
             {/* Balance Sheet Comparison */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <DollarSign className="w-6 h-6 text-[#58A4B0]" />
+                <DollarSign className="w-6 h-6 text-[#F08070]" />
                 Balance Sheet and Cash Flow (Extract)
               </h2>
               <div className="overflow-x-auto">
@@ -949,7 +949,7 @@ export default function TradeSimulator() {
                       <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedEquity)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Increased as earnings are higher over the period</td>
                     </tr>
-                    <tr className="bg-[#58A4B0]/10">
+                    <tr className="bg-[#F08070]/10">
                       <td className="py-3 px-4 text-sm font-semibold">Free cash flow</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(freeCashFlow)}</td>
                       <td className="py-3 px-4 text-sm text-right font-bold text-red-700">{formatCurrency(adjustedFCF)}</td>
@@ -963,7 +963,7 @@ export default function TradeSimulator() {
             {/* Key Ratios */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <BarChart3 className="w-6 h-6 text-[#58A4B0]" />
+                <BarChart3 className="w-6 h-6 text-[#F08070]" />
                 Key Ratios
               </h2>
               <div className="overflow-x-auto">
