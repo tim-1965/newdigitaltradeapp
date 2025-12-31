@@ -305,7 +305,7 @@ export default function TradeSimulator() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#F08070]/5">
       {/* Header */}
-      <div className="bg-white border-b-2 border-[#D64933] shadow-sm">
+      <div className="bg-white shadow-sm">
         <div className="max-w-[1800px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -319,37 +319,58 @@ export default function TradeSimulator() {
                 <p className="text-sm text-gray-600 mt-1">Cash Against Data Platform</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              {showSaved && (
-                <div className="flex items-center gap-2 text-[#D64933] text-sm">
-                  <Check className="w-4 h-4" />
-                  <span>Saved</span>
-                </div>
-              )}
-              <div className="flex bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setActiveView('inputs')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'inputs'
-                      ? 'bg-[#F08070] text-white shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <Calculator className="w-4 h-4 inline mr-2" />
-                  Inputs & Results
-                </button>
-                <button
-                  onClick={() => setActiveView('simulation')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeView === 'simulation'
-                      ? 'bg-[#D64933] text-white shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <BarChart3 className="w-4 h-4 inline mr-2" />
-                  Simulation
-                </button>
+            {showSaved && (
+              <div className="flex items-center gap-2 text-[#D64933] text-sm">
+                <Check className="w-4 h-4" />
+                <span>Saved</span>
               </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Tab Navigation */}
+        <div className="border-t border-gray-200">
+          <div className="max-w-[1800px] mx-auto px-6">
+            <div className="flex gap-1">
+              <button
+                onClick={() => setActiveView('inputs')}
+                className={`relative px-8 py-4 text-left transition-all ${
+                  activeView === 'inputs'
+                    ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3 mb-1">
+                  <Calculator className="w-5 h-5" />
+                  <span className="text-lg font-bold">Panel 1: Inputs & Results</span>
+                </div>
+                <p className={`text-xs ${activeView === 'inputs' ? 'text-white/80' : 'text-gray-500'}`}>
+                  Enter your company data and see immediate benefit calculations
+                </p>
+                {activeView === 'inputs' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
+                )}
+              </button>
+              
+              <button
+                onClick={() => setActiveView('simulation')}
+                className={`relative px-8 py-4 text-left transition-all ${
+                  activeView === 'simulation'
+                    ? 'bg-gradient-to-br from-[#D64933] to-[#F08070] text-white'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3 mb-1">
+                  <BarChart3 className="w-5 h-5" />
+                  <span className="text-lg font-bold">Panel 2: Before & After Simulation</span>
+                </div>
+                <p className={`text-xs ${activeView === 'simulation' ? 'text-white/80' : 'text-gray-500'}`}>
+                  Compare your historic financials with projected improvements
+                </p>
+                {activeView === 'simulation' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -633,7 +654,7 @@ export default function TradeSimulator() {
                   {/* P&L Section */}
                   <div>
                     <h3 className="text-lg font-bold mb-1">Total Annual P&L Benefit</h3>
-                    <p className="text-white/80 text-xs mb-3">Early payment discounts, operational savings</p>
+                    <p className="text-white/80 text-xs mb-3">Early payment discounts, headcount savings, customs processes</p>
                     <div className="text-4xl font-bold mb-4">{formatCurrency(totalPLBenefit)}</div>
 
                     <div className="grid grid-cols-3 gap-2 text-xs">
@@ -684,7 +705,7 @@ export default function TradeSimulator() {
                 </p>
                 
                 <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                  The most efficient system is one where exporting suppliers are able to upload their paperwork as they ship to a secure portal like PrimaTrade. Each document is converted to useful data by the platform as it is uploaded, with the data checked and warranted by the exporter.
+                  The most efficient system is one where exporting suppliers are able to upload their paperwork as they ship to a secure portal like PrimaTrade. Each document is converted to useful data by the platform as it is uploaded, checked and warranted by the exporter.
                 </p>
                 
                 <p className="text-sm text-gray-700 leading-relaxed mb-4">
