@@ -596,7 +596,7 @@ export default function TradeSimulator() {
                         {showTooltip && (
                           <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
                             <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
-                            Trade digitisation enables invoices to be safely approved for payment at shipment, and further enabling suppliers to be paid at shipment. This is very valuable for suppliers and can generate discounts on invoices and the ability to lengthen invoice terms.
+                            Trade digitisation enables invoices to be safely approved for payment at shipment; this capability means that suppliers can also be paid at shipment. This is very valuable for suppliers and can generate discounts on invoices and the ability to lengthen invoice terms.
                           </div>
                         )}
                       </div>
