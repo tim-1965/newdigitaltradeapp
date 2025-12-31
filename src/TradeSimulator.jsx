@@ -762,7 +762,11 @@ export default function TradeSimulator() {
                     </li>
                     <li className="flex gap-3">
                       <span className="text-[#D64933] font-bold mt-0.5">•</span>
-                      <span className="leading-relaxed">Cash to be accelerated to suppliers in return for discount on the invoice (often 2%, 3% or more), and this can be organised using finance to preserve the importer's working capital.</span>
+                      <span className="leading-relaxed">Cash to be accelerated to suppliers at shipment in return for discount on the invoice (often 2%, 3% or more), and this can be organised using finance to preserve the importer's working capital.</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-[#D64933] font-bold mt-0.5">•</span>
+                      <span className="leading-relaxed">With suppliers able to ask for payment at shipment, payment terms from suppliers can be lengthened without causing supply chain stress.</span>
                     </li>
                     <li className="flex gap-3">
                       <span className="text-[#D64933] font-bold mt-0.5">•</span>
