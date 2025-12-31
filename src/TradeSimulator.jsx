@@ -882,10 +882,10 @@ export default function TradeSimulator() {
               <h2 className="text-xl font-bold text-gray-900 mb-4">Historic Financial Position (for comparison)</h2>
               <p className="text-sm text-gray-600 mb-6">Enter your current financial figures in millions to see the impact of digitalization</p>
               
-              <div className="flex gap-8">
+              <div className="flex flex-col lg:flex-row gap-8">
                 {/* Input Fields - Two Columns */}
-                <div className="flex-1 max-w-3xl">
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                <div className="flex-1 lg:max-w-3xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
                     {/* Left Column - P&L Items */}
                     <div className="space-y-4">
                       <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">Key figures: P&L</h3>
@@ -1016,7 +1016,7 @@ export default function TradeSimulator() {
                 </div>
                 
                 {/* Right Side - Explanatory Text Box */}
-                <div className="flex-1 min-w-[300px]">
+                <div className="flex-1 lg:min-w-[300px]">
                   <div className="bg-gradient-to-br from-white to-[#F08070]/5 rounded-lg border-2 border-[#F08070]/30 p-6 h-full">
                     <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                       <TrendingUp className="w-5 h-5 text-[#D64933]" />
