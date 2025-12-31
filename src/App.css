@@ -250,7 +250,16 @@ input[type="range"].slider:focus::-moz-range-thumb {
     border: 2px solid #F08070 !important;
   }
 
-  /* Keep summary card with strong colors */
+  /* Lighten benefit summary boxes for readability */
+  .bg-gradient-to-r.from-\\[\\#D64933\\],
+  .bg-gradient-to-r.from-red-600,
+  .to-\\[\\#F08070\\] {
+    background: #fef2f2 !important;
+    color: black !important;
+    border: 2px solid #F08070 !important;
+  }
+
+  /* Keep only the final impact summary card with strong colors */
   .from-red-600.to-orange-600 {
     background: linear-gradient(to right, #dc2626, #ea580c) !important;
     color: white !important;
@@ -259,8 +268,89 @@ input[type="range"].slider:focus::-moz-range-thumb {
   /* Ensure all heading text in light boxes is black */
   .bg-gradient-to-br.from-white h3,
   .bg-gradient-to-br.from-white p,
-  .bg-gradient-to-br.from-white span {
+  .bg-gradient-to-br.from-white span,
+  .bg-gradient-to-r.from-\\[\\#D64933\\] h3,
+  .bg-gradient-to-r.from-\\[\\#D64933\\] p,
+  .bg-gradient-to-r.from-\\[\\#D64933\\] span,
+  .bg-gradient-to-r.from-\\[\\#D64933\\] div {
     color: black !important;
+  }
+
+  /* Make Panel 2 tables extremely compact */
+  [data-panel="simulation"] table {
+    font-size: 7pt !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  [data-panel="simulation"] table th,
+  [data-panel="simulation"] table td {
+    padding: 0.15rem 0.25rem !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Compact column widths for Panel 2 */
+  [data-panel="simulation"] table th:first-child,
+  [data-panel="simulation"] table td:first-child {
+    width: 35% !important;
+  }
+
+  [data-panel="simulation"] table th:nth-child(2),
+  [data-panel="simulation"] table td:nth-child(2) {
+    width: 18% !important;
+  }
+
+  [data-panel="simulation"] table th:nth-child(3),
+  [data-panel="simulation"] table td:nth-child(3) {
+    width: 18% !important;
+  }
+
+  [data-panel="simulation"] table th:nth-child(4),
+  [data-panel="simulation"] table td:nth-child(4) {
+    width: 29% !important;
+  }
+
+  /* Smaller fonts for notes column */
+  [data-panel="simulation"] table td:nth-child(4) {
+    font-size: 6pt !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Compact Panel 2 sections */
+  [data-panel="simulation"] .bg-white.rounded-lg {
+    padding: 0.4rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  [data-panel="simulation"] h2 {
+    font-size: 11pt !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  [data-panel="simulation"] .space-y-6 {
+    margin-top: 0 !important;
+  }
+
+  [data-panel="simulation"] .space-y-6 > * + * {
+    margin-top: 0.4rem !important;
+  }
+
+  /* Reduce Impact Summary card size */
+  [data-panel="simulation"] .from-red-600.to-orange-600{
+    padding: 0.5rem !important;
+  }
+
+  [data-panel="simulation"] .from-red-600.to-orange-600 h2 {
+    font-size: 12pt !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  [data-panel="simulation"] .from-red-600.to-orange-600 .text-4xl {
+    font-size: 14pt !important;
+  }
+
+  [data-panel="simulation"] .from-red-600.to-orange-600 .grid {
+    gap: 0.3rem !important;
   }
 
   /* Adjust spacing */
