@@ -294,8 +294,8 @@ export default function TradeSimulator() {
                     <Info className="w-3.5 h-3.5" />
                   </button>
                   {showTooltip && (
-                    <div className="absolute left-0 top-full mt-1 z-50 w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
-                      <div className="absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                    <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                      <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
                       {tooltip}
                     </div>
                   )}
@@ -337,23 +337,90 @@ export default function TradeSimulator() {
     );
   };
 
-  const CalculatedField = ({ label, value, note = '' }) => (
-    <div className="bg-[#F08070]/10 border-l-4 border-[#F08070] py-2.5 px-3 mb-2">
-      {/* Mobile: Vertical Stack, Desktop: Horizontal */}
-      <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
-        <div className="md:flex-1 md:min-w-0">
-          <label className="text-xs font-semibold text-gray-900 block">{label}</label>
-          {/* Note shows ONLY on desktop - next to label */}
-          {note && <p className="hidden md:block text-[10px] text-gray-600 mt-0.5 leading-tight">{note}</p>}
+  const CalculatedField = ({ label, value, note = '', tooltip = '' }) => {
+    const [showTooltip, setShowTooltip] = React.useState(false);
+
+    const toggleTooltip = () => {
+      setShowTooltip(!showTooltip);
+    };
+
+    return (
+      <div className="bg-[#F08070]/10 border-l-4 border-[#F08070] py-2.5 px-3 mb-2">
+        {/* Mobile: Vertical Stack, Desktop: Horizontal */}
+        <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
+          <div className="md:flex-1 md:min-w-0">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-semibold text-gray-900 block">{label}</label>
+              {tooltip && (
+                <div className="relative inline-block">
+                  <button
+                    type="button"
+                    onClick={toggleTooltip}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                    aria-label="More information"
+                  >
+                    <Info className="w-3.5 h-3.5" />
+                  </button>
+                  {showTooltip && (
+                    <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                      <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                      {tooltip}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            {/* Note shows ONLY on desktop - next to label */}
+            {note && <p className="hidden md:block text-[10px] text-gray-600 mt-0.5 leading-tight">{note}</p>}
+          </div>
+          <div className="text-base font-bold text-[#D64933] md:min-w-[120px] md:text-right">
+            {value}
+          </div>
         </div>
-        <div className="text-base font-bold text-[#D64933] md:min-w-[120px] md:text-right">
-          {value}
-        </div>
+        {/* Note shows ONLY on mobile - below value, smaller font to prevent wrapping */}
+        {note && <p className="md:hidden text-[10px] text-gray-600 mt-1 leading-tight">{note}</p>}
       </div>
-      {/* Note shows ONLY on mobile - below value, smaller font to prevent wrapping */}
-      {note && <p className="md:hidden text-[10px] text-gray-600 mt-1 leading-tight">{note}</p>}
-    </div>
-  );
+    );
+  };
+
+  const ResultRow = ({ label, value, tooltip = '', className = '', labelClassName = '', valueClassName = '' }) => {
+    const [showTooltip, setShowTooltip] = React.useState(false);
+
+    const toggleTooltip = () => {
+      setShowTooltip(!showTooltip);
+    };
+
+    return (
+      <div className={className}>
+        <div className="flex items-center gap-1.5">
+          <span className={labelClassName}>{label}</span>
+          {tooltip && (
+            <div className="relative inline-block">
+              <button
+                type="button"
+                onClick={toggleTooltip}
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+                className="text-[#F08070] hover:text-[#D64933] transition-colors focus:outline-none print:hidden"
+                aria-label="More information"
+              >
+                <Info className="w-3 h-3" />
+              </button>
+              {showTooltip && (
+                <div className="fixed md:absolute left-1/2 md:left-0 top-1/2 md:top-full transform -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 md:mt-1 z-50 w-80 md:w-64 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl print:hidden">
+                  <div className="hidden md:block absolute -top-1 left-3 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                  {tooltip}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <span className={valueClassName}>{value}</span>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#BAC1B8]/10 to-[#F08070]/5">
@@ -494,6 +561,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="days"
                     note="60 days = suppliers paid 60 days after shipment."
+                    tooltip="This is the current average term for supplier invoices in days across your international supply chain. For example, if your standard terms of payment are 60 days after shipment (and all suppliers are on the standard terms), then set the slider to 60 days."
                   />
                   <SliderField
                     label="Additional payment term for suppliers"
@@ -515,6 +583,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note="% of invoices paid at shipment."
+                    tooltip="If suppliers decide to take payment at shipment, then they are charged a discount (see the next slider). Not all suppliers will elect to do this - and so some suppliers will simply agree to wait for payment on the new extended terms payment date."
                   />
                   <SliderField
                     label="Early payment discount for payment at shipment"
@@ -525,6 +594,7 @@ export default function TradeSimulator() {
                     step={0.1}
                     unit="%"
                     note="Percent. reduction in the invoice amount."
+                    tooltip="Suppliers have the option to wait for payment or take early payment at shipment. If they take payment at shipment, you will ask them to give you a discount off the invoice which is set by this slider. Payment at shipment is valuable to suppliers because they get cash against their documents and before delivery."
                   />
                   <SliderField
                     label="Days after shipment until early payment"
@@ -535,6 +605,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="days"
                     note="Time period for processing and payments"
+                    tooltip="It normally takes a few days for suppliers to upload their paperwork to the PrimaTrade portal where it gets converted into useful structured data - and then for approval and payment to happen. Move the slider to set the time period in days here."
                   />
                   <SliderField
                     label="Share of early payments funded by banks / SCF"
@@ -545,6 +616,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note="Portion of early payments funded externally"
+                    tooltip="The payment to the supplier can be made using your own cash (ie: paying the invoice early) or the supplier can get its early payment by funding the invoice with a bank under a program managed by PrimaTrade (so not using your money)."
                   />
                   <SliderField
                     label="Supply chain finance rate / cost of funds (annual)"
@@ -555,6 +627,7 @@ export default function TradeSimulator() {
                     step={0.1}
                     unit="%"
                     note="Rate charged by the bank to fund early payments."
+                    tooltip="If the early payment is funded by a bank, this is the interest rate that the bank charges. The supplier economically pays this rate as part of the early payment discount (the excess of the early payment discount over this cost is your P&L)."
                   />
                   <SliderField
                     label="Internal cost of funds"
@@ -565,6 +638,7 @@ export default function TradeSimulator() {
                     step={0.1}
                     unit="%"
                     note="Notional borrowing rate for internal funding."
+                    tooltip="If you pay the invoice early with your own cash (eg: from treasury funds), then this is the rate notionally charged, reflecting the fact that the funds are not on deposit elsewhere."
                   />
                   <SliderField
                     label="Rate for savings from working capital generated"
@@ -575,6 +649,7 @@ export default function TradeSimulator() {
                     step={0.1}
                     unit="%"
                     note="Used to estimate annual value of lower borrowings"
+                    tooltip="This is your normal borrowing cost which is saved because of the additional cash generated by lengthening payment terms. So this rate would be the one applicable to overdrafts or revolving credit facilities that you might have."
                   />
                 </div>
               </div>
@@ -594,6 +669,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="FTE"
                     note="Number of FTE currently in AP."
+                    tooltip="The number of people in your accounts payable team handling your international suppliers. They would be dealing with invoices and paperwork, digitizing them, checking them, matching them, approving them, making entries in the accounting system and managing payments."
                   />
                   <SliderField
                     label="Fully loaded cost per AP FTE"
@@ -605,6 +681,7 @@ export default function TradeSimulator() {
                     unit={`${currencySymbol} / yr`}
                     note="Salary + benefits + overhead."
                     formatValue={(v) => `${currencySymbol}${(v/1000).toFixed(0)}K`}
+                    tooltip="This is the average cost of each person in the AP team, used to calculate the financial saving when the workload of the AP team is reduced - since suppliers are now doing some of their work in digitising their paperwork and thereby also enabling current processes to be automated."
                   />
                   <SliderField
                     label="% headcount reduction achievable"
@@ -615,6 +692,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note="Headcount savings from more efficient processing"
+                    tooltip="This is the workload reduction in the AP (accounts payable) team managing international suppliers resulting from the digitisation of paperwork and automation of processes. Our clients are typically seeing a 40% reduction in workload."
                   />
                 </div>
               </div>
@@ -634,6 +712,7 @@ export default function TradeSimulator() {
                     step={50}
                     unit="filings / month"
                     note="Declarations currently handled via broker/forwarder."
+                    tooltip="The number of filings into the customs system each month - since shipments can be consolidated, this is typically lower than the number of shipments."
                   />
                   <SliderField
                     label="Customs broker fee per filing"
@@ -644,6 +723,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit={`${currencySymbol} / filing`}
                     note="Total fee per filing charged by broker."
+                    tooltip="Customs brokers charge a fee to assemble the customs filing from the shipping paperwork, usually per shipment, often quite high because of the manual work involved. This fee is no longer paid when customs filings are done digitally using exporter digital trade data."
                   />
                   <SliderField
                     label="% of filings moved to direct digital self-filing"
@@ -654,6 +734,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note="Share posted directly into customs systems."
+                    tooltip="Not all filings can be done automatically from exporter data - but current experience is that nearly all can - so this is usually a high percentage."
                   />
                   <SliderField
                     label="Monthly # of shipments with forwarder doc fees"
@@ -664,6 +745,7 @@ export default function TradeSimulator() {
                     step={50}
                     unit="shipments / month"
                     note="Only include shipments where fees are avoided via digitisation."
+                    tooltip="Forwarders can also charge additional fees for digitising and managing shipping paperwork and providing the data that results - these fees are saved when exporters do this work."
                   />
                   <SliderField
                     label="Forwarder/doc fee per shipment"
@@ -674,6 +756,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit={`${currencySymbol} / shipment`}
                     note="Document handling, forwarding admin, etc."
+                    tooltip="This fee is the amount charged for the service per shipment - usually it is per shipment rather than per customs filing."
                   />
                   <SliderField
                     label="% of forwarder/doc fees eliminated"
@@ -684,6 +767,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note="Often similar to % self-filing, but can differ."
+                    tooltip="This should be a high percentage unless forwarders are also adding essential data from their own processes which still needs to be received and cannot be collected from exporters."
                   />
                   <SliderField
                     label="Current trade compliance team headcount"
@@ -694,6 +778,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="FTE"
                     note="Number of FTE currently in trade compliance."
+                    tooltip="Most businesses have a team that is responsible for capturing data from shipping documents for internal purposes (compliance, duty calculations, verifying shipments, coordinating goods receipts etc). This effort can be reduced with trade digitisation."
                   />
                   <SliderField
                     label="Fully loaded cost per FTE"
@@ -705,6 +790,7 @@ export default function TradeSimulator() {
                     unit={`${currencySymbol} / yr`}
                     note="Salary + benefits + overhead."
                     formatValue={(v) => `${currencySymbol}${(v/1000).toFixed(0)}K`}
+                    tooltip="This is the average cost of each person in the trade compliance / trade data team, used to calculate the financial saving when the workload of the team is reduced - since suppliers are now doing some of their work in digitising their paperwork and thereby also enabling current processes to be automated."
                   />
                   <SliderField
                     label="% headcount reduction achievable"
@@ -715,6 +801,7 @@ export default function TradeSimulator() {
                     step={1}
                     unit="%"
                     note="Headcount savings from more efficient processing"
+                    tooltip="This is the workload reduction in the trade team resulting from the digitisation of paperwork and automation of processes. Our clients are typically seeing a 40% reduction in workload."
                   />
                 </div>
               </div>
@@ -832,41 +919,69 @@ export default function TradeSimulator() {
                       <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
                       <span className="font-semibold text-[#D64933]">{formatCurrency(internalFundedAmount)}</span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t">
-                      <span className="text-gray-600">Total discount value:</span>
-                      <span className="font-semibold text-red-700">{formatCurrency(discountValue)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Bank funding cost:</span>
-                      <span className="font-semibold text-red-700">-{formatCurrency(bankFundingCost)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Internal funding cost:</span>
-                      <span className="font-semibold text-red-700">-{formatCurrency(internalFundingCost)}</span>
-                    </div>
-                    <div className="flex justify-between pt-2 border-t font-bold">
-                      <span className="text-gray-900">Net discount benefit:</span>
-                      <span className="text-2xl font-bold text-red-700">{formatCurrency(netDiscountBenefit)}</span>
-                    </div>
+                    <ResultRow 
+                      label="Total discount value:"
+                      value={formatCurrency(discountValue)}
+                      tooltip="Equals the face value amount of imports paid early times the early payment discount. This is a saving for the importer."
+                      className="flex justify-between pt-2 border-t"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-red-700"
+                    />
+                    <ResultRow 
+                      label="Bank funding cost:"
+                      value={`-${formatCurrency(bankFundingCost)}`}
+                      tooltip="Equals the amount charged by banks to fund early payments. This charge is made to suppliers not to the importer and is netted out of the early payment discount."
+                      className="flex justify-between"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-red-700"
+                    />
+                    <ResultRow 
+                      label="Internal funding cost:"
+                      value={`-${formatCurrency(internalFundingCost)}`}
+                      tooltip="Equals the notional cost (internally) for the use of own funds where suppliers take early payments but invoices are not funded by banks as own funds are used to pay the invoices early."
+                      className="flex justify-between"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-red-700"
+                    />
+                    <ResultRow 
+                      label="Net discount benefit:"
+                      value={formatCurrency(netDiscountBenefit)}
+                      tooltip="The net economic benefit generated when suppliers take early payment (= early payment discounts less the funding costs)."
+                      className="flex justify-between pt-2 border-t font-bold"
+                      labelClassName="text-gray-900"
+                      valueClassName="text-2xl font-bold text-red-700"
+                    />
                   </div>
                   <div className="space-y-3">
                     <div className="font-semibold text-gray-800">Working capital benefits</div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">From longer payment terms:</span>
-                      <span className="font-semibold text-red-700">{formatCurrency(wcFromExtension)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Own cash used to pay early:</span>
-                      <span className="font-semibold text-red-700">-{formatCurrency(wcUsedForEarlyPay)}</span>
-                    </div>
+                    <ResultRow 
+                      label="From longer payment terms:"
+                      value={formatCurrency(wcFromExtension)}
+                      tooltip="If suppliers agree longer payment terms then this generates working capital for the importer - since the importer pays suppliers more slowly and DPO (days payable outstanding) goes up."
+                      className="flex justify-between"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-red-700"
+                    />
+                    <ResultRow 
+                      label="Own cash used to pay early:"
+                      value={`-${formatCurrency(wcUsedForEarlyPay)}`}
+                      tooltip="If suppliers agree longer payment terms but then take early payment and the importer uses its own funds to make that payment, then this consumes working capital and DPO (days payable outstanding) goes down."
+                      className="flex justify-between"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-red-700"
+                    />
                     <div className="flex justify-between pt-2 border-t font-bold">
                       <span className="text-gray-900">Net working capital:</span>
                       <span className="text-2xl font-bold text-red-700">{formatCurrency(netWorkingCapital)}</span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t">
-                      <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
-                      <span className="font-semibold text-[#D64933]">{formatCurrency(wcAnnualValue)}</span>
-                    </div>
+                    <ResultRow 
+                      label={`Annual value at ${formatNumber(wcInterestRate, 1)}%:`}
+                      value={formatCurrency(wcAnnualValue)}
+                      tooltip="Additional working capital has a P&L value because it means borrowings are lower - this value is calculated as the interest cost that is saved when less is borrowed in the business."
+                      className="flex justify-between pt-2 border-t"
+                      labelClassName="text-gray-600"
+                      valueClassName="font-semibold text-[#D64933]"
+                    />
                    </div>
                 </div>
               </div>
@@ -875,30 +990,54 @@ export default function TradeSimulator() {
               <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Headcount savings and other benefits</h3>
                   <div className="space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">AP FTEs saved:</span>
-                    <span className="font-semibold text-purple-700">{formatNumber(apFteSaved, 1)} FTEs</span> 
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">AP headcount savings:</span>
-                    <span className="font-semibold text-red-700">{formatCurrency(apSavings)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Customs broker savings:</span>
-                    <span className="font-semibold text-red-700">{formatCurrency(brokerSavings)}</span>
-                  </div>
-                   <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                    <span className="font-semibold text-red-700">{formatCurrency(forwarderSavings)}</span>
-                  </div>
-                   <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Trade FTEs saved:</span>
-                    <span className="font-semibold text-purple-700">{formatNumber(tradeFteSaved, 1)} FTEs</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-sm text-gray-600">Trade headcount savings:</span>
-                    <span className="font-semibold text-red-700">{formatCurrency(tradeHeadcountSavings)}</span>
-                  </div>
+                  <ResultRow 
+                    label="AP FTEs saved:"
+                    value={`${formatNumber(apFteSaved, 1)} FTEs`}
+                    tooltip="The number of accounts payable (AP) people who are not required because the workload has reduced."
+                    className="flex justify-between items-center pb-2 border-b"
+                    labelClassName="text-sm text-gray-600"
+                    valueClassName="font-semibold text-purple-700"
+                  />
+                  <ResultRow 
+                    label="AP headcount savings:"
+                    value={formatCurrency(apSavings)}
+                    tooltip="The financial saving resulting from lower headcount being required in the accounts payable team."
+                    className="flex justify-between items-center pb-2 border-b"
+                    labelClassName="text-sm text-gray-600"
+                    valueClassName="font-semibold text-red-700"
+                  />
+                  <ResultRow 
+                    label="Customs broker savings:"
+                    value={formatCurrency(brokerSavings)}
+                    tooltip="The financial saving resulting from lower fees being paid to customs brokers for compiling customs filings."
+                    className="flex justify-between items-center pb-2 border-b"
+                    labelClassName="text-sm text-gray-600"
+                    valueClassName="font-semibold text-red-700"
+                  />
+                  <ResultRow 
+                    label="Forwarder fee savings:"
+                    value={formatCurrency(forwarderSavings)}
+                    tooltip="The financial saving resulting from lower fees being paid to forwarders for handling documents and providing data to the importer."
+                    className="flex justify-between items-center pb-2 border-b"
+                    labelClassName="text-sm text-gray-600"
+                    valueClassName="font-semibold text-red-700"
+                  />
+                  <ResultRow 
+                    label="Trade FTEs saved:"
+                    value={`${formatNumber(tradeFteSaved, 1)} FTEs`}
+                    tooltip="The number of people in the trade / trade data / compliance team who are no longer required because the workload has reduced."
+                    className="flex justify-between items-center pb-2 border-b"
+                    labelClassName="text-sm text-gray-600"
+                    valueClassName="font-semibold text-purple-700"
+                  />
+                  <ResultRow 
+                    label="Trade headcount savings:"
+                    value={formatCurrency(tradeHeadcountSavings)}
+                    tooltip="The financial saving resulting from lower headcount being required in the trade / trade data / compliance team."
+                    className="flex justify-between items-center pb-2 border-b"
+                    labelClassName="text-sm text-gray-600"
+                    valueClassName="font-semibold text-red-700"
+                  />
                 <div className="flex justify-between items-center pt-3">
                     <span className="font-bold text-gray-900">Total benefit from operational savings:</span>
                     <span className="text-2xl font-bold text-red-700">{formatCurrency(totalOperationalSavings)}</span>
