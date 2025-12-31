@@ -336,7 +336,7 @@ export default function TradeSimulator() {
                 className="h-6 sm:h-8 w-auto flex-shrink-0"
               />
               <div className="min-w-0">
-                <h1 className="text-base sm:text-2xl font-bold text-gray-900 truncate">Trade Digitalisation Benefits Calculator</h1>
+                <h1 className="text-base sm:text-2xl font-bold text-gray-900 truncate">Trade Digitalisation Benefits</h1>
                 <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 hidden sm:block">Cash Against Data Platform</p>
               </div>
             </div>
@@ -714,8 +714,8 @@ export default function TradeSimulator() {
 
                   {/* Working Capital Section - Already centered */}
                   <div className="md:border-l border-white/30 md:pl-6 text-center md:text-left">
-                    <h3 className="text-lg font-bold mb-1">Net Working Capital Win</h3>
-                    <p className="text-white/80 text-xs mb-3">Cash released via longer supplier payment terms</p>
+                    <h3 className="text-lg font-bold mb-1">Working Capital Win</h3>
+                    <p className="text-white/80 text-xs mb-3">Cash released (longer payment terms)</p>
                     <div className="text-4xl font-bold mb-4">{formatCurrency(netWorkingCapital)}</div>
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
@@ -724,7 +724,7 @@ export default function TradeSimulator() {
                         <div className="text-sm font-bold">{formatCurrency(wcFromExtension)}</div>
                       </div>
                       <div>
-                        <div className="text-white/70 mb-1">Used for early pay:</div>
+                        <div className="text-white/70 mb-1">Self-funded:</div>
                         <div className="text-sm font-bold">-{formatCurrency(wcUsedForEarlyPay)}</div>
                       </div>
                     </div>
@@ -808,7 +808,7 @@ export default function TradeSimulator() {
                     </div>
                     <div className="flex justify-between pt-2 border-t font-bold">
                       <span className="text-gray-900">Net discount benefit:</span>
-                      <span className="text-red-700">{formatCurrency(netDiscountBenefit)}</span>
+                      <span className="text-2xl font-bold text-red-700">{formatCurrency(netDiscountBenefit)}</span>
                     </div>
                   </div>
                   <div className="space-y-3">
@@ -823,7 +823,7 @@ export default function TradeSimulator() {
                     </div>
                     <div className="flex justify-between pt-2 border-t font-bold">
                       <span className="text-gray-900">Net working capital:</span>
-                      <span className="text-red-700">{formatCurrency(netWorkingCapital)}</span>
+                      <span className="text-2xl font-bold text-red-700">{formatCurrency(netWorkingCapital)}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t">
                       <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
