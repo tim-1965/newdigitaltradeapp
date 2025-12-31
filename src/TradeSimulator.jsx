@@ -277,7 +277,7 @@ export default function TradeSimulator() {
               }}
             />
             <div className="text-right min-w-[60px]">
-              <span className="text-sm font-semibold text-[#0C7C59]">
+              <span className="text-sm font-semibold text-[#D64933]">
                 {formatValue ? formatValue(localValue) : localValue}
               </span>
               {unit && <span className="text-xs text-gray-600 ml-1">{unit}</span>}
@@ -295,7 +295,7 @@ export default function TradeSimulator() {
           <label className="text-xs font-semibold text-gray-900 block mb-0.5">{label}</label>
           {note && <p className="text-xs text-gray-600 line-clamp-1">{note}</p>}
         </div>
-        <div className="text-base font-bold text-[#0C7C59] min-w-[120px] text-right">
+        <div className="text-base font-bold text-[#D64933] min-w-[120px] text-right">
           {value}
         </div>
       </div>
@@ -321,7 +321,7 @@ export default function TradeSimulator() {
             </div>
             <div className="flex items-center gap-4">
               {showSaved && (
-                <div className="flex items-center gap-2 text-[#0C7C59] text-sm">
+                <div className="flex items-center gap-2 text-[#D64933] text-sm">
                   <Check className="w-4 h-4" />
                   <span>Saved</span>
                 </div>
@@ -342,7 +342,7 @@ export default function TradeSimulator() {
                   onClick={() => setActiveView('simulation')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     activeView === 'simulation'
-                      ? 'bg-[#0C7C59] text-white shadow-sm'
+                      ? 'bg-[#D64933] text-white shadow-sm'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -628,7 +628,7 @@ export default function TradeSimulator() {
                             
             <div className="space-y-6">
               {/* Summary card aligned with top of panel */}
-              <div className="bg-gradient-to-br from-[#0C7C59] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white">
+              <div className="bg-gradient-to-br from-[#D64933] via-[#58A4B0] to-[#58A4B0] rounded-lg shadow-xl p-6 text-white">
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* P&L Section */}
                   <div>
@@ -684,15 +684,15 @@ export default function TradeSimulator() {
                     </div>
                     <div className="flex justify-between pl-4">
                       <span className="text-gray-600">• Bank funded ({formatNumber(bankFundedPct, 0)}%):</span>
-                      <span className="font-semibold text-[#0C7C59]">{formatCurrency(bankFundedAmount)}</span>
+                      <span className="font-semibold text-[#D64933]">{formatCurrency(bankFundedAmount)}</span>
                     </div>
                     <div className="flex justify-between pl-4">
                       <span className="text-gray-600">• Internally funded ({formatNumber(100 - bankFundedPct, 0)}%):</span>
-                      <span className="font-semibold text-[#0C7C59]">{formatCurrency(internalFundedAmount)}</span>
+                      <span className="font-semibold text-[#D64933]">{formatCurrency(internalFundedAmount)}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t">
                       <span className="text-gray-600">Total discount value:</span>
-                      <span className="font-semibold text-green-700">{formatCurrency(discountValue)}</span>
+                      <span className="font-semibold text-red-700">{formatCurrency(discountValue)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Bank funding cost:</span>
@@ -704,14 +704,14 @@ export default function TradeSimulator() {
                     </div>
                     <div className="flex justify-between pt-2 border-t font-bold">
                       <span className="text-gray-900">Net discount benefit:</span>
-                      <span className="text-green-700">{formatCurrency(netDiscountBenefit)}</span>
+                      <span className="text-red-700">{formatCurrency(netDiscountBenefit)}</span>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div className="font-semibold text-gray-800">Working capital benefits</div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">From longer payment terms:</span>
-                      <span className="font-semibold text-green-700">{formatCurrency(wcFromExtension)}</span>
+                      <span className="font-semibold text-red-700">{formatCurrency(wcFromExtension)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Own cash used to pay early:</span>
@@ -719,11 +719,11 @@ export default function TradeSimulator() {
                     </div>
                     <div className="flex justify-between pt-2 border-t font-bold">
                       <span className="text-gray-900">Net working capital:</span>
-                      <span className="text-green-700">{formatCurrency(netWorkingCapital)}</span>
+                      <span className="text-red-700">{formatCurrency(netWorkingCapital)}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t">
                       <span className="text-gray-600">Annual value at {formatNumber(wcInterestRate, 1)}%:</span>
-                      <span className="font-semibold text-[#0C7C59]">{formatCurrency(wcAnnualValue)}</span>
+                      <span className="font-semibold text-[#D64933]">{formatCurrency(wcAnnualValue)}</span>
                     </div>
                    </div>
                 </div>
@@ -739,15 +739,15 @@ export default function TradeSimulator() {
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b">
                     <span className="text-sm text-gray-600">AP headcount savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(apSavings)}</span>
+                    <span className="font-semibold text-red-700">{formatCurrency(apSavings)}</span>
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b">
                     <span className="text-sm text-gray-600">Customs broker savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(brokerSavings)}</span>
+                    <span className="font-semibold text-red-700">{formatCurrency(brokerSavings)}</span>
                   </div>
                    <div className="flex justify-between items-center pb-2 border-b">
                     <span className="text-sm text-gray-600">Forwarder fee savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(forwarderSavings)}</span>
+                    <span className="font-semibold text-red-700">{formatCurrency(forwarderSavings)}</span>
                   </div>
                    <div className="flex justify-between items-center pb-2 border-b">
                     <span className="text-sm text-gray-600">Trade FTEs saved:</span>
@@ -755,11 +755,11 @@ export default function TradeSimulator() {
                   </div>
                   <div className="flex justify-between items-center pb-2 border-b">
                     <span className="text-sm text-gray-600">Trade headcount savings:</span>
-                    <span className="font-semibold text-green-700">{formatCurrency(tradeHeadcountSavings)}</span>
+                    <span className="font-semibold text-red-700">{formatCurrency(tradeHeadcountSavings)}</span>
                   </div>
                 <div className="flex justify-between items-center pt-3">
                     <span className="font-bold text-gray-900">Total benefit from operational savings:</span>
-                    <span className="text-2xl font-bold text-green-700">{formatCurrency(totalOperationalSavings)}</span>
+                    <span className="text-2xl font-bold text-red-700">{formatCurrency(totalOperationalSavings)}</span>
                   </div>
                 </div>
               </div>
@@ -874,7 +874,7 @@ export default function TradeSimulator() {
                     <tr className="border-b-2 border-gray-300">
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Item</th>
                       <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#D64933] w-40">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -882,31 +882,31 @@ export default function TradeSimulator() {
                     <tr>
                       <td className="py-3 px-4 text-sm">Turnover / revenue</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(turnover)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-[#0C7C59]">{formatCurrency(turnover)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-[#D64933]">{formatCurrency(turnover)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Unchanged</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Cost of sales</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(costOfSales)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedCostOfSales)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedCostOfSales)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced by early payment discounts where funding is external</td>
                     </tr>
                     <tr className="bg-[#58A4B0]/10">
                       <td className="py-3 px-4 text-sm font-semibold">Operating profit</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(operatingProfit)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedOperatingProfit)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-bold text-red-700">{formatCurrency(adjustedOperatingProfit)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Increased by the full P&L benefit</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Net interest payable</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(netInterest)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedNetInterest)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedNetInterest)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced as lower borrowing because of working capital benefits</td>
                     </tr>
                     <tr className="bg-[#58A4B0]/10">
                       <td className="py-3 px-4 text-sm font-semibold">EBITDA</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(ebitda)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedEbitda)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-bold text-red-700">{formatCurrency(adjustedEbitda)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Increased by funded early payment discounts and operational wins</td>
                     </tr>
                   </tbody>
@@ -926,7 +926,7 @@ export default function TradeSimulator() {
                     <tr className="border-b-2 border-gray-300">
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Item</th>
                       <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#D64933] w-40">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -934,25 +934,25 @@ export default function TradeSimulator() {
                     <tr>
                       <td className="py-3 px-4 text-sm">Trade payables</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(tradePayables)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-[#0C7C59]">{formatCurrency(adjustedTradePayables)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-[#D64933]">{formatCurrency(adjustedTradePayables)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Goes up as suppliers are providing more credit</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Net debt</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(netDebt)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedNetDebt)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedNetDebt)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Reduced as lower borrowing because of working capital benefits</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Equity</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatCurrency(equity)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatCurrency(adjustedEquity)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatCurrency(adjustedEquity)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Increased as earnings are higher over the period</td>
                     </tr>
                     <tr className="bg-[#58A4B0]/10">
                       <td className="py-3 px-4 text-sm font-semibold">Free cash flow</td>
                       <td className="py-3 px-4 text-sm text-right font-bold">{formatCurrency(freeCashFlow)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-bold text-green-700">{formatCurrency(adjustedFCF)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-bold text-red-700">{formatCurrency(adjustedFCF)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Increased as working capital generated</td>
                     </tr>
                   </tbody>
@@ -972,7 +972,7 @@ export default function TradeSimulator() {
                     <tr className="border-b-2 border-gray-300">
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 w-64">Ratio</th>
                       <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 w-40">Historic Value</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#0C7C59] w-40">After PrimaTrade</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-[#D64933] w-40">After PrimaTrade</th>
                       <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Notes</th>
                     </tr>
                   </thead>
@@ -980,37 +980,37 @@ export default function TradeSimulator() {
                     <tr>
                       <td className="py-3 px-4 text-sm">EBITDA margin</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatPercent(ebitdaMargin)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatPercent(adjustedEbitdaMargin)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatPercent(adjustedEbitdaMargin)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Up because cost of sales is lower and operations more efficient</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Operating margin</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatPercent(operatingMargin)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatPercent(adjustedOperatingMargin)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatPercent(adjustedOperatingMargin)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Up because cost of sales is lower and operations more efficient</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Leverage (Net Debt / EBITDA)</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatNumber(leverage, 2)}x</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatNumber(adjustedLeverage, 2)}x</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatNumber(adjustedLeverage, 2)}x</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Down because EBITDA is higher and net debt is lower</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Solvency (Debt / Equity)</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatNumber(solvency, 2)}x</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatNumber(adjustedSolvency, 2)}x</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatNumber(adjustedSolvency, 2)}x</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Down because net debt is lower and equity is higher</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">FCF / Sales</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatPercent(fcfSales)}</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatPercent(adjustedFcfSales)}</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatPercent(adjustedFcfSales)}</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Up because working capital is generated</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-4 text-sm">Interest cover</td>
                       <td className="py-3 px-4 text-sm text-right font-medium">{formatNumber(interestCover, 2)}x</td>
-                      <td className="py-3 px-4 text-sm text-right font-medium text-green-700">{formatNumber(adjustedInterestCover, 2)}x</td>
+                      <td className="py-3 px-4 text-sm text-right font-medium text-red-700">{formatNumber(adjustedInterestCover, 2)}x</td>
                       <td className="py-3 px-4 text-xs text-gray-600">Up because interest costs reduce and earnings increase</td>
                     </tr>
                   </tbody>
@@ -1019,23 +1019,23 @@ export default function TradeSimulator() {
             </div>
 
             {/* Summary Card */}
-            <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg shadow-xl p-8 text-white">
+            <div className="bg-gradient-to-r from-red-600 to-orange-600 rounded-lg shadow-xl p-8 text-white">
               <h2 className="text-2xl font-bold mb-6">Impact Summary</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <div className="text-green-100 text-sm mb-2">P&L Improvement</div>
+                  <div className="text-red-100 text-sm mb-2">P&L Improvement</div>
                   <div className="text-4xl font-bold mb-1">{formatCurrency(adjustedOperatingProfit - operatingProfit)}</div>
-                  <div className="text-green-100 text-sm">Operating profit increase</div>
+                  <div className="text-red-100 text-sm">Operating profit increase</div>
                 </div>
                 <div>
-                  <div className="text-green-100 text-sm mb-2">Working Capital Released</div>
+                  <div className="text-red-100 text-sm mb-2">Working Capital Released</div>
                   <div className="text-4xl font-bold mb-1">{formatCurrency(netWorkingCapital)}</div>
-                  <div className="text-green-100 text-sm">Additional cash available</div>
+                  <div className="text-red-100 text-sm">Additional cash available</div>
                 </div>
                 <div>
-                  <div className="text-green-100 text-sm mb-2">Leverage Improvement</div>
+                  <div className="text-red-100 text-sm mb-2">Leverage Improvement</div>
                   <div className="text-4xl font-bold mb-1">{formatNumber(leverage - adjustedLeverage, 2)}x</div>
-                  <div className="text-green-100 text-sm">Net Debt / EBITDA reduction</div>
+                  <div className="text-red-100 text-sm">Net Debt / EBITDA reduction</div>
                 </div>
               </div>
             </div>

@@ -41,7 +41,7 @@ input[type="range"].slider::-webkit-slider-thumb {
 }
 
 input[type="range"].slider::-webkit-slider-thumb:hover {
-  background: #0C7C59;
+  background: #D64933;
   transform: translateY(-6px) scale(1.15);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -63,7 +63,7 @@ input[type="range"].slider::-moz-range-thumb {
 }
 
 input[type="range"].slider::-moz-range-thumb:hover {
-  background: #0C7C59;
+  background: #D64933;
   transform: translateY(-6px) scale(1.15);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
