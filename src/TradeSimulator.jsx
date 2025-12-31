@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, DollarSign, BarChart3, Calculator, FileText, Save, Check } from 'lucide-react';
+import { TrendingUp, DollarSign, BarChart3, Calculator, FileText, Save, Check, Printer } from 'lucide-react';
 
 export default function TradeSimulator() {
   const [activeView, setActiveView] = useState('inputs'); // 'inputs' or 'simulation'
@@ -96,6 +96,11 @@ export default function TradeSimulator() {
       tradeComplianceHeadcount, tradeCostPerFte, tradeEfficiencyPct,
       turnover, costOfSales, operatingProfit, netInterest, ebitda, tradePayables, 
       netDebt, equity, freeCashFlow]);
+
+  // Print handler
+  const handlePrint = () => {
+    window.print();
+  };
 
   // ===== CALCULATIONS =====
   
@@ -397,7 +402,8 @@ export default function TradeSimulator() {
 
       {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
-        {activeView === 'inputs' ? (
+        {/* Panel 1: Inputs & Results */}
+        <div className={activeView === 'inputs' ? '' : 'hidden print:block'} data-panel="inputs">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 sm:gap-6 lg:items-start">
             {/* Box 1 - Left column on desktop, order-1 on mobile */}
             <div className="space-y-4 sm:space-y-6 order-1 lg:col-start-1 lg:row-start-1">
@@ -873,7 +879,21 @@ export default function TradeSimulator() {
               </div>
             </div>
           </div>
-        ) : (
+
+          {/* Print Button */}
+          <div className="mt-8 flex justify-center print:hidden">
+            <button
+              onClick={handlePrint}
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D64933] to-[#F08070] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+            >
+              <Printer className="w-5 h-5" />
+              Print to PDF
+            </button>
+          </div>
+        </div>
+
+        {/* Panel 2: Simulation View */}
+        <div className={activeView === 'simulation' ? '' : 'hidden print:block'} data-panel="simulation">
           <>
           {/* Simulation View */}
           <div className="space-y-6">
@@ -1218,9 +1238,20 @@ export default function TradeSimulator() {
                 </div>
               </div>
             </div>
+
+            {/* Print Button */}
+            <div className="mt-8 flex justify-center print:hidden">
+              <button
+                onClick={handlePrint}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D64933] to-[#F08070] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+              >
+                <Printer className="w-5 h-5" />
+                Print to PDF
+              </button>
+            </div>
           </div>
           </>
-        )}
+        </div>
       </div>
     </div>
   );
