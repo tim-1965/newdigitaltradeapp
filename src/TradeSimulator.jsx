@@ -337,7 +337,7 @@ export default function TradeSimulator() {
               />
               <div className="min-w-0">
                 <h1 className="text-base sm:text-2xl font-bold text-gray-900 truncate">Trade Digitalisation Benefits</h1>
-                <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 hidden sm:block">Cash Against Data Platform</p>
+                <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 hidden sm:block">Cash Against Data</p>
               </div>
             </div>
             {showSaved && (
