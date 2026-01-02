@@ -526,7 +526,10 @@ export default function TradeSimulator() {
         {/* Explanatory Text Box */}
         <div className="bg-gradient-to-r from-[#F08070]/10 to-[#D64933]/5 border-l-4 border-[#D64933] rounded-r-lg p-4 mb-4 sm:mb-6">
           <p className="text-sm text-gray-700 leading-relaxed">
-            This app enables you to compare a PrimaTrade SCF program with a traditional SCF program. PrimaTrade offers the ability to reach all your suppliers supported by a high level of automation - even suppliers in the long tail and in difficult jurisdictions. You can also replace expensive card payment programs with more efficient SCF, collecting an early payment discount to bring in-house the fees that are currently paid externally. On top, PrimaTrade enables early payments to be approved before delivery (at shipment), delivering much earlier cash to suppliers and much more value.
+            This app enables you to assess the benefits of trade digitalisation for your import supply chain. 
+            In <strong>Panel 1</strong>, you can input your company data to see immediate calculations of potential benefits from trade digitalisation, including early payment discounts, working capital improvements, and operational savings.
+            In <strong>Panel 2</strong>, you can simulate the impact of these benefits on your company's financial statements, comparing your historic financials with projected improvements.
+            Use the sliders and input fields to adjust parameters and see how they affect the outcomes in real-time.
           </p>
         </div>
 
